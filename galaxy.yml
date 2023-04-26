@@ -1,0 +1,21 @@
+namespace: fortinet
+name: fortiflexvm
+version: 1.0.0
+readme: README.md
+authors:
+    - Xinwei Du <dux@fortinet.com> (@DrMofu)
+description: A collection of Ansible Modules for FortiFlexVM
+license:
+    - GPL-3.0-or-later
+tags:
+    - fortinet
+    - networking
+# dependencies: {}
+repository: https://github.com/fortinet-ansible-dev/ansible-galaxy-fortiflexvm-collection
+documentation: https://ansible-galaxy-fortiflexvm-docs.readthedocs.io/en/latest
+homepage: https://www.fortinet.com
+issues: https://github.com/fortinet-ansible-dev/ansible-galaxy-fortiflexvm-collection/issues
+build_ignore: 
+  - "*.log"
+  - "tmp/**"
+  - ".git/*"

@@ -1,0 +1,51 @@
+- name: Update VM configuration
+  hosts: localhost
+  collections:
+    - fortinet.fortiflexvm
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Update a Virtual Machine configuration
+      fortinet.fortiflexvm.fortiflexvm_configs_update:
+        username: "{{ username }}"
+        password: "{{ password }}"
+        id: 3643
+        name: "ansible_modify"
+        status: "DISABLED" # ACTIVE or DISABLED
+
+        # Please only use zero or one of the following.
+        # If you want to update the configuration, please use the type you declared in fortiflexvm_configs_create.
+
+        fortiGateBundle:
+          cpu: "2" # "1", "2", "4", "8", "16", "32", "2147483647"
+          service: "FC" # "FC", "UTM", "ENT", "ATP"
+          vdom: 10 # 0 ~ 500
+
+        # fortiManager:
+        #   device: 1 # 1 ~ 100000
+        #   adom: 1 # 1 ~ 100000
+          
+        # fortiWeb:
+        #   cpu: "4" # "1", "2", "4", "8", "16"
+        #   service: "FWBSTD" # "FWBSTD" or "FWBADV"
+
+        # fortiGateLCS:
+        #   cpu: 4 # 1 ~ 96
+        #   fortiGuardServices: [] # "IPS", "AVDB", "FURL", "IOTH", "FGSA", "ISSS"  
+        #   supportService: "FC247" # "FC247", "ASET"
+        #   vdom: 1 # 1 ~ 500
+        #   cloudServices: ["FAMS", "SWNM"] # "FAMS", "SWNM", "FMGC", "AFAC"
+
+        # fortiAnalyzer:
+        #   storage: 5 # 5 ~ 8300
+        #   adom: 1 # 0 ~ 1200
+        #   service: "FAZFC247" # "FAZFC247"
+        
+        # fortiPortal:
+        #   device: 1 # 0 ~ 100000
+
+      register: result
+
+    - name: Display response
+      debug:
+        var: result.configs

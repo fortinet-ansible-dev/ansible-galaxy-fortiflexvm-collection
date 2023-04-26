@@ -1,0 +1,16 @@
+- name: Get list of Flex VM Programs for the account
+  hosts: localhost
+  collections:
+    - fortinet.fortiflexvm
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Get programs list
+      fortinet.fortiflexvm.fortiflexvm_programs_list_info:
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: result
+
+    - name: Display response
+      debug:
+        var: result.programs

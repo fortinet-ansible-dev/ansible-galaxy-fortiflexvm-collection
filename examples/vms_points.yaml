@@ -1,0 +1,19 @@
+- name: Get point usage for VMs
+  hosts: localhost
+  collections:
+    - fortinet.fortiflexvm
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Get VMs points
+      fortinet.fortiflexvm.fortiflexvm_vms_points_info:
+        username: "{{ username }}"
+        password: "{{ password }}"
+        configId: 25
+        startDate: "2020-10-01"
+        endDate: "2020-10-25"
+      register: result
+
+    - name: Display response
+      debug:
+        var: result.vms

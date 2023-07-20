@@ -31,24 +31,27 @@ class Connection():
         self.module = module
         self.access_token = ""
         self.validation_hash = None
-        self.session_file = "flexvm_session.json"
+        self.session_file = "fortiflex_session.json"
         self.username = username
         self.password = password
         self.save_session_file = False
+        self.log_path = False
+        self.retry_times = 4
         self.login()
 
     def login(self, check_error=True):
         if not self.username:
-            self.username = os.environ.get('FLEXVM_ACCESS_USERNAME')
+            self.username = os.environ.get('FORTIFLEX_ACCESS_USERNAME')
         if not self.password:
-            self.password = os.environ.get('FLEXVM_ACCESS_PASSWORD')
+            self.password = os.environ.get('FORTIFLEX_ACCESS_PASSWORD')
         if not self.username:
             self.module.fail_json(
-                msg="Please specify username in your playbook, or set environment variable: FLEXVM_ACCESS_USERNAME.")
+                msg="Please specify username in your playbook, or set environment variable: FORTIFLEX_ACCESS_USERNAME.")
         if not self.password:
             self.module.fail_json(
-                msg="Please specify password in your playbook, or set environment variable: FLEXVM_ACCESS_PASSWORD.")
+                msg="Please specify password in your playbook, or set environment variable: FORTIFLEX_ACCESS_PASSWORD.")
         self.validation_hash = self._hash_str(self.username + self.password)
+        self.log_path = os.environ.get('FORTIFLEX_LOG_PATH')
         if self._load_session():
             # already login
             return
@@ -76,13 +79,16 @@ class Connection():
         }
         query_url = os.path.join(API_URL, url)
         response = self.send(query_url, data, headers=headers, method=method)
-        if response.json()["status"] == -1 and response.json()["message"] == "Invalid security token.":
-            # token expired, login again
-            self.logout()
-            self.login()
+        retry = 0
+        while retry <= self.retry_times and response.json()["status"] == -1 and response.json()["message"] == "Invalid security token.":
+            if retry == self.retry_times:
+                # token expired, login again
+                self.logout()
+                self.login()
             headers["Authorization"] = "Bearer " + self.access_token
             response = self.send(
                 query_url, data, headers=headers, method=method)
+            retry += 1
 
         if check_error and response.status_code >= 400:
             self.module.fail_json(msg="Request failed with status code {0}".format(
@@ -96,6 +102,13 @@ class Connection():
                 exception=ANOTHER_LIBRARY_IMPORT_ERROR)
         response = None
         method = method.lower()
+        if self.log_path:
+            log_data = data.copy()
+            for sensitive_key in ["username", "password"]:
+                if sensitive_key in log_data:
+                    log_data[sensitive_key] = "******"
+            self.log("FortiFlex request to {0}: {1}".format(
+                url, str(log_data)))
         try:
             if method == "post":
                 response = requests.post(url, json=data, headers=headers)
@@ -107,10 +120,28 @@ class Connection():
         except Exception as e:
             self.module.fail_json(
                 msg="An error occurred while sending the {0} request: {1}".format(method, e))
+        if self.log_path:
+            log_data = response.json()
+            for sensitive_key in ["access_token", "refresh_token"]:
+                if sensitive_key in log_data:
+                    log_data[sensitive_key] = "******"
+            self.log("FortiFlex response: " + str(log_data))
         return response
 
     def logout(self):
         self._remove_session()
+
+    def log(self, data):
+        try:
+            if self.log_path:
+                with open(self.log_path, "a") as f:
+                    if isinstance(data, list):
+                        for item in data:
+                            f.write(str(item) + "\n")
+                    else:
+                        f.write(str(data) + "\n")
+        except (IOError, KeyError):
+            pass
 
     def _load_session(self):
         try:

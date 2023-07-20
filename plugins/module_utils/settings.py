@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 AUTH_URL = "https://customerapiauth.fortinet.com/api/v1/oauth/token/"
-API_URL = "https://support.fortinet.com/ES/api/flexvm/v1/"
+API_URL = "https://support.fortinet.com/ES/api/"
 
 PRODUCTS = [
     {
@@ -26,10 +26,10 @@ PRODUCTS = [
         "id": 2,
         "name": "fortiManager",
         "parameters": [
-            {"id": 3, "name": "device", "type": "int",
-                "min": 0, "max": 100000, "required": True},
+            {"id": 30, "name": "device", "type": "int",
+                "min": 1, "max": 100000, "required": True},
             {"id": 9, "name": "adom", "type": "int",
-                "min": 0, "max": 100000, "required": True},
+                "min": 1, "max": 100000, "required": True},
         ],
     },
     {
@@ -48,14 +48,14 @@ PRODUCTS = [
         "parameters": [
             {"id": 6, "name": "cpu", "type": "int",
                 "min": 1, "max": 96, "required": True},
-            {"id": 7, "name": "fortiGuardServices", "type": "list", "elements": "str", "choices": [
-                "IPS", "AVDB", "FURL", "IOTH", "FGSA", "ISSS"], "required":False, "default":[]},
+            {"id": 7, "name": "fortiGuardServices", "type": "list", "elements": "str",
+                "choices": ["IPS", "AVDB", "FGSA", "DLDB", "FAIS", "FURLDNS"], "required":False, "default":[]},
             {"id": 8, "name": "supportService", "type": "str",
                 "choices": ["FC247", "ASET"], "required":True},
             {"id": 11, "name": "vdom", "type": "int",
                 "min": 1, "max": 500, "required": True},
-            {"id": 12, "name": "cloudServices", "type": "list", "elements": "str", "choices": [
-                "FAMS", "SWNM", "FMGC", "AFAC"], "required":False, "default":[]},
+            {"id": 12, "name": "cloudServices", "type": "list", "elements": "str",
+                "choices": ["FAMS", "SWNM", "AFAC", "FAZC"], "required":False, "default":[]},
         ],
     },
     {
@@ -76,6 +76,30 @@ PRODUCTS = [
         "parameters": [
             {"id": 24, "name": "device", "type": "int",
                 "min": 0, "max": 100000, "required": True},
+        ],
+    },
+    {
+        "id": 9,
+        "name": "fortiADC",
+        "parameters": [
+            {"id": 25, "name": "cpu", "type": "str",
+                "choices": ["1", "2", "4", "8", "16", "32"], "required":True},
+            {"id": 26, "name": "service", "type": "str",
+                "choices": ["FDVSTD", "FDVADV", "FDVFC247"], "required":True},
+        ],
+    },
+    {
+        "id": 101,
+        "name": "fortiGateHardware",
+        "parameters": [
+            {"id": 27, "name": "model", "type": "str",
+                "choices": ["FGT40F", "FGT60F", "FGT70F", "FGT80F", "FG100F", "FGT60E",
+                            "FGT61F", "FG100E", "FG101F", "FG200E", "FG200F", "FG201F",
+                            "FG4H0F", "FG6H0F"], "required":True},
+            {"id": 28, "name": "service", "type": "str",
+                "choices": ["FGHWFC247", "FGHWFCEL", "FGHWATP", "FGHWUTP", "FGHWENT"], "required":True},
+            {"id": 29, "name": "addons", "type": "str",
+                "choices": ["NONE", "FGHWFCELU"], "required":False, "default":"NONE"},
         ],
     },
 ]

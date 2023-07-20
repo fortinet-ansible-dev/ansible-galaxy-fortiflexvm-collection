@@ -1,16 +1,17 @@
-- name: Get list of FlexVM groups
+- name: Get list of entitlements for a specific config ID
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
-    - name: Get groups list
-      fortinet.fortiflexvm.fortiflexvm_groups_list_info:
+    - name: Get entitlement list
+      fortinet.fortiflexvm.fortiflexvm_entitlements_list_info:
         username: "{{ username }}"
         password: "{{ password }}"
+        configId: 22
       register: result
 
     - name: Display response
       debug:
-        var: result.groups
+        var: result.entitlements

@@ -1,21 +1,21 @@
-- name: Create VMs
+- name: Create hardware entitlements
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
-    - name: Create Virtual Machines
-      fortinet.fortiflexvm.fortiflexvm_vms_create:
+    - name: Create hardware entitlements
+      fortinet.fortiflexvm.fortiflexvm_entitlements_hardware_create:
         username: "{{ username }}"
         password: "{{ password }}"
         configId: 42
-        count: 1
-        description: "Create through Ansible"
+        serialNumbers:
+          - "FGT60FTK19000010"
+          - "FGT60FTK19000013"
         endDate: "2023-11-11T00:00:00"
-        folderPath: "My Assets"
       register: result
 
     - name: Display response
       debug:
-        var: result.vms
+        var: result.entitlements

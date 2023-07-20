@@ -14,22 +14,22 @@ __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
-module: fortiflexvm_vms_list_info
-short_description: Get list of existing VMs for FlexVM Configuration.
+module: fortiflexvm_entitlements_list_info
+short_description: Get list of existing entitlements for a FlexVM Configuration.
 description:
-    - This module retrieves a list of VMs associated with a specific config ID from FortiFlexVM API using the provided credentials.
-version_added: "1.0.0"
+    - This module retrieves a list of entitlements associated with a specific config ID from FortiFlexVM API using the provided credentials.
+version_added: "2.0.0"
 author:
     - Xinwei Du (@DrMofu)
 options:
     username:
         description:
-            - The username to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_USERNAME.
+            - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
         required: false
     password:
         description:
-            - The password to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_PASSWORD.
+            - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
     configId:
@@ -40,7 +40,7 @@ options:
 '''
 
 EXAMPLES = '''
-- name: Get list of VMs for a specific config ID
+- name: Get list of entitlements for a specific config ID
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
@@ -48,8 +48,8 @@ EXAMPLES = '''
     username: "<your_own_value>"
     password: "<your_own_value>"
   tasks:
-    - name: Get VMs list
-      fortinet.fortiflexvm.fortiflexvm_vms_list_info:
+    - name: Get entitlements list
+      fortinet.fortiflexvm.fortiflexvm_entitlements_list_info:
         username: "{{ username }}"
         password: "{{ password }}"
         configId: 22
@@ -57,51 +57,51 @@ EXAMPLES = '''
 
     - name: Display response
       debug:
-        var: result.vms
+        var: result.entitlements
 '''
 
 RETURN = '''
-vms:
-    description: List of VMs associated with the specified config ID.
+entitlements:
+    description: List of entitlements associated with the specified config ID.
     type: list
     returned: always
     contains:
         serialNumber:
-            description: The serial number of the VM.
+            description: The serial number of the entitlement.
             type: str
             returned: always
             sample: "FGVMELTM20000004"
         description:
-            description: The description of the VM.
+            description: The description of the entitlement.
             type: str
             returned: always
             sample: "VM created for department X"
         configId:
-            description: The config ID of the VM.
+            description: The config ID of the entitlement.
             type: int
             returned: always
             sample: 22
         startDate:
-            description: The start date of the VM.
+            description: The start date of the entitlement.
             type: str
             returned: always
             sample: "2020-08-25 10:12:25"
         endDate:
-            description: The end date of the VM.
+            description: The end date of the entitlement.
             type: str
             returned: always
             sample: "2020-09-12 12:13:37"
         status:
-            description: The status of the VM. Possible values are "PENDING", "ACTIVE", "STOPPED" or "EXPIRED".
+            description: The status of the entitlement. Possible values are "PENDING", "ACTIVE", "STOPPED" or "EXPIRED".
             type: str
             returned: always
             sample: "STOPPED"
         token:
-            description: The token of the VM.
+            description: The token of the entitlement.
             type: str
             returned: always
         tokenStatus:
-            description: The token status of the VM. Possible values are "NOTUSED" or "USED".
+            description: The token status of the entitlement. Possible values are "NOTUSED" or "USED".
             type: str
             returned: always
             sample: "USED"
@@ -130,7 +130,7 @@ def main():
 
     # Send request to get VMs list
     data = {"configId": module.params["configId"]}
-    response = connection.send_request("vms/list", data, method="POST")
+    response = connection.send_request("fortiflex/v2/entitlements/list", data, method="POST")
 
     # Exit with response data
     module.exit_json(changed=False, **response)

@@ -15,7 +15,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: fortiflexvm_configs_list_info
-short_description: Get list of FlexVM Configurations.
+short_description: Get list of FortiFlex Configurations.
 description:
     - This module retrieves a list of configs from FortiFlexVM API using the provided credentials and program serial number.
 version_added: "1.0.0"
@@ -24,12 +24,12 @@ author:
 options:
     username:
         description:
-            - The username to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_USERNAME.
+            - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
         required: false
     password:
         description:
-            - The password to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_PASSWORD.
+            - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
     programSerialNumber:
@@ -40,7 +40,7 @@ options:
 '''
 
 EXAMPLES = '''
-- name: Get list of Flex VM Configurations for a Program
+- name: Get list of FortiFlex Configurations for a Program
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
@@ -48,7 +48,7 @@ EXAMPLES = '''
     username: "<your_own_value>"
     password: "<your_own_value>"
   tasks:
-    - name:  Get configs list
+    - name: Get configs list
       fortinet.fortiflexvm.fortiflexvm_configs_list_info:
         username: "{{ username }}"
         password: "{{ password }}"
@@ -153,7 +153,7 @@ configs:
                 fortiGuardServices:
                     description:
                         - The fortiguard services this FortiGate Virtual Machine supports. The default value is an empty list.
-                        - It should contain zero, one or more elements of ["IPS", "AVDB", "FURL", "IOTH", "FGSA", "ISSS"].
+                        - It should contain zero, one or more elements of ["IPS", "AVDB", "FGSA", "DLDB", "FAIS", "FURLDNS"].
                     type: list
                     returned: always
                 supportService:
@@ -169,7 +169,7 @@ configs:
                 cloudServices:
                     description:
                         - The cloud services this FortiGate Virtual Machine supports. The default value is an empty list.
-                        - It should contain zero, one or more elements of ["FAMS", "SWNM", "FMGC", "AFAC"].
+                        - It should contain zero, one or more elements of ["FAMS", "SWNM", "AFAC", "FAZC"].
                     type: list
                     returned: always
         fortiAnalyzer:
@@ -205,6 +205,48 @@ configs:
                         - Number of managed devices. A number between 0 and 100000 (inclusive).
                     type: str
                     returned: always
+        fortiADC:
+            description:
+                - FortiADC Virtual Machine.
+            type: dict
+            returned: changed
+            contains:
+                cpu:
+                    description:
+                        - Number of CPUs. The value of this attribute is one of "1", "2", "4", "8", "16" or "32".
+                    type: str
+                    returned: always
+                service:
+                    description:
+                        - Support Service. "FDVSTD" (Standard), "FDVADV" (Advanced) or "FDVFC247" (FortiCare Premium).
+                    type: str
+                    returned: always
+        fortiGateHardware:
+            description:
+                - FortiGate Hardware.
+            type: dict
+            returned: changed
+            contains:
+                model:
+                    description:
+                        - The device model. Possible values are
+                        - FGT40F (FortiGate-40F), FGT60F (FortiGate-60F), FGT70F (FortiGate-70F), FGT80F (FortiGate-80F),
+                        - FG100F (FortiGate-100F), FGT60E (FortiGate-60E), FGT61F (FortiGate-61F), FG100E (FortiGate-100E),
+                        - FG101F (FortiGate-101F), FG200E (FortiGate-200E), FG200F (FortiGate-200F), FG201F (FortiGate-201F),
+                        - FG4H0F (FortiGate-400F), FG6H0F (FortiGate-600F).
+                    type: str
+                    returned: always
+                service:
+                    description:
+                        - Support Service. Possible values are FGHWFC247 (FortiCare Premium), FGHWFCEL (FortiCare Elite),
+                        - FDVFC247 (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
+                    type: str
+                    returned: always
+                addons:
+                    description:
+                        - Addons. Only support "NONE" now, will support "FGHWFCELU" (FortiCare Elite Upgrade) in the future.
+                    type: str
+                    returned: always
 '''
 
 from ansible.module_utils.basic import AnsibleModule
@@ -231,12 +273,11 @@ def main():
 
     # Send request to get config list
     data = {"programSerialNumber": module.params['programSerialNumber']}
-    response = connection.send_request("configs/list", data, method="POST")
+    response = connection.send_request("fortiflex/v2/configs/list", data, method="POST")
 
     # Trasform the format of output data
     for i in range(len(response["configs"])):
-        response["configs"][i] = utils.transform_config_output(
-            response["configs"][i])
+        response["configs"][i] = utils.transform_config_output(response["configs"][i])
 
     # Exit with response data
     module.exit_json(changed=False, **response)

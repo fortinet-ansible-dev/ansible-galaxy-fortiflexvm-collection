@@ -1,12 +1,12 @@
-- name: Get point usage for VMs
+- name: Get point usage for entitlements
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
-    - name: Get VMs points
-      fortinet.fortiflexvm.fortiflexvm_vms_points_info:
+    - name: Get entitlements points
+      fortinet.fortiflexvm.fortiflexvm_entitlements_points_info:
         username: "{{ username }}"
         password: "{{ password }}"
         configId: 25
@@ -16,4 +16,4 @@
 
     - name: Display response
       debug:
-        var: result.vms
+        var: result.entitlements

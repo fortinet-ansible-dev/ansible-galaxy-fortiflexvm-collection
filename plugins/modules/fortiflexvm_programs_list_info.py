@@ -15,27 +15,27 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: fortiflexvm_programs_list_info
-short_description: Get list of Flex VM Programs for the account.
+short_description: Get list of FortiFlex Programs for the account.
 description:
-    - This module retrieves a list of VM Programs using the provided credentials.
+    - This module retrieves a list of FortiFlex Programs using the provided credentials.
 version_added: "1.0.0"
 author:
     - Xinwei Du (@DrMofu)
 options:
     username:
         description:
-            - The username to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_USERNAME.
+            - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
         required: false
     password:
         description:
-            - The password to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_PASSWORD.
+            - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
 '''
 
 EXAMPLES = '''
-- name: Get list of VM Programs for the account
+- name: Get list of programs for the account
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
@@ -108,7 +108,7 @@ def main():
     connection = Connection(module, module.params["username"], module.params["password"])
 
     # Send request to get programs list
-    response = connection.send_request("programs/list", {}, method="POST")
+    response = connection.send_request("fortiflex/v2/programs/list", {}, method="POST")
 
     # Exit with response data
     module.exit_json(changed=False, **response)

@@ -15,27 +15,27 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: fortiflexvm_groups_list_info
-short_description: Get list of FlexVM groups (asset folders).
+short_description: Get list of FortiFlex groups (asset folders).
 description:
-    - This module returns list of FlexVM groups (asset folders that have FlexVM products in them).
+    - This module returns list of FortiFlex groups (asset folders that have FortiFlex products in them).
 version_added: "1.0.0"
 author:
     - Xinwei Du (@DrMofu)
 options:
     username:
         description:
-            - The username to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_USERNAME.
+            - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
         required: false
     password:
         description:
-            - The password to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_PASSWORD.
+            - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
 '''
 
 EXAMPLES = '''
-- name: Get list of FlexVM groups
+- name: Get list of FortiFlex groups
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
@@ -61,17 +61,17 @@ groups:
     returned: always
     contains:
         folderPath:
-            description: The folder path of the FlexVM group.
+            description: The folder path of the FortiFlex group.
             type: str
             returned: always
-            sample: "My Assets/Department A/FlexVM Group 1"
+            sample: "My Assets/Department A/Group 1"
         availableTokens:
-            description: The number of available tokens for the FlexVM group.
+            description: The number of available tokens for the FortiFlex group.
             type: int
             returned: always
             sample: 5
         usedTokens:
-            description: The number of used tokens for the FlexVM group.
+            description: The number of used tokens for the FortiFlex group.
             type: int
             returned: always
             sample: 22
@@ -98,7 +98,7 @@ def main():
     connection = Connection(module, module.params["username"], module.params["password"])
 
     # Send request to get groups list
-    response = connection.send_request("groups/list", {}, method="POST")
+    response = connection.send_request("flexvm/v1/groups/list", {}, method="POST")
 
     # Exit with response data
     module.exit_json(changed=False, **response)

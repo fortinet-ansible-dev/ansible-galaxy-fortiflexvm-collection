@@ -14,27 +14,27 @@ __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
-module: fortiflexvm_vms_points_info
-short_description: Get point usage for VMs.
+module: fortiflexvm_entitlements_points_info
+short_description: Get point usage for entitlements.
 description:
-    - Returns total points consumed by one or more virtual machines in a date range.
-version_added: "1.0.0"
+    - Returns total points consumed by one or more entitlements in a date range.
+version_added: "2.0.0"
 author:
     - Xinwei Du (@DrMofu)
 options:
     username:
         description:
-            - The username to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_USERNAME.
+            - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
         required: false
     password:
         description:
-            - The password to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_PASSWORD.
+            - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
     configId:
         description:
-            - The ID of the virtual machine configuration.
+            - The ID of the configuration.
         type: int
         required: true
     startDate:
@@ -52,7 +52,7 @@ options:
 '''
 
 EXAMPLES = '''
-- name: Get point usage for VMs
+- name: Get point usage for entitlementss
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
@@ -60,8 +60,8 @@ EXAMPLES = '''
     username: "<your_own_value>"
     password: "<your_own_value>"
   tasks:
-    - name: Get VMs points
-      fortinet.fortiflexvm.fortiflexvm_vms_points_info:
+    - name: Get entitlements points
+      fortinet.fortiflexvm.fortiflexvm_entitlements_points_info:
         username: "{{ username }}"
         password: "{{ password }}"
         configId: 25
@@ -71,22 +71,22 @@ EXAMPLES = '''
 
     - name: Display response
       debug:
-        var: result.vms
+        var: result.entitlements
 '''
 
 RETURN = '''
-vms:
-    description: List of virtual machines and their consumed points in the specified date range.
+entitlements:
+    description: List of entitlements and their consumed points in the specified date range.
     type: list
     returned: always
     contains:
         serialNumber:
-            description: The serial number of the virtual machine.
+            description: The serial number of the entitlement.
             type: str
             returned: always
             sample: "FGVMELTM20000029"
         points:
-            description: The total points consumed by the virtual machine in the specified date range.
+            description: The total points consumed by the entitlement in the specified date range.
             type: int
             returned: always
             sample: 425
@@ -115,13 +115,13 @@ def main():
     # Create connection
     connection = Connection(module, module.params["username"], module.params["password"])
 
-    # Send request to get VMs points
+    # Send request to get entitlements points
     data = {
         "configId": module.params["configId"],
         "startDate": module.params["startDate"],
         "endDate": module.params["endDate"]
     }
-    response = connection.send_request("vms/points", data, method="POST")
+    response = connection.send_request("fortiflex/v2/entitlements/points", data, method="POST")
 
     # Exit with response data
     module.exit_json(changed=False, **response)

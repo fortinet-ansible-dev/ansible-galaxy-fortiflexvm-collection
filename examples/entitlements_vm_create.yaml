@@ -1,0 +1,21 @@
+- name: Create VMs
+  hosts: localhost
+  collections:
+    - fortinet.fortiflexvm
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Create Virtual Machines.
+      fortinet.fortiflexvm.fortiflexvm_entitlements_vm_create:
+        username: "{{ username }}"
+        password: "{{ password }}"
+        configId: 42
+        count: 1 # If you set it as 0, FortiFlexvm ansible collection will not create any vm.
+        description: "Create through Ansible" # Optional.
+        endDate: "2023-11-11T00:00:00" # Optional. If not set, it will use the program end date automatically.
+        folderPath: "My Assets" # Optional. If not set, new VM will be in "My Assets"
+      register: result
+
+    - name: Display response
+      debug:
+        var: result.entitlements

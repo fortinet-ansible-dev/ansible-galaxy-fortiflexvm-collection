@@ -1,0 +1,75 @@
+ancestor: null
+releases:
+  1.0.0:
+    changes:
+      release_summary: This is the first proper release of the fortiflex.
+    fragments:
+    - 1.0.0.yml
+    modules:
+    - description: Create a new FlexVM Configuration.
+      name: fortiflexvm_configs_create
+      namespace: ''
+    - description: Get list of FlexVM Configurations.
+      name: fortiflexvm_configs_list_info
+      namespace: ''
+    - description: Update a FlexVM Configuration.
+      name: fortiflexvm_configs_update
+      namespace: ''
+    - description: Get list of FlexVM groups (asset folders).
+      name: fortiflexvm_groups_list_info
+      namespace: ''
+    - description: Get net available (unused) token.
+      name: fortiflexvm_groups_nexttoken_info
+      namespace: ''
+    - description: Get list of Flex VM Programs for the account.
+      name: fortiflexvm_programs_list_info
+      namespace: ''
+    - description: Create one or more VMs based on a FlexVM Configuration.
+      name: fortiflexvm_vms_create
+      namespace: ''
+    - description: Get list of existing VMs for FlexVM Configuration.
+      name: fortiflexvm_vms_list_info
+      namespace: ''
+    - description: Get point usage for VMs.
+      name: fortiflexvm_vms_points_info
+      namespace: ''
+    - description: Update an existing VM.
+      name: fortiflexvm_vms_update
+      namespace: ''
+    release_date: '2023-04-26'
+  2.0.0:
+    changes:
+      breaking_changes:
+      - All vms modules are renamed to entitlements modules. The return value vms
+        are renamed to entitlements.
+      major_changes:
+      - Support creating hardware entitlements by using fortiflexvm_entitlements_hardware_create.
+      minor_changes:
+      - Support bypass_validation and check_parameters in fortiflexvm_configs_create
+        and fortiflexvm_configs_update.
+      - Support two new configurations, fortiADC and fortiGateHardware.
+      release_summary: Update FortiFlexVM Ansible to support FortiFlex v2.
+      removed_features:
+      - fortiflexvm_vms_create (renamed to fortiflexvm_entitlements_vm_create)
+      - fortiflexvm_vms_list_info (renamed to fortiflexvm_entitlements_list_info)
+      - fortiflexvm_vms_points_info (renamed to fortiflexvm_entitlements_points_info)
+      - fortiflexvm_vms_update (renamed to fortiflexvm_entitlements_update)
+    fragments:
+    - 2.0.0.yml
+    modules:
+    - description: Create hardware entitlements based on a FortiFlex Configuration.
+      name: fortiflexvm_entitlements_hardware_create
+      namespace: ''
+    - description: Get list of existing entitlements for a FlexVM Configuration.
+      name: fortiflexvm_entitlements_list_info
+      namespace: ''
+    - description: Get point usage for entitlements.
+      name: fortiflexvm_entitlements_points_info
+      namespace: ''
+    - description: Create one or more VMs based on a FortiFlex Configuration.
+      name: fortiflexvm_entitlements_vm_create
+      namespace: ''
+    - description: Regenerate token for a VM.
+      name: fortiflexvm_entitlements_vm_regenerate_token
+      namespace: ''
+    release_date: '2023-07-20'

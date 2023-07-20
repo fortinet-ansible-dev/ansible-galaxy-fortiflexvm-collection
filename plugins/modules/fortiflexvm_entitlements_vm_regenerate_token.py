@@ -12,13 +12,14 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+
 DOCUMENTATION = '''
 ---
-module: fortiflexvm_groups_nexttoken_info
-short_description: Get net available (unused) token.
+module: fortiflexvm_entitlements_vm_regenerate_token
+short_description: Regenerate token for a VM.
 description:
-    - Returns first available token by asset folder or Configuration id (folder path, or config id or both can be specified in request).
-version_added: "1.0.0"
+    - Regenerate token for a VM.
+version_added: "2.0.0"
 author:
     - Xinwei Du (@DrMofu)
 options:
@@ -32,35 +33,32 @@ options:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
-    folderPath:
+    serialNumber:
         description:
-            - Folder path. Please declare at least one of the two arguments folderPath and configId.
+            - The serial number of the entitlement to update.
         type: str
-        required: false
-    configId:
+        required: true
+    regenerate:
         description:
-            - The ID of a Flex VM Configuration. Please declare at least one of the two arguments folderPath and configId.
-        type: int
-        required: false
+            - Whether regenerate a new token.
+        type: bool
+        required: true
 '''
 
 EXAMPLES = '''
-- name: Get next available (unused) token
+- name: Regenerate token
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
-  vars:
-    username: "<your_own_value>"
-    password: "<your_own_value>"
+  vars_files:
+    - vars/vars.yml
   tasks:
-    - name: Get groups nexttoken
-      fortinet.fortiflexvm.fortiflexvm_groups_nexttoken_info:
+    - name: Regenerate token
+      fortinet.fortiflexvm.fortiflexvm_entitlements_vm_regenerate_token:
         username: "{{ username }}"
         password: "{{ password }}"
-        # Please declare at least one of the following two arguments: folderPath and configId.
-        # You can annotate at most one argument that you don't want to specify.
-        folderPath: "My Assets"
-        configId: 22
+        serialNumber: "FGVMMLTM23001324"
+        regenerate: true # If you set it as false, FortiFlexvm ansible collection will return an empty list.
       register: result
 
     - name: Display response
@@ -70,37 +68,37 @@ EXAMPLES = '''
 
 RETURN = '''
 entitlements:
-    description: Next available (unused) token. This list only has one element.
+    description: The entitlement you update. This list only contains one entitlement. It will be empty if you set regenerate as false.
     type: list
     returned: always
     contains:
-        configId:
-            description: The config ID of the entitlement.
-            type: int
-            returned: always
-            sample: 22
-        description:
-            description: The description of the entitlement.
-            type: str
-            returned: always
-            sample: "VMs created for department A"
-        endDate:
-            description: The end date of the entitlement.
-            type: str
-            returned: always
-            sample: "2020-10-25 00:00:00"
         serialNumber:
             description: The serial number of the entitlement.
             type: str
             returned: always
-            sample: "FGVMELTM20000020"
+            sample: "FGVMMLTM23001324"
+        description:
+            description: The description of the entitlement.
+            type: str
+            returned: always
+            sample: "Modify through Ansible"
+        configId:
+            description: The config ID of the entitlement.
+            type: int
+            returned: always
+            sample: 3196
         startDate:
             description: The start date of the entitlement.
             type: str
             returned: always
-            sample: "2020-08-01 10:12:25"
+            sample: "2023-03-13T11:48:53.03"
+        endDate:
+            description: The end date of the entitlement.
+            type: str
+            returned: always
+            sample: "2023-12-12T00:00:00"
         status:
-            description: The status of the entitlement. Possible values are "PENDING", "ACTIVE", "STOPPED" or "EXPIRED".
+            description: The status of the VM. Possible values are "PENDING", "ACTIVE", "STOPPED" or "EXPIRED".
             type: str
             returned: always
             sample: "ACTIVE"
@@ -109,7 +107,7 @@ entitlements:
             type: str
             returned: always
         tokenStatus:
-            description: The token status of the entitlement.
+            description: The token status of the entitlement. Possible values are "NOTUSED" or "USED".
             type: str
             returned: always
             sample: "NOTUSED"
@@ -124,8 +122,8 @@ def main():
     module_args = dict(
         username=dict(type='str', required=False),
         password=dict(type='str', required=False, no_log=True),
-        folderPath=dict(type='str', required=False, default=""),
-        configId=dict(type='int', required=False, default=0),
+        serialNumber=dict(type='str', required=True),
+        regenerate=dict(type='bool', required=True),
     )
 
     # Initialize AnsibleModule object
@@ -134,25 +132,27 @@ def main():
         supports_check_mode=True
     )
 
+    # Check mode
+    if module.check_mode:
+        module.exit_json(changed=module.params["regenerate"], input_params=module.params)
+
+    # If don't regenerate, return directly.
+    if not module.params["regenerate"]:
+        response = {"entitlements": []}
+        module.exit_json(changed=False, **response)
+
     # Create connection
     connection = Connection(module, module.params["username"], module.params["password"])
+    data = {
+        "serialNumber": module.params["serialNumber"]
+    }
 
-    # Send request to get program list
-    data = {}
-    if not module.params['folderPath'] and not module.params['configId']:
-        module.fail_json(
-            msg="Please declare at least one of the two arguments: folderPath and configId.")
-    if module.params['folderPath'] != "":
-        data['folderPath'] = module.params['folderPath']
-    if module.params['configId'] != 0:
-        data['configId'] = module.params['configId']
-    response = connection.send_request("flexvm/v1/groups/nexttoken", data, method="POST")
-    if "vms" in response:
-        response["entitlements"] = response["vms"]
-        del response["vms"]
+    # Send request
+    # If something goes wrong (e.g., incorrect input, 404), the program will report an error and exist.
+    response = connection.send_request("fortiflex/v2/entitlements/vm/token", data, method="POST")
 
     # Exit with response data
-    module.exit_json(changed=False, **response)
+    module.exit_json(changed=True, **response)
 
 
 if __name__ == '__main__':

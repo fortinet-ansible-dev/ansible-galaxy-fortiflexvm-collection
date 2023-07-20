@@ -15,21 +15,21 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: fortiflexvm_configs_update
-short_description: Update a FlexVM Configuration.
+short_description: Update a FortiFlex Configuration.
 description:
-    - This module update a FlexVM Configuration under a program.
+    - This module update a FortiFlex Configuration under a program.
 version_added: "1.0.0"
 author:
     - Xinwei Du (@DrMofu)
 options:
     username:
         description:
-            - The username to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_USERNAME.
+            - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
         required: false
     password:
         description:
-            - The password to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_PASSWORD.
+            - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
     id:
@@ -48,6 +48,22 @@ options:
         type: str
         required: false
         choices: ["ACTIVE", "DISABLED"]
+    bypass_validation:
+        description:
+            - Only set to True when module schema diffs with FortiFlex API structure, module continues to execute without validating parameters.
+        type: bool
+        required: false
+        default: false
+        version_added: 2.0.0
+    check_parameters:
+        description:
+            - Check whether the parameters are set correctly before sending the data.
+            - If set to true, FortiFlexVM Ansible will check the parameter correctness based on the rules.
+            - It is only for debugging purposes, not recommended to set it as true since the rules in FortiFlexVM Ansible may be outdated.
+        type: bool
+        required: false
+        default: false
+        version_added: 2.0.0
     fortiGateBundle:
         description:
             - FortiGate Virtual Machine - Service Bundle.
@@ -59,13 +75,11 @@ options:
                     - The number of CPUs. The value of this attribute is one of "1", "2", "4", "8", "16",  "32" or "2147483647" (unlimited).
                 type: str
                 required: true
-                choices: ["1", "2", "4", "8", "16", "32", "2147483647"]
             service:
                 description:
                     - The value of this attribute is one of "FC" (FortiCare), "UTM", "ENT" (Enterprise) or "ATP".
                 type: str
                 required: true
-                choices: ["FC", "UTM", "ENT", "ATP"]
             vdom:
                 description:
                     - Number of VDOMs. A number between 0 and 500 (inclusive). The default number is 0.
@@ -99,13 +113,11 @@ options:
                     - Number of CPUs. The value of this attribute is one of "1", "2" "4", "8" or "16".
                 type: str
                 required: true
-                choices: ["1", "2", "4", "8", "16"]
             service:
                 description:
                     - Service Package. Valid values are "FWBSTD" (Standard) or "FWBADV" (Advanced).
                 type: str
                 required: true
-                choices: ["FWBSTD", "FWBADV"]
     fortiGateLCS:
         description:
             - FortiGate Virtual Machine - A La Carte Services.
@@ -120,7 +132,7 @@ options:
             fortiGuardServices:
                 description:
                     - The fortiguard services this FortiGate Virtual Machine supports. The default value is an empty list.
-                    - It should contain zero, one or more elements of ["IPS", "AVDB", "FURL", "IOTH", "FGSA", "ISSS"].
+                    - It should contain zero, one or more elements of ["IPS", "AVDB", "FGSA", "DLDB", "FAIS", "FURLDNS"].
                 type: list
                 elements: str
                 required: false
@@ -130,7 +142,6 @@ options:
                     - Valid values are "FC247" (FortiCare 24x7) or "ASET" (FortiCare Elite).
                 type: str
                 required: true
-                choices: ["FC247", "ASET"]
             vdom:
                 description:
                     - Number of VDOMs. A number between 1 and 500 (inclusive).
@@ -139,7 +150,7 @@ options:
             cloudServices:
                 description:
                     - The cloud services this FortiGate Virtual Machine supports. The default value is an empty list.
-                    - It should contain zero, one or more elements of ["FAMS", "SWNM", "FMGC", "AFAC"].
+                    - It should contain zero, one or more elements of ["FAMS", "SWNM", "AFAC", "FAZC"].
                 type: list
                 elements: str
                 required: false
@@ -165,7 +176,6 @@ options:
                     - Support Service. Currently, the only available option is "FAZFC247" (FortiCare Premium). The default value is "FAZFC247".
                 required: true
                 type: str
-                choices: ["FAZFC247"]
     fortiPortal:
         description:
             - FortiPortal Virtual Machine.
@@ -177,10 +187,55 @@ options:
                     - Number of managed devices. A number between 0 and 100000 (inclusive).
                 type: int
                 required: true
+    fortiADC:
+        description:
+            - FortiADC Virtual Machine.
+        type: dict
+        required: false
+        version_added: 2.0.0
+        suboptions:
+            cpu:
+                description:
+                    - Number of CPUs. The value of this attribute is one of "1", "2", "4", "8", "16" or "32".
+                type: str
+                required: true
+            service:
+                description:
+                    - Support Service. "FDVSTD" (Standard), "FDVADV" (Advanced) or "FDVFC247" (FortiCare Premium).
+                type: str
+                required: true
+    fortiGateHardware:
+        description:
+            - FortiGate Hardware.
+        type: dict
+        required: false
+        version_added: 2.0.0
+        suboptions:
+            model:
+                description:
+                    - The device model. Possible values are
+                    - FGT40F (FortiGate-40F), FGT60F (FortiGate-60F), FGT70F (FortiGate-70F), FGT80F (FortiGate-80F),
+                    - FG100F (FortiGate-100F), FGT60E (FortiGate-60E), FGT61F (FortiGate-61F), FG100E (FortiGate-100E),
+                    - FG101F (FortiGate-101F), FG200E (FortiGate-200E), FG200F (FortiGate-200F), FG201F (FortiGate-201F),
+                    - FG4H0F (FortiGate-400F), FG6H0F (FortiGate-600F).
+                type: str
+                required: true
+            service:
+                description:
+                    - Support Service. Possible values are FGHWFC247 (FortiCare Premium), FGHWFCEL (FortiCare Elite),
+                    - FDVFC247 (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
+                type: str
+                required: true
+            addons:
+                description:
+                    - Addons. Only support "NONE" now, will support "FGHWFCELU" (FortiCare Elite Upgrade) in the future.
+                type: str
+                required: false
+                default: "NONE"
 '''
 
 EXAMPLES = '''
-- name: Update VM configuration
+- name: Update a FortiFlex configuration
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
@@ -188,7 +243,7 @@ EXAMPLES = '''
     username: "<your_own_value>"
     password: "<your_own_value>"
   tasks:
-    - name: Update a Virtual Machine configuration
+    - name: Update a FortiFlex configuration
       fortinet.fortiflexvm.fortiflexvm_configs_update:
         username: "{{ username }}"
         password: "{{ password }}"
@@ -196,36 +251,56 @@ EXAMPLES = '''
         name: "ansible_modify"
         status: "DISABLED" # ACTIVE or DISABLED
 
+        # If FortiFlex API supports new params while FortiFlex Ansible does not support them yet,
+        # you can set bypass_validation: true. The FortiFlex Ansible will allow you to use new param
+        # without perforam any sanity check. The default value is false.
+        bypass_validation: false
+
+        # Check whether the parameters are set correctly before sending the data. The default value is false.
+        # If set to true, FortiFlexVM Ansible will check the parameter correctness based on the rules.
+        # It is only for debugging purposes, not recommended to set it as true since the rules in FortiFlexVM Ansible may be outdated.
+        check_parameters: false
+
         # Please only use zero or one of the following.
         # If you want to update the configuration, please use the type you declared in fortiflexvm_configs_create.
 
         fortiGateBundle:
-          cpu: "2" # "1", "2", "4", "8", "16", "32", "2147483647"
+          cpu: "2"      # "1", "2", "4", "8", "16", "32", "2147483647"
           service: "FC" # "FC", "UTM", "ENT", "ATP"
-          vdom: 10 # 0 ~ 500
+          vdom: 10      # 0 ~ 500
 
         # fortiManager:
-        #   device: 1 # 1 ~ 100000
-        #   adom: 1 # 1 ~ 100000
+        #   device: 1                         # 1 ~ 100000
+        #   adom: 1                           # 1 ~ 100000
 
         # fortiWeb:
-        #   cpu: "4" # "1", "2", "4", "8", "16"
-        #   service: "FWBSTD" # "FWBSTD" or "FWBADV"
+        #   cpu: "4"                          # "1", "2", "4", "8", "16"
+        #   service: "FWBSTD"                 # "FWBSTD" or "FWBADV"
 
         # fortiGateLCS:
-        #   cpu: 4 # 1 ~ 96
-        #   fortiGuardServices: [] # "IPS", "AVDB", "FURL", "IOTH", "FGSA", "ISSS"
-        #   supportService: "FC247" # "FC247", "ASET"
-        #   vdom: 1 # 1 ~ 500
-        #   cloudServices: ["FAMS", "SWNM"] # "FAMS", "SWNM", "FMGC", "AFAC"
+        #   cpu: 4                            # 1 ~ 96
+        #   fortiGuardServices: []            # "IPS", "AVDB", "FGSA", "DLDB", "FAIS", "FURLDNS"
+        #   supportService: "FC247"           # "FC247", "ASET"
+        #   vdom: 1                           # 1 ~ 500
+        #   cloudServices: ["FAMS", "SWNM"]   # "FAMS", "SWNM", "AFAC", "FAZC"
 
         # fortiAnalyzer:
-        #   storage: 5 # 5 ~ 8300
-        #   adom: 1 # 0 ~ 1200
-        #   service: "FAZFC247" # "FAZFC247"
+        #   storage: 5                        # 5 ~ 8300
+        #   adom: 1                           # 0 ~ 1200
+        #   service: "FAZFC247"               # "FAZFC247"
 
         # fortiPortal:
-        #   device: 1 # 0 ~ 100000
+        #   device: 1                         # 0 ~ 100000
+
+        # fortiADC:
+        #   cpu: "1"                          # "1", "2", "4", "8", "16", "32"
+        #   service: "FDVSTD"                 # "FDVSTD", "FDVADV" or "FDVFC247"
+
+        # fortiGateHardware:
+        #   model: "FGT40F"                   # "FGT40F", "FGT60F", "FGT70F", "FGT80F", "FG100F", "FGT60E", "FGT61F",
+        #                                     # "FG100E", "FG101F", "FG200E", "FG200F", "FG201F", "FG4H0F", "FG6H0F"
+        #   service: "FGHWFC247"              # "FGHWFC247", "FGHWFCEL", "FDVFC247", "FGHWUTP" or "FGHWENT"
+        #   addons: "NONE"
 
       register: result
 
@@ -327,7 +402,7 @@ configs:
                 fortiGuardServices:
                     description:
                         - The fortiguard services this FortiGate Virtual Machine supports. The default value is an empty list.
-                        - It should contain zero, one or more elements of ["IPS", "AVDB", "FURL", "IOTH", "FGSA", "ISSS"].
+                        - It should contain zero, one or more elements of ["IPS", "AVDB", "FGSA", "DLDB", "FAIS", "FURLDNS"].
                     type: list
                     returned: always
                 supportService:
@@ -343,7 +418,7 @@ configs:
                 cloudServices:
                     description:
                         - The cloud services this FortiGate Virtual Machine supports. The default value is an empty list.
-                        - It should contain zero, one or more elements of ["FAMS", "SWNM", "FMGC", "AFAC"].
+                        - It should contain zero, one or more elements of ["FAMS", "SWNM", "AFAC", "FAZC"].
                     type: list
                     returned: always
         fortiAnalyzer:
@@ -379,9 +454,52 @@ configs:
                         - Number of managed devices. A number between 0 and 100000 (inclusive).
                     type: str
                     returned: always
+        fortiADC:
+            description:
+                - FortiADC Virtual Machine.
+            type: dict
+            returned: changed
+            contains:
+                cpu:
+                    description:
+                        - Number of CPUs. The value of this attribute is one of "1", "2", "4", "8", "16" or "32".
+                    type: str
+                    returned: always
+                service:
+                    description:
+                        - Support Service. "FDVSTD" (Standard), "FDVADV" (Advanced) or "FDVFC247" (FortiCare Premium).
+                    type: str
+                    returned: always
+        fortiGateHardware:
+            description:
+                - FortiGate Hardware.
+            type: dict
+            returned: changed
+            contains:
+                model:
+                    description:
+                        - The device model. Possible values are
+                        - FGT40F (FortiGate-40F), FGT60F (FortiGate-60F), FGT70F (FortiGate-70F), FGT80F (FortiGate-80F),
+                        - FG100F (FortiGate-100F), FGT60E (FortiGate-60E), FGT61F (FortiGate-61F), FG100E (FortiGate-100E),
+                        - FG101F (FortiGate-101F), FG200E (FortiGate-200E), FG200F (FortiGate-200F), FG201F (FortiGate-201F),
+                        - FG4H0F (FortiGate-400F), FG6H0F (FortiGate-600F).
+                    type: str
+                    returned: always
+                service:
+                    description:
+                        - Support Service. Possible values are FGHWFC247 (FortiCare Premium), FGHWFCEL (FortiCare Elite),
+                        - FDVFC247 (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
+                    type: str
+                    returned: always
+                addons:
+                    description:
+                        - Addons. Only support "NONE" now, will support "FGHWFCELU" (FortiCare Elite Upgrade) in the future.
+                    type: str
+                    returned: always
 '''
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.basic import _load_params
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils import utils
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection import Connection
 
@@ -392,30 +510,31 @@ def get_module_args():
         username=dict(type='str', required=False),
         password=dict(type='str', required=False, no_log=True),
         id=dict(type='int', required=True),
-        status=dict(type='str', required=False,
-                    choices=["ACTIVE", "DISABLED"]),
+        status=dict(type='str', required=False, choices=["ACTIVE", "DISABLED"]),
         name=dict(type='str', required=False),
+        bypass_validation=dict(type="bool", required=False, default=False),
+        check_parameters=dict(type="bool", required=False, default=False),
     )
 
     # Get product-specific parameters
     products = utils.get_products(key="name")
+    ignore_validation = False
+    params = _load_params()
+    if params and 'bypass_validation' in params and params['bypass_validation'] is True:
+        ignore_validation = True
     for product_name in products:
-        product_dict = dict(
-            type='dict',
-            required=False,
-            options=dict()
-        )
-        for param in products[product_name]["parameters"]:
-            param_details = dict(
-                type=param["type"], required=param["required"])
-            if param["type"] == "str" and "choices" in param:
-                param_details["choices"] = param["choices"]
-            if "default" in param:
-                param_details["default"] = param["default"]
-            if "elements" in param:
-                param_details["elements"] = param["elements"]
-            product_dict["options"][param["name"]] = param_details
-        module_args[product_name] = product_dict
+        if ignore_validation:
+            module_args[product_name] = {"type": "dict", "required": False}
+        else:
+            product_dict = {"type": "dict", "required": False, "options": {}}
+            for param in products[product_name]["parameters"]:
+                param_details = dict(type=param["type"], required=param["required"])
+                if "default" in param:
+                    param_details["default"] = param["default"]
+                if "elements" in param:
+                    param_details["elements"] = param["elements"]
+                product_dict["options"][param["name"]] = param_details
+            module_args[product_name] = product_dict
     return module_args
 
 
@@ -454,16 +573,16 @@ def main():
 
     # update the configuration
     if data:
-        response = connection.send_request("configs/update", data, method="POST")
+        response = connection.send_request("fortiflex/v2/configs/update", data, method="POST")
         current_status = response["configs"]["status"]
 
     # active or stop the configuration
     if module.params["status"] and module.params["status"] != current_status:
         data = {"id": module.params["id"]}
         if module.params["status"] == "ACTIVE":
-            response = connection.send_request("configs/enable", data, method="POST")
+            response = connection.send_request("fortiflex/v2/configs/enable", data, method="POST")
         elif module.params["status"] == "DISABLED":
-            response = connection.send_request("configs/disable", data, method="POST")
+            response = connection.send_request("fortiflex/v2/configs/disable", data, method="POST")
 
     # Trasform the format of output data
     response["configs"] = utils.transform_config_output(response["configs"])

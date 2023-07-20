@@ -17,4 +17,4 @@
 
     - name: Display response
       debug:
-        var: result.vms
+        var: result.entitlements

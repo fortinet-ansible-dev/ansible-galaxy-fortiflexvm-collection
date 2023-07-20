@@ -13,59 +13,6 @@ import os
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.settings import PRODUCTS
 
 
-def camel_to_snake_case(camel_dict):
-    """
-    Recursively converts the keys of a given dictionary from camelCase to snake_case.
-
-    Args:
-        camel_dict (dict): The input dictionary with keys in camelCase format. The dictionary can be nested.
-
-    Returns:
-        dict: A new dictionary with keys converted to snake_case format. The structure of the input dictionary is preserved.
-
-    Example:
-        input_dict = {
-            "thisIsVariable": 1,
-            "anotherVariable": {
-                "nestedCamelCase": 2,
-                "deeplyNested": {
-                    "veryDeep": 3
-                }
-            }
-        }
-        converted_dict = camel_to_snake_case(input_dict)
-        print(converted_dict)
-        # Output:
-        # {
-        #     'this_is_variable': 1,
-        #     'another_variable': {
-        #         'nested_camel_case': 2,
-        #         'deeply_nested': {
-        #             'very_deep': 3
-        #         }
-        #     }
-        # }
-    """
-    def convert_key(key):
-        snake_key = []
-        for char in key:
-            if char.isupper():
-                snake_key.append('_')
-                snake_key.append(char.lower())
-            else:
-                snake_key.append(char)
-        return ''.join(snake_key)
-
-    snake_dict = {}
-    for key, value in camel_dict.items():
-        snake_key = convert_key(key)
-        if isinstance(value, dict):
-            snake_dict[snake_key] = camel_to_snake_case(value)
-        else:
-            snake_dict[snake_key] = value
-    return snake_dict
-
-
 def get_products(key="name"):
     products = {}
     for item in PRODUCTS:
@@ -97,7 +44,11 @@ def get_param_name_by_id(id):
             params = item["parameters"]
             for param in params:
                 get_param_name_by_id.param_id2name[param["id"]] = param["name"]
-    return get_param_name_by_id.param_id2name[int(id)]
+    param_id = int(id)
+    return_name = str(param_id)
+    if param_id in get_param_name_by_id.param_id2name:
+        return_name = get_param_name_by_id.param_id2name[param_id]
+    return return_name
 
 
 def get_product_name_by_id(id):
@@ -106,7 +57,11 @@ def get_product_name_by_id(id):
         get_product_name_by_id.product_id2name = {}
         for item in PRODUCTS:
             get_product_name_by_id.product_id2name[item["id"]] = item["name"]
-    return get_product_name_by_id.product_id2name[int(id)]
+    product_id = int(id)
+    return_name = str(product_id)
+    if product_id in get_product_name_by_id.product_id2name:
+        return_name = get_product_name_by_id.product_id2name[product_id]
+    return return_name
 
 
 def infer_product_type(module):
@@ -124,7 +79,7 @@ def infer_product_type(module):
     return specified_products[0]
 
 
-def transform_parameters(module):
+def transform_parameters(module, check_param=False):
     # Get products information.
     products = get_products(key="name")
     product_type = infer_product_type(module)
@@ -133,9 +88,13 @@ def transform_parameters(module):
     parameters = []
     configs = module.params[product_type]
     param_requirements = products[product_type]["parameters"]
+
+    # Consider normal params
     for item in param_requirements:
         param_id = item["id"]
         param_name = item["name"]
+        if param_name not in configs:
+            continue
         param_value = configs[param_name]
         if param_value is not None:
             if item["type"] == "list":
@@ -146,7 +105,7 @@ def transform_parameters(module):
                     })
                 for param_item in param_value:
                     # Check the validation of the input "list"
-                    if "choices" in item and param_item not in item["choices"]:
+                    if check_param and "choices" in item and param_item not in item["choices"]:
                         module.fail_json(msg="Invalid value {0} of parameter {1}. Support values: {2}".format(
                             param_item, param_name, item["choices"]))
                     parameters.append({
@@ -154,14 +113,36 @@ def transform_parameters(module):
                         "value": param_item
                     })
             else:
-                # Check the validation of the input "int"
-                # No need to check "choices" for "str". It is already done by Ansible.
-                if item["type"] == "int" and ("min" in item or "max" in item):
-                    min_value = item["min"] if "min" in item else float("-inf")
-                    max_value = item["max"] if "max" in item else float("inf")
-                    if param_value < min_value or param_value > max_value:
-                        module.fail_json(msg="Invalid value {0} of parameter {1}. Support range: {2} ~ {3} (inclusive)".format(
-                            param_value, param_name, min_value, max_value))
+                if check_param:
+                    # Check "choices" for "str".
+                    if item["type"] == "str" and "choices" in item:
+                        if param_value not in item["choices"]:
+                            module.fail_json(msg="Invalid value {0} of parameter {1}. Support values: {2}".format(
+                                param_value, param_name, item["choices"]))
+                    # Check the validation of the input "int"
+                    if item["type"] == "int" and ("min" in item or "max" in item):
+                        min_value = item["min"] if "min" in item else float("-inf")
+                        max_value = item["max"] if "max" in item else float("inf")
+                        if param_value < min_value or param_value > max_value:
+                            module.fail_json(msg="Invalid value {0} of parameter {1}. Support range: {2} ~ {3} (inclusive)".format(
+                                param_value, param_name, min_value, max_value))
+                parameters.append({
+                    "id": param_id,
+                    "value": param_value
+                })
+
+    # Consider digital params
+    for user_define_name in configs:
+        if isinstance(user_define_name, int) or user_define_name.isdigit():
+            param_id = int(user_define_name)
+            param_value = configs[user_define_name]
+            if isinstance(param_value, list):
+                for param_value_item in param_value:
+                    parameters.append({
+                        "id": param_id,
+                        "value": param_value_item
+                    })
+            else:
                 parameters.append({
                     "id": param_id,
                     "value": param_value
@@ -177,12 +158,16 @@ def transform_config_output(item):
     for param in item["parameters"]:
         param_name = get_param_name_by_id(param["id"])
         if param_name not in configs_response[product_type]:
-            configs_response[product_type][param_name] = param["value"]
+            if product_type == "fortiGateLCS" and param_name in ["cloudServices", "fortiGuardServices"]:
+                configs_response[product_type][param_name] = []
+                if param["value"] != "NONE":
+                    configs_response[product_type][param_name].append(param["value"])
+            else:
+                configs_response[product_type][param_name] = param["value"]
         elif isinstance(configs_response[product_type][param_name], list):
             configs_response[product_type][param_name].append(param["value"])
-        else:
-            configs_response[product_type][param_name] = [
-                configs_response[product_type][param_name], param["value"]]
+        else:  # Change the format of output to list
+            configs_response[product_type][param_name] = [configs_response[product_type][param_name], param["value"]]
     for param_name in item:
         if param_name == "productType" or param_name == "parameters":
             continue
@@ -192,14 +177,14 @@ def transform_config_output(item):
 
 def fill_auth(module):
     if not module.params["username"]:
-        username = os.environ.get('FLEXVM_ACCESS_USERNAME')
+        username = os.environ.get('FORTIFLEX_ACCESS_USERNAME')
         if not username:
             module.fail_json(
-                msg="Please specify username in your playbook, or set environment variable: FLEXVM_ACCESS_USERNAME.")
+                msg="Please specify username in your playbook, or set environment variable: FORTIFLEX_ACCESS_USERNAME.")
         module.params["username"] = username
     if not module.params["password"]:
-        password = os.environ.get('FLEXVM_ACCESS_PASSWORD')
+        password = os.environ.get('FORTIFLEX_ACCESS_PASSWORD')
         if not password:
             module.fail_json(
-                msg="Please specify password in your playbook, or set environment variable: FLEXVM_ACCESS_PASSWORD.")
+                msg="Please specify password in your playbook, or set environment variable: FORTIFLEX_ACCESS_PASSWORD.")
         module.params["password"] = password

@@ -14,28 +14,28 @@ __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
-module: fortiflexvm_vms_create
-short_description: Create one or more VMs based on a FlexVM Configuration.
+module: fortiflexvm_entitlements_vm_create
+short_description: Create one or more VMs based on a FortiFlex Configuration.
 description:
-    - Create one or more VMs based on a FlexVM Configuration.
-    - This API is only used to create one or more VMs. To modify a VM, please refer to fortiflexvm_vms_update.
-version_added: "1.0.0"
+    - Create one or more VMs based on a FortiFlex Configuration.
+    - This API is only used to create one or more VMs. To modify a VM, please refer to fortiflexvm_entitlements_update.
+version_added: "2.0.0"
 author:
     - Xinwei Du (@DrMofu)
 options:
     username:
         description:
-            - The username to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_USERNAME.
+            - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
         required: false
     password:
         description:
-            - The password to authenticate. If not declared, the code will read the environment variable FLEXVM_ACCESS_PASSWORD.
+            - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
     configId:
         description:
-            - The ID of a Flex VM Configuration.
+            - The ID of a FortiFlex Configuration.
         type: int
         required: true
     count:
@@ -55,6 +55,7 @@ options:
             - VM(s) end date. It can not be before today's date or after the program's end date.
             - Any format that satisfies [ISO 8601](https://www.w3.org/TR/NOTE-datetime-970915.html) is accepted.
             - Recommended format is "YYYY-MM-DDThh:mm:ss".
+            - If not specify, it will use the program's end date automatically.
         type: str
         required: false
     folderPath:
@@ -73,25 +74,25 @@ EXAMPLES = '''
     username: "<your_own_value>"
     password: "<your_own_value>"
   tasks:
-    - name: Create Virtual Machines
-      fortinet.fortiflexvm.fortiflexvm_vms_create:
+    - name: Create Virtual Machines.
+      fortinet.fortiflexvm.fortiflexvm_entitlements_vm_create:
         username: "{{ username }}"
         password: "{{ password }}"
         configId: 42
-        count: 1
-        description: "Create through Ansible"
-        endDate: "2023-11-11T00:00:00"
-        folderPath: "My Assets"
+        count: 1 # If you set it as 0, FortiFlexvm ansible collection will not create any vm.
+        description: "Create through Ansible" # Optional.
+        endDate: "2023-11-11T00:00:00" # Optional. If not set, it will use the program end date automatically.
+        folderPath: "My Assets" # Optional. If not set, new VM will be in "My Assets"
       register: result
 
     - name: Display response
       debug:
-        var: result.vms
+        var: result.entitlements
 '''
 
 RETURN = '''
-vms:
-    description: A list of virtual machines and their details.
+entitlements:
+    description: A list of virtual machine entitlements and their details.
     type: list
     returned: always
     contains:
@@ -161,21 +162,27 @@ def main():
     # Prepare data to send
     data = {}
     for param in ["configId", "count", "endDate", "folderPath", "description"]:
-        if module.params[param]:
+        if module.params[param] is not None:
             data[param] = module.params[param]
 
     # Check mode
     if module.check_mode:
-        module.exit_json(changed=True,
+        changed = (data["count"] != 0)
+        module.exit_json(changed=changed,
                          input_params=module.params,
                          send_data=data)
+
+    # If don't create any VM, return directly.
+    if data["count"] == 0:
+        response = {"entitlements": []}
+        module.exit_json(changed=False, **response)
 
     # Create connection
     connection = Connection(module, module.params["username"], module.params["password"])
 
-    # Send request to get groups list
+    # Send request
     # If something goes wrong (e.g., incorrect input, 404), the program will report an error and exist.
-    response = connection.send_request("vms/create", data, method="POST")
+    response = connection.send_request("fortiflex/v2/entitlements/vm/create", data, method="POST")
 
     # Exit with response data
     module.exit_json(changed=True, **response)

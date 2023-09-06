@@ -17,7 +17,7 @@ PRODUCTS = [
             {"id": 1, "name": "cpu", "type": "str", "choices": [
                 "1", "2", "4", "8", "16", "32", "2147483647"], "required":True},
             {"id": 2, "name": "service", "type": "str", "choices": [
-                "FC", "UTM", "ENT", "ATP"], "required":True},
+                "FC", "UTP", "ENT", "ATP"], "required":True},
             {"id": 10, "name": "vdom", "type": "int", "min": 0,
                 "max": 500, "required": False, "default": 0},
         ],

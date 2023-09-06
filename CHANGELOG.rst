@@ -5,6 +5,19 @@ Fortinet.Fortiflexvm Release Notes
 .. contents:: Topics
 
 
+v2.0.1
+======
+
+Release Summary
+---------------
+
+Improve document. Release to Ansible Automation Hub.
+
+Bugfixes
+--------
+
+- Improve document quality.
+
 v2.0.0
 ======
 

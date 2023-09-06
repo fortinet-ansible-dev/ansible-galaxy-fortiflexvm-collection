@@ -71,7 +71,7 @@ options:
                 required: true
             service:
                 description:
-                    - The value of this attribute is one of "FC" (FortiCare), "UTM", "ENT" (Enterprise) or "ATP".
+                    - The value of this attribute is one of "FC" (FortiCare), "UTP", "ENT" (Enterprise) or "ATP".
                 type: str
                 required: true
             vdom:
@@ -257,7 +257,7 @@ EXAMPLES = '''
         # Please only use one of the following.
         fortiGateBundle:
           cpu: "2"      # "1", "2", "4", "8", "16", "32", "2147483647"
-          service: "FC" # "FC", "UTM", "ENT", "ATP"
+          service: "FC" # "FC", "UTP", "ENT", "ATP"
           vdom: 10      # 0 ~ 500
 
         # fortiManager:
@@ -339,7 +339,7 @@ configs:
                     returned: always
                 service:
                     description:
-                        - he value of this attribute is one of "FC" (FortiCare), "UTM", "ENT" (Enterprise) or "ATP".
+                        - he value of this attribute is one of "FC" (FortiCare), "UTP", "ENT" (Enterprise) or "ATP".
                     type: str
                     returned: always
                 vdom:

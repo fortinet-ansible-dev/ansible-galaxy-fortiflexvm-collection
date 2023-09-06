@@ -73,3 +73,11 @@ releases:
       name: fortiflexvm_entitlements_vm_regenerate_token
       namespace: ''
     release_date: '2023-07-20'
+  2.0.1:
+    changes:
+      bugfixes:
+      - Improve document quality.
+      release_summary: Improve document. Release to Ansible Automation Hub.
+    fragments:
+    - 2.0.1.yml
+    release_date: '2023-09-06'

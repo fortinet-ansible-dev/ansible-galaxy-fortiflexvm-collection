@@ -1,6 +1,6 @@
 namespace: fortinet
 name: fortiflexvm
-version: 2.0.0
+version: 2.0.1
 readme: README.md
 authors:
     - Xinwei Du <dux@fortinet.com> (@dux-fortinet)
@@ -20,3 +20,4 @@ build_ignore:
   - "tmp/**"
   - ".git/*"
   - "changelogs"
+  - "examples"

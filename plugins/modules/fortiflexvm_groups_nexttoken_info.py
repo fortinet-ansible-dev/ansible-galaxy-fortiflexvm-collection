@@ -37,11 +37,13 @@ options:
             - Folder path. Please declare at least one of the two arguments folderPath and configId.
         type: str
         required: false
+        default: ""
     configId:
         description:
             - The ID of a Flex VM Configuration. Please declare at least one of the two arguments folderPath and configId.
         type: int
         required: false
+        default: 0
 '''
 
 EXAMPLES = '''

@@ -33,15 +33,15 @@ options:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
-    serialNumber:
-        description:
-            - The serial number of the entitlement to update.
-        type: str
-        required: true
     regenerate:
         description:
             - Whether regenerate a new token.
         type: bool
+        required: true
+    serialNumber:
+        description:
+            - The serial number of the entitlement to update.
+        type: str
         required: true
 '''
 
@@ -72,31 +72,36 @@ entitlements:
     type: list
     returned: always
     contains:
-        serialNumber:
-            description: The serial number of the entitlement.
-            type: str
+        accountId:
+            description: Account ID.
+            type: int
             returned: always
-            sample: "FGVMMLTM23001324"
-        description:
-            description: The description of the entitlement.
-            type: str
-            returned: always
-            sample: "Modify through Ansible"
+            sample: 12345
         configId:
             description: The config ID of the entitlement.
             type: int
             returned: always
             sample: 3196
-        startDate:
-            description: The start date of the entitlement.
+        description:
+            description: The description of the entitlement.
             type: str
             returned: always
-            sample: "2023-03-13T11:48:53.03"
+            sample: "Modify through Ansible"
         endDate:
             description: The end date of the entitlement.
             type: str
             returned: always
             sample: "2023-12-12T00:00:00"
+        serialNumber:
+            description: The serial number of the entitlement.
+            type: str
+            returned: always
+            sample: "FGVMMLTM23001324"
+        startDate:
+            description: The start date of the entitlement.
+            type: str
+            returned: always
+            sample: "2023-03-13T11:48:53.03"
         status:
             description: The status of the VM. Possible values are "PENDING", "ACTIVE", "STOPPED" or "EXPIRED".
             type: str

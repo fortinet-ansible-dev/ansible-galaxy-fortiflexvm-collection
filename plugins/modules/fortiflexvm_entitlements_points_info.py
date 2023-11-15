@@ -18,6 +18,7 @@ module: fortiflexvm_entitlements_points_info
 short_description: Get point usage for entitlements.
 description:
     - Returns total points consumed by one or more entitlements in a date range.
+    - Either configId or (accountId and programSerialNumber) should be provided.
 version_added: "2.0.0"
 author:
     - Xinwei Du (@DrMofu)
@@ -32,20 +33,35 @@ options:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
+    accountId:
+        description: Account ID.
+        type: int
+        required: false
     configId:
         description:
             - The ID of the configuration.
         type: int
-        required: true
-    startDate:
-        description:
-            - The start date of the date range to query. Any format that satisfies [ISO 8601](https://www.w3.org/TR/NOTE-datetime-970915.html) is accepted.
-            - Recommended format is YYYY-MM-DD.
-        type: str
-        required: true
+        required: false
     endDate:
         description:
             - The end date of the date range to query. Any format that satisfies [ISO 8601](https://www.w3.org/TR/NOTE-datetime-970915.html) is accepted.
+            - Recommended format is YYYY-MM-DD.
+        type: str
+        required: true
+    programSerialNumber:
+        description:
+            - The serial number of your FortiFlex Program.
+        type: str
+        required: false
+    serialNumber:
+        description:
+            - The entitlement serial number.
+            - Instead of configId you can pass serialNumber to get results for one VM only.
+        type: str
+        required: false
+    startDate:
+        description:
+            - The start date of the date range to query. Any format that satisfies [ISO 8601](https://www.w3.org/TR/NOTE-datetime-970915.html) is accepted.
             - Recommended format is YYYY-MM-DD.
         type: str
         required: true
@@ -64,7 +80,12 @@ EXAMPLES = '''
       fortinet.fortiflexvm.fortiflexvm_entitlements_points_info:
         username: "{{ username }}"
         password: "{{ password }}"
-        configId: 25
+        # Either configId or (accountId and programSerialNumber) should be provided.
+        # configId: 3196
+        accountId: 12345
+        programSerialNumber: "ELAVMS0XXXXXX"
+        # Instead of configId you can pass serialNumber to get results for one VM only.
+        serialNumber: "FZVMMLTMXXXXXX"
         startDate: "2020-10-01"
         endDate: "2020-10-25"
       register: result
@@ -80,16 +101,21 @@ entitlements:
     type: list
     returned: always
     contains:
-        serialNumber:
-            description: The serial number of the entitlement.
-            type: str
+        accountId:
+            description: The ID of the account associated with the program.
+            type: int
             returned: always
-            sample: "FGVMELTM20000029"
+            sample: 12345
         points:
             description: The total points consumed by the entitlement in the specified date range.
             type: int
             returned: always
             sample: 425
+        serialNumber:
+            description: The serial number of the entitlement.
+            type: str
+            returned: always
+            sample: "FGVMELTM20000029"
 '''
 
 from ansible.module_utils.basic import AnsibleModule
@@ -101,9 +127,12 @@ def main():
     module_args = dict(
         username=dict(type='str', required=False),
         password=dict(type='str', required=False, no_log=True),
-        configId=dict(type='int', required=True),
-        startDate=dict(type='str', required=True),
+        accountId=dict(type='int', required=False),
+        configId=dict(type='int', required=False),
         endDate=dict(type='str', required=True),
+        programSerialNumber=dict(type='str', required=False),
+        serialNumber=dict(type='str', required=False),
+        startDate=dict(type='str', required=True),
     )
 
     # Initialize AnsibleModule object
@@ -116,11 +145,16 @@ def main():
     connection = Connection(module, module.params["username"], module.params["password"])
 
     # Send request to get entitlements points
+    if not module.params["configId"] and not (module.params["accountId"] and module.params["programSerialNumber"]):
+        module.fail_json(
+            msg="Please declare configId or declare accountId + programSerialNumber.")
     data = {
-        "configId": module.params["configId"],
         "startDate": module.params["startDate"],
         "endDate": module.params["endDate"]
     }
+    for key in ["accountId", "configId", "programSerialNumber", "serialNumber"]:
+        if module.params[key]:
+            data[key] = module.params[key]
     response = connection.send_request("fortiflex/v2/entitlements/points", data, method="POST")
 
     # Exit with response data

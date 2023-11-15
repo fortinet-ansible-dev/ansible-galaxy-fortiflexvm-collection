@@ -32,18 +32,22 @@ options:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
-    folderPath:
-        description:
-            - Folder path. Please declare at least one of the two arguments folderPath and configId.
+    accountId:
+        description: Account ID.
         type: str
         required: false
-        default: ""
     configId:
         description:
             - The ID of a Flex VM Configuration. Please declare at least one of the two arguments folderPath and configId.
         type: int
         required: false
         default: 0
+    folderPath:
+        description:
+            - Folder path. Please declare at least one of the two arguments folderPath and configId.
+        type: str
+        required: false
+        default: ""
 '''
 
 EXAMPLES = '''
@@ -60,9 +64,10 @@ EXAMPLES = '''
         username: "{{ username }}"
         password: "{{ password }}"
         # Please declare at least one of the following two arguments: folderPath and configId.
-        # You can annotate at most one argument that you don't want to specify.
+        # You can comment at most one argument that you don't want to specify.
         folderPath: "My Assets"
         configId: 22
+        # accountId: 12345 # optional
       register: result
 
     - name: Display response
@@ -76,6 +81,11 @@ entitlements:
     type: list
     returned: always
     contains:
+        accountId:
+            description: Account ID.
+            type: int
+            returned: if specified account ID in the argument
+            sample: 12345
         configId:
             description: The config ID of the entitlement.
             type: int
@@ -128,6 +138,7 @@ def main():
         password=dict(type='str', required=False, no_log=True),
         folderPath=dict(type='str', required=False, default=""),
         configId=dict(type='int', required=False, default=0),
+        accountId=dict(type='str', required=False),
     )
 
     # Initialize AnsibleModule object
@@ -141,6 +152,7 @@ def main():
 
     # Send request to get program list
     data = {}
+    request_url = "flexvm/v1/groups/nexttoken"
     if not module.params['folderPath'] and not module.params['configId']:
         module.fail_json(
             msg="Please declare at least one of the two arguments: folderPath and configId.")
@@ -148,7 +160,10 @@ def main():
         data['folderPath'] = module.params['folderPath']
     if module.params['configId'] != 0:
         data['configId'] = module.params['configId']
-    response = connection.send_request("flexvm/v1/groups/nexttoken", data, method="POST")
+    if module.params["accountId"]:
+        request_url = "fortiflex/v2/groups/nexttoken"
+        data["accountId"] = module.params["accountId"]
+    response = connection.send_request(request_url, data, method="POST")
     if "vms" in response:
         response["entitlements"] = response["vms"]
         del response["vms"]

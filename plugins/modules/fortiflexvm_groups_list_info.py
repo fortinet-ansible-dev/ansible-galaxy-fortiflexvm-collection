@@ -32,6 +32,10 @@ options:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
+    accountId:
+        description: Account ID.
+        type: str
+        required: false
 '''
 
 EXAMPLES = '''
@@ -47,6 +51,7 @@ EXAMPLES = '''
       fortinet.fortiflexvm.fortiflexvm_groups_list_info:
         username: "{{ username }}"
         password: "{{ password }}"
+        # accountId: 12345 # optional
       register: result
 
     - name: Display response
@@ -60,16 +65,21 @@ groups:
     type: list
     returned: always
     contains:
-        folderPath:
-            description: The folder path of the FortiFlex group.
-            type: str
-            returned: always
-            sample: "My Assets/Department A/Group 1"
+        accountId:
+            description: Account ID.
+            type: int
+            returned: if specified account ID in the argument
+            sample: 12345
         availableTokens:
             description: The number of available tokens for the FortiFlex group.
             type: int
             returned: always
             sample: 5
+        folderPath:
+            description: The folder path of the FortiFlex group.
+            type: str
+            returned: always
+            sample: "My Assets/Department A/Group 1"
         usedTokens:
             description: The number of used tokens for the FortiFlex group.
             type: int
@@ -86,6 +96,7 @@ def main():
     module_args = dict(
         username=dict(type='str', required=False),
         password=dict(type='str', required=False, no_log=True),
+        accountId=dict(type='str', required=False),
     )
 
     # Initialize AnsibleModule object
@@ -98,7 +109,12 @@ def main():
     connection = Connection(module, module.params["username"], module.params["password"])
 
     # Send request to get groups list
-    response = connection.send_request("flexvm/v1/groups/list", {}, method="POST")
+    data = {}
+    request_url = "flexvm/v1/groups/list"
+    if module.params["accountId"]:
+        request_url = "fortiflex/v2/groups/list"
+        data["accountId"] = module.params["accountId"]
+    response = connection.send_request(request_url, data, method="POST")
 
     # Exit with response data
     module.exit_json(changed=False, **response)

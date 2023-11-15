@@ -5,6 +5,22 @@ Fortinet.Fortiflexvm Release Notes
 .. contents:: Topics
 
 
+v2.0.2
+======
+
+Release Summary
+---------------
+
+Support 3 new configurations.
+
+Bugfixes
+--------
+
+- Support 3 new configurations, fortiClientEMSOP, fortiCloudPrivate and fortiCloudPublic.
+- Support optional argument accountId in some modules.
+- Update parameters for existing products.
+- entitlements_points_info supports getting results for specified entitlement.
+
 v2.0.1
 ======
 

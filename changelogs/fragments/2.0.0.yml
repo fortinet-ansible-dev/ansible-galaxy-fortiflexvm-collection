@@ -1,13 +1,13 @@
 release_summary: Update FortiFlexVM Ansible to support FortiFlex v2.
 breaking_changes:
-- All vms modules are renamed to entitlements modules. The return value vms are renamed to entitlements.
+  - All vms modules are renamed to entitlements modules. The return value vms are renamed to entitlements.
 major_changes:
-- Support creating hardware entitlements by using fortiflexvm_entitlements_hardware_create.
+  - Support creating hardware entitlements by using fortiflexvm_entitlements_hardware_create.
 minor_changes:
-- Support two new configurations, fortiADC and fortiGateHardware.
-- Support bypass_validation and check_parameters in fortiflexvm_configs_create and fortiflexvm_configs_update.
+  - Support two new configurations, fortiADC and fortiGateHardware.
+  - Support bypass_validation and check_parameters in fortiflexvm_configs_create and fortiflexvm_configs_update.
 removed_features:
-- fortiflexvm_vms_create (renamed to fortiflexvm_entitlements_vm_create)
-- fortiflexvm_vms_update (renamed to fortiflexvm_entitlements_update)
-- fortiflexvm_vms_list_info (renamed to fortiflexvm_entitlements_list_info)
-- fortiflexvm_vms_points_info (renamed to fortiflexvm_entitlements_points_info)
+  - fortiflexvm_vms_create (renamed to fortiflexvm_entitlements_vm_create)
+  - fortiflexvm_vms_update (renamed to fortiflexvm_entitlements_update)
+  - fortiflexvm_vms_list_info (renamed to fortiflexvm_entitlements_list_info)
+  - fortiflexvm_vms_points_info (renamed to fortiflexvm_entitlements_points_info)

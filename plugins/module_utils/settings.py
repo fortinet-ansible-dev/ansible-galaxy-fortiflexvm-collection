@@ -59,6 +59,22 @@ PRODUCTS = [
         ],
     },
     {
+        "id": 5,
+        "name": "fortiClientEMSOP",
+        "parameters": [
+            {"id": 13, "name": "ZTNA", "type": "int",
+                "min": 0, "max": 25000, "required": True},
+            {"id": 14, "name": "EPP", "type": "int",
+                "min": 0, "max": 25000, "required": True},
+            {"id": 15, "name": "chromebook", "type": "int",
+                "min": 0, "max": 25000, "required": True},
+            {"id": 16, "name": "service", "type": "str",
+                "choices": ["FCTFC247"], "required": True},
+            {"id": 36, "name": "addons", "type": "list", "elements": "str",
+                "choices": ["BPS"], "required": False, "default":[]},
+        ],
+    },
+    {
         "id": 7,
         "name": "fortiAnalyzer",
         "parameters": [
@@ -95,11 +111,30 @@ PRODUCTS = [
             {"id": 27, "name": "model", "type": "str",
                 "choices": ["FGT40F", "FGT60F", "FGT70F", "FGT80F", "FG100F", "FGT60E",
                             "FGT61F", "FG100E", "FG101F", "FG200E", "FG200F", "FG201F",
-                            "FG4H0F", "FG6H0F"], "required":True},
+                            "FG4H0F", "FG6H0F", "FWF40F", "FWF60F", "FGR60F", "FR70FB",
+                            "FGT81F", "FG101E", "FG4H1F", "FG1K0F", "FG180F", "F2K60F",
+                            "FG3K0F", "FG3K1F", "FG3K2F"], "required":True},
             {"id": 28, "name": "service", "type": "str",
                 "choices": ["FGHWFC247", "FGHWFCEL", "FGHWATP", "FGHWUTP", "FGHWENT"], "required":True},
-            {"id": 29, "name": "addons", "type": "str",
-                "choices": ["NONE", "FGHWFCELU"], "required":False, "default":"NONE"},
+            {"id": 29, "name": "addons", "type": "list", "elements": "str",
+                "choices": ["FGHWFCELU", "FGHWFAMS", "FGHWFAIS", "FGHWSWNM", "FGHWDLDB",
+                            "FGHWFAZC", "FGHWSOCA", "FGHWMGAS", "FGHWSPAL", "FGHWFCSS"], "required":False, "default":[]},
+        ],
+    },
+    {
+        "id": 202,
+        "name": "fortiCloudPrivate",
+        "parameters": [
+            {"id": 32, "name": "throughput", "type": "int", "min": 25, "max": 10000, "required": True},
+            {"id": 33, "name": "applications", "type": "int", "min": 0, "max": 2000, "required": True},
+        ],
+    },
+    {
+        "id": 203,
+        "name": "fortiCloudPublic",
+        "parameters": [
+            {"id": 34, "name": "throughput", "type": "int", "min": 25, "max": 10000, "required": True},
+            {"id": 35, "name": "applications", "type": "int", "min": 0, "max": 2000, "required": True},
         ],
     },
 ]

@@ -64,17 +64,7 @@ programs:
             description: The ID of the account associated with the program.
             type: int
             returned: always
-            sample: 223354
-        serialNumber:
-            description: The serial number of the program.
-            type: str
-            returned: always
-            sample: "ELAVMR0000000101"
-        startDate:
-            description: The start date of the program.
-            type: str
-            returned: always
-            sample: "2020-05-16 00:00:00"
+            sample: 12345
         endDate:
             description: The end date of the program.
             type: str
@@ -85,6 +75,16 @@ programs:
             type: bool
             returned: always
             sample: true
+        serialNumber:
+            description: The serial number of the program.
+            type: str
+            returned: always
+            sample: "ELAVMR0000000101"
+        startDate:
+            description: The start date of the program.
+            type: str
+            returned: always
+            sample: "2020-05-16 00:00:00"
 '''
 
 from ansible.module_utils.basic import AnsibleModule

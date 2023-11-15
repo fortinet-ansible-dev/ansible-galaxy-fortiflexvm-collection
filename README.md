@@ -8,13 +8,13 @@ You can use FortiFlexVM Ansible Collection to create entitlements (licenses) for
 For details, please read our [documentation](https://ansible-galaxy-fortiflexvm-docs.readthedocs.io/en/latest/).
 
 ## Requirements
-- Ansible 2.13+
+- Ansible 2.14+
 - Python 3
 
 ## Installation
 This collection is distributed via [ansible-galaxy](https://galaxy.ansible.com/), the installation steps are as follows:
 
-1. Install or upgrade to Ansible 2.13+
+1. Install or upgrade to Ansible 2.14+
 2. Download this collection from galaxy: `ansible-galaxy collection install fortinet.fortiflexvm`
 
 

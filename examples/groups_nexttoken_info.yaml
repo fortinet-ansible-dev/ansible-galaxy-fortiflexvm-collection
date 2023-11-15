@@ -10,9 +10,10 @@
         username: "{{ username }}"
         password: "{{ password }}"
         # Please declare at least one of the following two arguments: folderPath and configId.
-        # You can annotate at most one argument that you don't want to specify.
+        # You can comment at most one argument that you don't want to specify.
         folderPath: "My Assets"
         configId: 22
+        # accountId: 12345 # optional
       register: result
 
     - name: Display response

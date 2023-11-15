@@ -96,6 +96,11 @@ entitlements:
     type: list
     returned: always
     contains:
+        accountId:
+            description: The ID of the account associated with the program.
+            type: int
+            returned: always
+            sample: 12345
         configId:
             description: The ID of the virtual machine configuration.
             type: int

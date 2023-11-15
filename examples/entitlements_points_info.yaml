@@ -9,7 +9,12 @@
       fortinet.fortiflexvm.fortiflexvm_entitlements_points_info:
         username: "{{ username }}"
         password: "{{ password }}"
-        configId: 25
+        # Either configId or (accountId and programSerialNumber) should be provided.
+        # configId: 3196
+        accountId: 12345
+        programSerialNumber: "ELAVMS0XXXXXX"
+        # Instead of configId you can pass serialNumber to get results for one VM only.
+        serialNumber: "FZVMMLTMXXXXXX"
         startDate: "2020-10-01"
         endDate: "2020-10-25"
       register: result

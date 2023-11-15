@@ -9,7 +9,10 @@
       fortinet.fortiflexvm.fortiflexvm_entitlements_list_info:
         username: "{{ username }}"
         password: "{{ password }}"
+        # Either configId or (accountId and programSerialNumber) should be provided.
         configId: 22
+        # accountId: 12345
+        # programSerialNumber: "ELAVMS00XXXXX"
       register: result
 
     - name: Display response

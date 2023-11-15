@@ -1,0 +1,6 @@
+release_summary: Support 3 new configurations.
+bugfixes:
+  - Update parameters for existing products.
+  - Support 3 new configurations, fortiClientEMSOP, fortiCloudPrivate and fortiCloudPublic.
+  - Support optional argument accountId in some modules.
+  - entitlements_points_info supports getting results for specified entitlement.

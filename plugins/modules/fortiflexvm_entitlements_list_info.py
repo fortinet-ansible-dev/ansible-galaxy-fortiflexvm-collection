@@ -17,7 +17,8 @@ DOCUMENTATION = '''
 module: fortiflexvm_entitlements_list_info
 short_description: Get list of existing entitlements for a FlexVM Configuration.
 description:
-    - This module retrieves a list of entitlements associated with a specific config ID from FortiFlexVM API using the provided credentials.
+    - This module retrieves a list of entitlements for a configuration.
+    - Either configId or (accountId and programSerialNumber) should be provided.
 version_added: "2.0.0"
 author:
     - Xinwei Du (@DrMofu)
@@ -32,11 +33,20 @@ options:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
+    accountId:
+        description: Account ID.
+        type: int
+        required: false
     configId:
         description:
             - The ID of the configuration for which to retrieve the list of VMs.
         type: int
-        required: true
+        required: false
+    programSerialNumber:
+        description:
+            - The serial number of your FortiFlex Program.
+        type: str
+        required: false
 '''
 
 EXAMPLES = '''
@@ -52,7 +62,10 @@ EXAMPLES = '''
       fortinet.fortiflexvm.fortiflexvm_entitlements_list_info:
         username: "{{ username }}"
         password: "{{ password }}"
+        # Either configId or (accountId and programSerialNumber) should be provided.
         configId: 22
+        # accountId: 12345
+        # programSerialNumber: "ELAVMS00XXXXX"
       register: result
 
     - name: Display response
@@ -66,31 +79,36 @@ entitlements:
     type: list
     returned: always
     contains:
-        serialNumber:
-            description: The serial number of the entitlement.
-            type: str
+        accountId:
+            description: Account ID.
+            type: int
             returned: always
-            sample: "FGVMELTM20000004"
-        description:
-            description: The description of the entitlement.
-            type: str
-            returned: always
-            sample: "VM created for department X"
+            sample: 12345
         configId:
             description: The config ID of the entitlement.
             type: int
             returned: always
             sample: 22
-        startDate:
-            description: The start date of the entitlement.
+        description:
+            description: The description of the entitlement.
             type: str
             returned: always
-            sample: "2020-08-25 10:12:25"
+            sample: "VM created for department X"
         endDate:
             description: The end date of the entitlement.
             type: str
             returned: always
             sample: "2020-09-12 12:13:37"
+        serialNumber:
+            description: The serial number of the entitlement.
+            type: str
+            returned: always
+            sample: "FGVMELTM20000004"
+        startDate:
+            description: The start date of the entitlement.
+            type: str
+            returned: always
+            sample: "2020-08-25 10:12:25"
         status:
             description: The status of the entitlement. Possible values are "PENDING", "ACTIVE", "STOPPED" or "EXPIRED".
             type: str
@@ -116,7 +134,9 @@ def main():
     module_args = dict(
         username=dict(type='str', required=False),
         password=dict(type='str', required=False, no_log=True),
-        configId=dict(type='int', required=True),
+        accountId=dict(type='int', required=False),
+        configId=dict(type='int', required=False),
+        programSerialNumber=dict(type='str', required=False),
     )
 
     # Initialize AnsibleModule object
@@ -129,7 +149,14 @@ def main():
     connection = Connection(module, module.params["username"], module.params["password"])
 
     # Send request to get VMs list
-    data = {"configId": module.params["configId"]}
+    data = {}
+    if not module.params["configId"] and not (module.params["accountId"] and module.params["programSerialNumber"]):
+        module.fail_json(
+            msg="Please declare configId or declare accountId + programSerialNumber.")
+    for key in ["accountId", "configId", "programSerialNumber"]:
+        if module.params[key]:
+            data[key] = module.params[key]
+
     response = connection.send_request("fortiflex/v2/entitlements/list", data, method="POST")
 
     # Exit with response data

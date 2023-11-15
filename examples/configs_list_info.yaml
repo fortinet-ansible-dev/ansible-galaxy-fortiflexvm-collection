@@ -9,6 +9,7 @@
       fortinet.fortiflexvm.fortiflexvm_configs_list_info:
         username: "{{ username }}"
         password: "{{ password }}"
+        # accountId: 12345 # optional
         programSerialNumber: "ELAVMS000000XXXX"
       register: result
 

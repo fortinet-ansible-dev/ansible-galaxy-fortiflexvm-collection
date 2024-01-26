@@ -92,3 +92,20 @@ releases:
     fragments:
       - 2.0.2.yml
     release_date: "2023-11-15"
+  2.1.0:
+    changes:
+      bugfixes:
+        - Change the tpye of parameter cpu in fortiGateBundle from str to int.
+        - Configuration fortiGateBundle supports new parameters, fortiGuardServices,
+          cloudServices and supportService.
+      minor_changes:
+        - One new module entitlements_cloud_create.
+        - Support new configurations, fortiClientEMSCloud.
+      release_summary: Support one new module and one configuration.
+    fragments:
+      - 2.1.0.yml
+    modules:
+      - description: Create one cloud entitlement based on a FortiFlex Configuration.
+        name: fortiflexvm_entitlements_cloud_create
+        namespace: ""
+    release_date: "2024-01-22"

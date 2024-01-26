@@ -20,7 +20,7 @@ description:
     - This module updates an existing entitlement.
 version_added: "1.0.0"
 author:
-    - Xinwei Du (@DrMofu)
+    - Xinwei Du (@dux-fortinet)
 options:
     username:
         description:

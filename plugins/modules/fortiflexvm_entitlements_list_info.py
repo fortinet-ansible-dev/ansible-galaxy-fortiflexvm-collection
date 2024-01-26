@@ -21,7 +21,7 @@ description:
     - Either configId or (accountId and programSerialNumber) should be provided.
 version_added: "2.0.0"
 author:
-    - Xinwei Du (@DrMofu)
+    - Xinwei Du (@dux-fortinet)
 options:
     username:
         description:

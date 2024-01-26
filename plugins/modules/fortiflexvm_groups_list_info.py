@@ -20,7 +20,7 @@ description:
     - This module returns list of FortiFlex groups (asset folders that have FortiFlex products in them).
 version_added: "1.0.0"
 author:
-    - Xinwei Du (@DrMofu)
+    - Xinwei Du (@dux-fortinet)
 options:
     username:
         description:

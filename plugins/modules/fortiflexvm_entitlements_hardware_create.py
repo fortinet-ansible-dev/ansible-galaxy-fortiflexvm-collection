@@ -22,7 +22,7 @@ description:
     - To modify an entitlement, please refer to fortiflexvm_entitlements_update.
 version_added: "2.0.0"
 author:
-    - Xinwei Du (@DrMofu)
+    - Xinwei Du (@dux-fortinet)
 options:
     username:
         description:

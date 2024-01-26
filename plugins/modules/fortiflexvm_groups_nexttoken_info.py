@@ -20,7 +20,7 @@ description:
     - Returns first available token by asset folder or Configuration id (folder path, or config id or both can be specified in request).
 version_added: "1.0.0"
 author:
-    - Xinwei Du (@DrMofu)
+    - Xinwei Du (@dux-fortinet)
 options:
     username:
         description:

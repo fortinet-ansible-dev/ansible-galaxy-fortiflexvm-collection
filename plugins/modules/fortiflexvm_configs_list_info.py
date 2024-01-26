@@ -20,7 +20,7 @@ description:
     - This module retrieves a list of configs from FortiFlexVM API using the provided credentials and program serial number.
 version_added: "1.0.0"
 author:
-    - Xinwei Du (@DrMofu)
+    - Xinwei Du (@dux-fortinet)
 options:
     username:
         description:
@@ -104,18 +104,31 @@ configs:
                 cpu:
                     description:
                         - The number of CPUs. The value of this attribute is one of "1", "2", "4", "8", "16",  "32" or "2147483647" (unlimited).
-                    type: str
-                    returned: always
+                    type: int
                 service:
                     description:
                         - The value of this attribute is one of "FC" (FortiCare), "UTP", "ENT" (Enterprise) or "ATP".
                     type: str
-                    returned: always
                 vdom:
                     description:
                         - Number of VDOMs. A number between 0 and 500 (inclusive). The default number is 0.
                     type: int
-                    returned: always
+                fortiGuardServices:
+                    description:
+                        - Fortiguard Services. The default value is an empty list.
+                        - It should contain zero, one or more elements of ["FGTAVDB", "FGTFAIS", "FGTISSS", "FGTDLDB", "FGTFGSA", "FGTFCSS"].
+                    type: list
+                    elements: str
+                cloudServices:
+                    description:
+                        - Cloud Services. The default value is an empty list.
+                        - It should contain zero, one or more elements of ["FGTFAMS", "FGTSWNM", "FGTSOCA", "FGTFAZC", "FGTSWOS", "FGTFSPA"].
+                    type: list
+                    elements: str
+                supportService:
+                    description:
+                        - Suport service. "FGTFCELU" or "NONE". Default is "NONE".
+                    type: str
         fortiManager:
             description:
                 - FortiManager Virtual Machine.
@@ -125,12 +138,10 @@ configs:
                     description:
                         - Number of managed devices. A number between 1 and 100000 (inclusive).
                     type: int
-                    returned: always
                 adom:
                     description:
                         - Number of ADOMs. A number between 1 and 100000 (inclusive).
                     type: int
-                    returned: always
         fortiWeb:
             description:
                 - FortiWeb Virtual Machine - Service Bundle.
@@ -140,12 +151,10 @@ configs:
                     description:
                         - Number of CPUs. The value of this attribute is one of "1", "2", "4", "8" or "16".
                     type: str
-                    returned: always
                 service:
                     description:
                         - Service Package. Valid values are "FWBSTD" (Standard) or "FWBADV" (Advanced).
                     type: str
-                    returned: always
         fortiGateLCS:
             description:
                 - FortiGate Virtual Machine - A La Carte Services.
@@ -155,31 +164,26 @@ configs:
                     description:
                         - The number of CPUs. A number between 1 and 96 (inclusive).
                     type: int
-                    returned: always
                 fortiGuardServices:
                     description:
                         - The fortiguard services this FortiGate Virtual Machine supports. The default value is an empty list.
                         - It should contain zero, one or more elements of ["IPS", "AVDB", "FGSA", "DLDB", "FAIS", "FURLDNS"].
                     type: list
                     elements: str
-                    returned: always
                 supportService:
                     description:
                         - Valid values are "FC247" (FortiCare 24x7) or "ASET" (FortiCare Elite).
                     type: str
-                    returned: always
                 vdom:
                     description:
                         - Number of VDOMs. A number between 1 and 500 (inclusive).
                     type: int
-                    returned: always
                 cloudServices:
                     description:
                         - The cloud services this FortiGate Virtual Machine supports. The default value is an empty list.
                         - It should contain zero, one or more elements of ["FAMS", "SWNM", "AFAC", "FAZC"].
                     type: list
                     elements: str
-                    returned: always
         fortiClientEMSOP:
             description:
                 - FortiClient EMS On-Prem.
@@ -190,24 +194,20 @@ configs:
                         - ZTNA/VPN (number of endpoints).
                         - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
                     type: int
-                    returned: always
                 EPP:
                     description:
                         - EPP/ATP + ZTNA/VPN (number of endpoints).
                         - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
                     type: int
-                    returned: always
                 chromebook:
                     description:
                         - Chromebook (number of endpoints).
                         - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
                     type: int
-                    returned: always
                 service:
                     description:
                         - Support Services. Possible value is "FCTFC247" (FortiCare Premium)
                     type: str
-                    returned: always
                 addons:
                     description: Addons. A list. Possible value is "BPS" ( FortiCare Best Practice).
                     type: list
@@ -221,18 +221,15 @@ configs:
                     description:
                         - Daily Storage (GB). A number between 5 and 8300 (inclusive).
                     type: int
-                    returned: always
                 adom:
                     description:
                         - Number of ADOMs. A number between 0 and 1200 (inclusive).
                     type: int
-                    returned: always
                 service:
                     description:
                         - Support Service. Currently, the only available option is "FAZFC247" (FortiCare Premium).
                         - The default value is "FAZFC247".
                     type: str
-                    returned: always
         fortiPortal:
             description:
                 - FortiPortal Virtual Machine.
@@ -242,7 +239,6 @@ configs:
                     description:
                         - Number of managed devices. A number between 0 and 100000 (inclusive).
                     type: str
-                    returned: always
         fortiADC:
             description:
                 - FortiADC Virtual Machine.
@@ -252,12 +248,10 @@ configs:
                     description:
                         - Number of CPUs. The value of this attribute is one of "1", "2", "4", "8", "16" or "32".
                     type: str
-                    returned: always
                 service:
                     description:
                         - Support Service. "FDVSTD" (Standard), "FDVADV" (Advanced) or "FDVFC247" (FortiCare Premium).
                     type: str
-                    returned: always
         fortiGateHardware:
             description:
                 - FortiGate Hardware.
@@ -272,25 +266,22 @@ configs:
                         - FG4H0F (FortiGate-400F), FG6H0F (FortiGate-600F), FWF40F (FortiWifi-40F), FWF60F (FortiWifi-60F),
                         - FGR60F (FortiGateRugged-60F), FR70FB (FortiGateRugged-70F), FGT81F (FortiGate-81F), FG101E (FortiGate-101E),
                         - FG4H1F (FortiGate-401F), FG1K0F (FortiGate-1000F), FG180F (FortiGate-1800F), F2K60F (FortiGate-2600F),
-                        - FG3K0F (FortiGate-3000F), FG3K1F (FortiGate-3001F), FG3K2F (FortiGate-3200F).
+                        - FG3K0F (FortiGate-3000F), FG3K1F (FortiGate-3001F), FG3K2F (FortiGate-3200F)...
                     type: str
-                    returned: always
                 service:
                     description:
                         - Support Service. Possible values are FGHWFC247 (FortiCare Premium), FGHWFCEL (FortiCare Elite),
                         - FDVFC247 (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
                     type: str
-                    returned: always
                 addons:
                     description:
-                        - Addons. A list, possible values are
-                        - FGHWFCELU (FortiCare Elite Upgrade), FGHWFAMS (FortiGate Cloud Management),
+                        - Addons. Possible values are
+                        - NONE, FGHWFCELU (FortiCare Elite Upgrade), FGHWFAMS (FortiGate Cloud Management),
                         - FGHWFAIS (AI-Based In-line Sandbox), FGHWSWNM (SD-WAN Underlay), FGHWDLDB (FortiGuard DLP),
                         - FGHWFAZC (FortiAnalyzer Cloud), FGHWSOCA (SOCaaS), FGHWMGAS (Managed FortiGate),
                         - FGHWSPAL (SD-WAN Connector for FortiSASE), FGHWFCSS (FortiConverter Service).
                     type: list
                     elements: str
-                    returned: always
         fortiCloudPrivate:
             description:
                 - FortiWeb Cloud, Private.
@@ -303,11 +294,9 @@ configs:
                         - 700, 800, 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500,
                         - 7000, 7500, 8000, 8500, 9000, 9500, 10000.
                     type: int
-                    returned: always
                 applications:
                     description: Number of web applications. Number between 0 and 2000 (inclusive).
                     type: int
-                    returned: always
         fortiCloudPublic:
             description:
                 - FortiWeb Cloud, Public.
@@ -316,15 +305,47 @@ configs:
                 throughput:
                     description:
                         - Average Throughput (Mbps).
-                        - Possible values are 10, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600,
+                        - Possible values are 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600,
                         - 700, 800, 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500,
                         - 7000, 7500, 8000, 8500, 9000, 9500, 10000.
                     type: int
-                    returned: always
                 applications:
                     description: Number of web applications. Number between 0 and 2000 (inclusive).
                     type: int
-                    returned: always
+        fortiClientEMSCloud:
+            description:
+                - FortiClient EMS Cloud.
+            type: dict
+            contains:
+                ZTNA:
+                    description:
+                        - ZTNA/VPN (number of endpoints).
+                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    type: int
+                ZTNA_FGF:
+                    description:
+                        - ZTNA/VPN + FortiGuard Forensics (number of endpoints).
+                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    type: int
+                EPP_ZTNA:
+                    description:
+                        - EPP/ATP + ZTNA/VPN (number of endpoints).
+                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    type: int
+                EPP_ZTNA_FGF:
+                    description:
+                        - EPP/ATP + ZTNA/VPN + FortiGuard Forensics (number of endpoints).
+                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    type: int
+                chromebook:
+                    description:
+                        - Chromebook (number of endpoints).
+                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    type: int
+                addons:
+                    description: Addons. A list. Possible value is "BPS" ( FortiCare Best Practice).
+                    type: list
+                    elements: str
 '''
 
 from ansible.module_utils.basic import AnsibleModule

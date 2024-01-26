@@ -12,14 +12,14 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-
 DOCUMENTATION = '''
 ---
-module: fortiflexvm_entitlements_vm_regenerate_token
-short_description: Regenerate token for a VM.
+module: fortiflexvm_entitlements_cloud_create
+short_description: Create one cloud entitlement based on a FortiFlex Configuration.
 description:
-    - Regenerate token for a VM.
-version_added: "2.0.0"
+    - Create one cloud entitlement on a FortiFlex Configuration.
+    - This API is only used to create one cloud entitlement. To modify an entitlement, please refer to fortiflexvm_entitlements_update.
+version_added: "2.1.0"
 author:
     - Xinwei Du (@dux-fortinet)
 options:
@@ -33,32 +33,35 @@ options:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
         required: false
-    regenerate:
+    configId:
         description:
-            - Whether regenerate a new token.
-        type: bool
+            - The ID of a FortiFlex Configuration.
+        type: int
         required: true
-    serialNumber:
+    endDate:
         description:
-            - The serial number of the entitlement to update.
+            - VM(s) end date. It can not be before today's date or after the program's end date.
+            - Any format that satisfies [ISO 8601](https://www.w3.org/TR/NOTE-datetime-970915.html) is accepted.
+            - Recommended format is "YYYY-MM-DDThh:mm:ss".
+            - If not specify, it will use the program's end date automatically.
         type: str
-        required: true
+        required: false
 '''
 
 EXAMPLES = '''
-- name: Regenerate token
+- name: Create cloud entitlement.
   hosts: localhost
   collections:
     - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
-    - name: Regenerate token
-      fortinet.fortiflexvm.fortiflexvm_entitlements_vm_regenerate_token:
+    - name: Create Cloud Entitlement.
+      fortinet.fortiflexvm.fortiflexvm_entitlements_cloud_create:
         username: "{{ username }}"
         password: "{{ password }}"
-        serialNumber: "FGVMMLTM23001324"
-        regenerate: true # If you set it as false, FortiFlexvm ansible collection will return an empty list.
+        configId: 12345
+        endDate: "2024-02-12T00:00:00" # Optional. If not set, it will use the program end date automatically.
       register: result
 
     - name: Display response
@@ -68,51 +71,51 @@ EXAMPLES = '''
 
 RETURN = '''
 entitlements:
-    description: The entitlement you update. This list only contains one entitlement. It will be empty if you set regenerate as false.
+    description: A list of virtual machine entitlements and their details.
     type: list
     returned: always
     contains:
         accountId:
-            description: Account ID.
+            description: The ID of the account associated with the program.
             type: int
             returned: always
             sample: 12345
         configId:
-            description: The config ID of the entitlement.
+            description: The ID of the virtual machine configuration.
             type: int
             returned: always
-            sample: 3196
+            sample: 42
         description:
-            description: The description of the entitlement.
+            description: The description of the virtual machine.
             type: str
             returned: always
-            sample: "Modify through Ansible"
+            sample: "Create through Ansible"
         endDate:
-            description: The end date of the entitlement.
+            description: The end date of the virtual machine's validity.
             type: str
             returned: always
-            sample: "2023-12-12T00:00:00"
+            sample: "2023-11-11T00:00:00"
         serialNumber:
-            description: The serial number of the entitlement.
+            description: The serial number of the virtual machine.
             type: str
             returned: always
-            sample: "FGVMMLTM23001324"
+            sample: "FGVMMLTM23002016"
         startDate:
-            description: The start date of the entitlement.
+            description: The start date of the virtual machine's validity.
             type: str
             returned: always
-            sample: "2023-03-13T11:48:53.03"
+            sample: "2023-04-06T15:49:29.643"
         status:
-            description: The status of the VM. Possible values are "PENDING", "ACTIVE", "STOPPED" or "EXPIRED".
+            description: The status of the virtual machine.
             type: str
             returned: always
-            sample: "ACTIVE"
+            sample: "PENDING"
         token:
-            description: The token of the entitlement.
+            description: The token assigned to the virtual machine.
             type: str
             returned: always
         tokenStatus:
-            description: The token status of the entitlement. Possible values are "NOTUSED" or "USED".
+            description: The status of the token assigned to the virtual machine.
             type: str
             returned: always
             sample: "NOTUSED"
@@ -127,8 +130,8 @@ def main():
     module_args = dict(
         username=dict(type='str', required=False),
         password=dict(type='str', required=False, no_log=True),
-        serialNumber=dict(type='str', required=True),
-        regenerate=dict(type='bool', required=True),
+        configId=dict(type='int', required=True),
+        endDate=dict(type='str', required=False),
     )
 
     # Initialize AnsibleModule object
@@ -137,24 +140,24 @@ def main():
         supports_check_mode=True
     )
 
+    # Prepare data to send
+    data = {}
+    for param in ["configId", "endDate"]:
+        if module.params[param] is not None:
+            data[param] = module.params[param]
+
     # Check mode
     if module.check_mode:
-        module.exit_json(changed=module.params["regenerate"], input_params=module.params)
-
-    # If don't regenerate, return directly.
-    if not module.params["regenerate"]:
-        response = {"entitlements": []}
-        module.exit_json(changed=False, **response)
+        module.exit_json(changed=False,
+                         input_params=module.params,
+                         send_data=data)
 
     # Create connection
     connection = Connection(module, module.params["username"], module.params["password"])
-    data = {
-        "serialNumber": module.params["serialNumber"]
-    }
 
     # Send request
     # If something goes wrong (e.g., incorrect input, 404), the program will report an error and exist.
-    response = connection.send_request("fortiflex/v2/entitlements/vm/token", data, method="POST")
+    response = connection.send_request("fortiflex/v2/entitlements/cloud/create", data, method="POST")
 
     # Exit with response data
     module.exit_json(changed=True, **response)

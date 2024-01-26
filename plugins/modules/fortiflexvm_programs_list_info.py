@@ -20,7 +20,7 @@ description:
     - This module retrieves a list of FortiFlex Programs using the provided credentials.
 version_added: "1.0.0"
 author:
-    - Xinwei Du (@DrMofu)
+    - Xinwei Du (@dux-fortinet)
 options:
     username:
         description:

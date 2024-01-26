@@ -1,0 +1,7 @@
+release_summary: Support one new module and one configuration.
+minor_changes:
+  - Support new configurations, fortiClientEMSCloud.
+  - One new module entitlements_cloud_create.
+bugfixes:
+  - Configuration fortiGateBundle supports new parameters, fortiGuardServices, cloudServices and supportService.
+  - Change the tpye of parameter cpu in fortiGateBundle from str to int.

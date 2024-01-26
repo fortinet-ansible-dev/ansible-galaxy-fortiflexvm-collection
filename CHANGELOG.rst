@@ -5,6 +5,31 @@ Fortinet.Fortiflexvm Release Notes
 .. contents:: Topics
 
 
+v2.1.0
+======
+
+Release Summary
+---------------
+
+Support one new module and one configuration.
+
+Minor Changes
+-------------
+
+- One new module entitlements_cloud_create.
+- Support new configurations, fortiClientEMSCloud.
+
+Bugfixes
+--------
+
+- Change the tpye of parameter cpu in fortiGateBundle from str to int.
+- Configuration fortiGateBundle supports new parameters, fortiGuardServices, cloudServices and supportService.
+
+New Modules
+-----------
+
+- fortinet.fortiflexvm.fortiflexvm_entitlements_cloud_create - Create one cloud entitlement based on a FortiFlex Configuration.
+
 v2.0.2
 ======
 

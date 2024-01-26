@@ -158,7 +158,7 @@ def transform_config_output(item):
     for param in item["parameters"]:
         param_name = get_param_name_by_id(param["id"])
         if param_name not in configs_response[product_type]:
-            if product_type == "fortiGateLCS" and param_name in ["cloudServices", "fortiGuardServices"]:
+            if param["id"] in [7, 12, 29, 36, 42, 43, 44]:
                 configs_response[product_type][param_name] = []
                 if param["value"] != "NONE":
                     configs_response[product_type][param_name].append(param["value"])

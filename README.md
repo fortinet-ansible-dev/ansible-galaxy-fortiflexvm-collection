@@ -8,7 +8,7 @@ You can use FortiFlexVM Ansible Collection to create entitlements (licenses) for
 For details, please read our [documentation](https://ansible-galaxy-fortiflexvm-docs.readthedocs.io/en/latest/).
 
 ## Requirements
-- Ansible 2.14+
+- Ansible 2.15+
 - Python 3
 
 ## Installation
@@ -31,8 +31,6 @@ Create `create_vm_config.yml` with the following template:
 ```yaml
 - name: Create VM configuration
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   tasks:
     - name: Create a configuration
       fortinet.fortiflexvm.fortiflexvm_configs_create:
@@ -66,6 +64,7 @@ The collection provides the following modules:
 * `fortiflexvm_vms_list_info` Get list of existing VMs for FlexVM Configuration.
 * `fortiflexvm_vms_points_info` Get point usage for VMs.
 * `fortiflexvm_vms_update` Update an existing VM.
+* `fortiflexvm_tools_calc_info` Estimate cost.
 
 ## License
 

@@ -108,4 +108,25 @@ releases:
       - description: Create one cloud entitlement based on a FortiFlex Configuration.
         name: fortiflexvm_entitlements_cloud_create
         namespace: ""
-    release_date: "2024-01-22"
+    release_date: "2024-01-25"
+  2.2.0:
+    changes:
+      bugfixes:
+        - Imporved the format of example Ansible playbooks.
+        - Improved logic of fortiflexvm_entitlements_update.
+      minor_changes:
+        - Added 1 new resource, fortiflexvm_tool_calc_info.
+        - Added 2 new configurations, fortiSASE and fortiEDR.
+        - fortiflexvm_entitlements_list_info supported options "description", "serialnumber",
+          "status", "tokenstatus".
+        - fortiflexvm_groups_nexttoken_info supported option "status".
+      release_summary: Added 1 new resource, 2 new configurations.
+    fragments:
+      - 2.2.0.yml
+    modules:
+      - description:
+          Estimate points that will be consumed for configuration with certain
+          parameters.
+        name: fortiflexvm_tools_calc_info
+        namespace: ""
+    release_date: "2024-03-29"

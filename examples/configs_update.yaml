@@ -1,7 +1,5 @@
 - name: Update a FortiFlex configuration
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
@@ -50,9 +48,9 @@
         #   cloudServices: ["FAMS", "SWNM"]   # "FAMS", "SWNM", "AFAC", "FAZC"
 
         # fortiClientEMSOP:
-        #   ZTNA: 2000                        # 0 ~ 25000. Value should be divisible by 25.
-        #   EPP: 2000                         # 0 ~ 25000. Value should be divisible by 25.
-        #   chromebook: 2000                  # 0 ~ 25000. Value should be divisible by 25.
+        #   ZTNA: 2000                        # Value should be 0 or between 25 and 25000.
+        #   EPP: 2000                         # Value should be 0 or between 25 and 25000.
+        #   chromebook: 2000                  # Value should be 0 or between 25 and 25000.
         #   service: "FCTFC247"               # "FCTFC247"
         #   addons: ["BPS"]                   # Empty or "BPS"
 
@@ -91,15 +89,25 @@
         #   applications: 20                  # 0 ~ 2000
 
         # fortiClientEMSCloud:
-        #   ZTNA: 200
-        #   ZTNA_FGF: 200
-        #   EPP_ZTNA: 200
-        #   EPP_ZTNA_FGF: 200
-        #   chromebook: 200
-        #   addons: []                        # [] or "BPS"
+        #   ZTNA: 100                         # Value should be 0 or between 25 and 25000.
+        #   ZTNA_FGF: 100                     # Value should be 0 or between 25 and 25000.
+        #   EPP_ZTNA: 100                     # Value should be 0 or between 25 and 25000.
+        #   EPP_ZTNA_FGF: 100                 # Value should be 0 or between 25 and 25000.
+        #   chromebook: 100                   # Value should be 0 or between 25 and 25000.
+        #   addons: ["BPS"]                   # [] or "BPS"
+
+        # fortiSASE:
+        #   users: 50                         # 50 ~ 50000. Value should be divisible by 25.
+        #   service: "FSASESTD"               # "FSASESTD" (Standard) or "FSASEADV" (Advanced).
+        #   bandwidth: 100                    # 25 ~ 10000. Value should be divisible by 25.
+        #   dedicatedIPs: 10                  # 4 ~ 65534
+
+        # fortiEDR:
+        #   service: "FEDRPDR"                # "FEDRPDR" (Discover/Protect/Respond)
+        #   addons: ["FEDRXDR"]               # Empty list or "FEDRXDR"
 
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.configs

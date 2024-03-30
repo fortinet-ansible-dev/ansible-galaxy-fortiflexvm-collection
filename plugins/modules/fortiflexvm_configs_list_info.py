@@ -12,7 +12,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: fortiflexvm_configs_list_info
 short_description: Get list of FortiFlex Configurations.
@@ -26,28 +26,23 @@ options:
         description:
             - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
-        required: false
     password:
         description:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
-        required: false
     accountId:
         description: Account ID.
         type: int
-        required: false
     programSerialNumber:
         description:
             - The serial number of the program to get configs for.
         type: str
         required: true
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Get list of FortiFlex Configurations for a Program
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars:
     username: "<your_own_value>"
     password: "<your_own_value>"
@@ -61,11 +56,11 @@ EXAMPLES = '''
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.configs
-'''
+"""
 
-RETURN = '''
+RETURN = """
 configs:
     description: List of configurations for the specified program serial number.
     type: list
@@ -192,17 +187,17 @@ configs:
                 ZTNA:
                     description:
                         - ZTNA/VPN (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 EPP:
                     description:
                         - EPP/ATP + ZTNA/VPN (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 chromebook:
                     description:
                         - Chromebook (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 service:
                     description:
@@ -320,33 +315,65 @@ configs:
                 ZTNA:
                     description:
                         - ZTNA/VPN (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 ZTNA_FGF:
                     description:
                         - ZTNA/VPN + FortiGuard Forensics (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 EPP_ZTNA:
                     description:
                         - EPP/ATP + ZTNA/VPN (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 EPP_ZTNA_FGF:
                     description:
                         - EPP/ATP + ZTNA/VPN + FortiGuard Forensics (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 chromebook:
                     description:
                         - Chromebook (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 addons:
                     description: Addons. A list. Possible value is "BPS" ( FortiCare Best Practice).
                     type: list
                     elements: str
-'''
+        fortiSASE:
+            description: fortiSASE Cloud Configuration.
+            type: dict
+            contains:
+                users:
+                    description:
+                        - Number of users. Number between 50 and 50,000 (inclusive).
+                        - Number between 50 and 50,000 (inclusive). Value should be divisible by 25.
+                    type: int
+                service:
+                    description: Service package. "FSASESTD" (Standard) or "FSASEADV" (Advanced).
+                    type: str
+                bandwidth:
+                    description: Number between 25 and 10,000 (inclusive). Value should be divisible by 25.
+                    type: int
+                dedicatedIPs:
+                    description: Number between 4 and 65,534 (inclusive).
+                    type: int
+        fortiEDR:
+            description: fortiEDR Cloud Configuration.
+            type: dict
+            contains:
+                service:
+                    description: Service package. "FEDRPDR" (Discover/Protect/Respond).
+                    type: str
+                endpoints:
+                    description: Number of Endpoints. Read only.
+                    type: int
+                addons:
+                    description: Addons. A list. Possible value is "FEDRXDR" (XDR).
+                    type: list
+                    elements: str
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils import utils
@@ -356,9 +383,9 @@ from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection im
 def main():
     # Define module arguments
     module_args = dict(
-        username=dict(type="str", required=False),
-        password=dict(type="str", required=False, no_log=True),
-        accountId=dict(type='int', required=False),
+        username=dict(type="str"),
+        password=dict(type="str", no_log=True),
+        accountId=dict(type="int"),
         programSerialNumber=dict(type="str", required=True),
     )
 
@@ -385,5 +412,5 @@ def main():
     module.exit_json(changed=False, **response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

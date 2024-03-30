@@ -12,7 +12,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: fortiflexvm_groups_nexttoken_info
 short_description: Get net available (unused) token.
@@ -26,35 +26,30 @@ options:
         description:
             - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
-        required: false
     password:
         description:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
-        required: false
     accountId:
-        description: Account ID.
+        description: Account ID. Please declare at least one of the two arguments, accountId or configId.
         type: str
-        required: false
     configId:
         description:
-            - The ID of a Flex VM Configuration. Please declare at least one of the two arguments folderPath and configId.
+            - The ID of a Flex VM Configuration. Please declare at least one of the two arguments, accountId or configId.
         type: int
-        required: false
-        default: 0
     folderPath:
         description:
-            - Folder path. Please declare at least one of the two arguments folderPath and configId.
+            - Folder path.
         type: str
-        required: false
-        default: ""
-'''
+    status:
+        description: Filter option. A list. Possible values are "ACTIVE", "PENDDING", "STOPPED" and "EXPIRED".
+        type: list
+        elements: str
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Get next available (unused) token
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars:
     username: "<your_own_value>"
     password: "<your_own_value>"
@@ -63,19 +58,22 @@ EXAMPLES = '''
       fortinet.fortiflexvm.fortiflexvm_groups_nexttoken_info:
         username: "{{ username }}"
         password: "{{ password }}"
-        # Please declare at least one of the following two arguments: folderPath and configId.
+        # Please declare at least one of the following two arguments: accountId or configId.
         # You can comment at most one argument that you don't want to specify.
-        folderPath: "My Assets"
         configId: 22
-        # accountId: 12345 # optional
+        # accountId: 12345
+
+        # Optional parameters
+        folderPath: "My Assets"
+        status: ["ACTIVE", "PENDING"] # "ACTIVE", "PENDING", "STOPPED", "EXPIRED"
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.entitlements
-'''
+"""
 
-RETURN = '''
+RETURN = """
 entitlements:
     description: Next available (unused) token. This list only has one element.
     type: list
@@ -125,7 +123,7 @@ entitlements:
             type: str
             returned: always
             sample: "NOTUSED"
-'''
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection import Connection
@@ -134,11 +132,12 @@ from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection im
 def main():
     # Define module arguments
     module_args = dict(
-        username=dict(type='str', required=False),
-        password=dict(type='str', required=False, no_log=True),
-        folderPath=dict(type='str', required=False, default=""),
-        configId=dict(type='int', required=False, default=0),
-        accountId=dict(type='str', required=False),
+        username=dict(type="str"),
+        password=dict(type="str", no_log=True),
+        accountId=dict(type="str"),
+        configId=dict(type="int"),
+        folderPath=dict(type="str"),
+        status=dict(type="list", elements="str"),
     )
 
     # Initialize AnsibleModule object
@@ -152,19 +151,12 @@ def main():
 
     # Send request to get program list
     data = {}
-    request_url = "flexvm/v1/groups/nexttoken"
-    if not module.params['folderPath'] and not module.params['configId']:
-        module.fail_json(
-            msg="Please declare at least one of the two arguments: folderPath and configId.")
-    if module.params['folderPath'] != "":
-        data['folderPath'] = module.params['folderPath']
-    if module.params['configId'] != 0:
-        data['configId'] = module.params['configId']
-    if module.params["accountId"]:
-        request_url = "fortiflex/v2/groups/nexttoken"
-        data["accountId"] = module.params["accountId"]
+    request_url = "fortiflex/v2/groups/nexttoken"
+    for key in ["configId", "folderPath", "status", "accountId"]:
+        if module.params[key] is not None:
+            data[key] = module.params[key]
     response = connection.send_request(request_url, data, method="POST")
-    if "vms" in response:
+    if "vms" in response:  # Avoid bug in API
         response["entitlements"] = response["vms"]
         del response["vms"]
 
@@ -172,5 +164,5 @@ def main():
     module.exit_json(changed=False, **response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

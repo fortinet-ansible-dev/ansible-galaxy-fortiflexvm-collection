@@ -12,7 +12,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: fortiflexvm_configs_update
 short_description: Update a FortiFlex Configuration.
@@ -26,12 +26,10 @@ options:
         description:
             - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
-        required: false
     password:
         description:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
-        required: false
     id:
         description:
             - The ID of the configuration you want to update.
@@ -41,18 +39,15 @@ options:
         description:
             - The name of your Flex VM Configuration.
         type: str
-        required: false
     status:
         description:
             - Active of disable the configuration.
         type: str
-        required: false
         choices: ["ACTIVE", "DISABLED"]
     bypass_validation:
         description:
             - Only set to True when module schema diffs with FortiFlex API structure, module continues to execute without validating parameters.
         type: bool
-        required: false
         default: false
         version_added: 2.0.0
     check_parameters:
@@ -61,14 +56,12 @@ options:
             - If set to true, FortiFlexVM Ansible will check the parameter correctness based on the rules.
             - It is only for debugging purposes, not recommended to set it as true since the rules in FortiFlexVM Ansible may be outdated.
         type: bool
-        required: false
         default: false
         version_added: 2.0.0
     fortiGateBundle:
         description:
             - FortiGate Virtual Machine - Service Bundle.
         type: dict
-        required: false
         suboptions:
             cpu:
                 description:
@@ -84,7 +77,6 @@ options:
                 description:
                     - Number of VDOMs. A number between 0 and 500 (inclusive). The default number is 0.
                 type: int
-                required: false
                 default: 0
             fortiGuardServices:
                 description:
@@ -92,7 +84,6 @@ options:
                     - It should contain zero, one or more elements of ["FGTAVDB", "FGTFAIS", "FGTISSS", "FGTDLDB", "FGTFGSA", "FGTFCSS"].
                 type: list
                 elements: str
-                required: false
                 default: []
             cloudServices:
                 description:
@@ -100,19 +91,16 @@ options:
                     - It should contain zero, one or more elements of ["FGTFAMS", "FGTSWNM", "FGTSOCA", "FGTFAZC", "FGTSWOS", "FGTFSPA"].
                 type: list
                 elements: str
-                required: false
                 default: []
             supportService:
                 description:
                     - Suport service. "FGTFCELU" or "NONE". Default is "NONE".
                 type: str
-                required: false
                 default: "NONE"
     fortiManager:
         description:
             - FortiManager Virtual Machine.
         type: dict
-        required: false
         suboptions:
             device:
                 description:
@@ -128,7 +116,6 @@ options:
         description:
             - FortiWeb Virtual Machine - Service Bundle.
         type: dict
-        required: false
         suboptions:
             cpu:
                 description:
@@ -144,7 +131,6 @@ options:
         description:
             - FortiGate Virtual Machine - A La Carte Services.
         type: dict
-        required: false
         suboptions:
             cpu:
                 description:
@@ -157,7 +143,6 @@ options:
                     - It should contain zero, one or more elements of ["IPS", "AVDB", "FGSA", "DLDB", "FAIS", "FURLDNS"].
                 type: list
                 elements: str
-                required: false
                 default: []
             supportService:
                 description:
@@ -175,30 +160,28 @@ options:
                     - It should contain zero, one or more elements of ["FAMS", "SWNM", "AFAC", "FAZC"].
                 type: list
                 elements: str
-                required: false
                 default: []
     fortiClientEMSOP:
         description:
             - FortiClient EMS On-Prem.
         type: dict
-        required: false
         suboptions:
             ZTNA:
                 description:
                     - ZTNA/VPN (number of endpoints).
-                    - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    - Value should be 0 or between 25 and 25000.
                 type: int
                 required: true
             EPP:
                 description:
                     - EPP/ATP + ZTNA/VPN (number of endpoints).
-                    - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    - Value should be 0 or between 25 and 25000.
                 type: int
                 required: true
             chromebook:
                 description:
                     - Chromebook (number of endpoints).
-                    - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    - Value should be 0 or between 25 and 25000.
                 type: int
                 required: true
             service:
@@ -210,13 +193,11 @@ options:
                 description: Addons. A list. Possible value is "BPS" ( FortiCare Best Practice).
                 type: list
                 elements: str
-                required: false
                 default: []
     fortiAnalyzer:
         description:
             - FortiAnalyzer Virtual Machine.
         type: dict
-        required: false
         suboptions:
             storage:
                 description:
@@ -237,7 +218,6 @@ options:
         description:
             - FortiPortal Virtual Machine.
         type: dict
-        required: false
         suboptions:
             device:
                 description:
@@ -248,7 +228,6 @@ options:
         description:
             - FortiADC Virtual Machine.
         type: dict
-        required: false
         version_added: 2.0.0
         suboptions:
             cpu:
@@ -265,7 +244,6 @@ options:
         description:
             - FortiGate Hardware.
         type: dict
-        required: false
         version_added: 2.0.0
         suboptions:
             model:
@@ -296,13 +274,11 @@ options:
                     - FGHWSPAL (SD-WAN Connector for FortiSASE), FGHWFCSS (FortiConverter Service).
                 type: list
                 elements: str
-                required: false
                 default: []
     fortiCloudPrivate:
         description:
             - FortiWeb Cloud, Private.
         type: dict
-        required: false
         version_added: 2.0.0
         suboptions:
             throughput:
@@ -321,7 +297,6 @@ options:
         description:
             - FortiWeb Cloud, Public.
         type: dict
-        required: false
         version_added: 2.0.0
         suboptions:
             throughput:
@@ -340,51 +315,84 @@ options:
         description:
             - FortiClient EMS Cloud.
         type: dict
-        required: false
         suboptions:
             ZTNA:
                 description:
                     - ZTNA/VPN (number of endpoints).
-                    - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    - Value should be 0 or between 25 and 25000.
                 type: int
                 required: true
             ZTNA_FGF:
                 description:
                     - ZTNA/VPN + FortiGuard Forensics (number of endpoints).
-                    - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    - Value should be 0 or between 25 and 25000.
                 type: int
                 required: true
             EPP_ZTNA:
                 description:
                     - EPP/ATP + ZTNA/VPN (number of endpoints).
-                    - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    - Value should be 0 or between 25 and 25000.
                 type: int
                 required: true
             EPP_ZTNA_FGF:
                 description:
                     - EPP/ATP + ZTNA/VPN + FortiGuard Forensics (number of endpoints).
-                    - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    - Value should be 0 or between 25 and 25000.
                 type: int
                 required: true
             chromebook:
                 description:
                     - Chromebook (number of endpoints).
-                    - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                    - Value should be 0 or between 25 and 25000.
                 type: int
                 required: true
             addons:
                 description: Addons. A list. Possible value is "BPS" ( FortiCare Best Practice).
                 type: list
                 elements: str
-                required: false
                 default: []
-'''
+    fortiSASE:
+        description:
+            - fortiSASE Cloud Configuration.
+        type: dict
+        suboptions:
+            users:
+                description:
+                    - Number of users. Number between 50 and 50,000 (inclusive).
+                    - Value should be divisible by 25.
+                type: int
+                required: true
+            service:
+                description: Service package. "FSASESTD" (Standard) or "FSASEADV" (Advanced).
+                type: str
+                required: true
+            bandwidth:
+                description: Number between 25 and 10,000 (inclusive). Value should be divisible by 25.
+                type: int
+                required: true
+            dedicatedIPs:
+                description: Number between 4 and 65,534 (inclusive).
+                type: int
+                required: true
+    fortiEDR:
+        description:
+            - fortiEDR Cloud Configuration.
+        type: dict
+        suboptions:
+            service:
+                description: Service package. "FEDRPDR" (Discover/Protect/Respond).
+                type: str
+                required: true
+            addons:
+                description: Addons. A list. Possible value is "FEDRXDR" (XDR).
+                type: list
+                elements: str
+                default: []
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Update a FortiFlex configuration
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars:
     username: "<your_own_value>"
     password: "<your_own_value>"
@@ -434,9 +442,9 @@ EXAMPLES = '''
         #   cloudServices: ["FAMS", "SWNM"]   # "FAMS", "SWNM", "AFAC", "FAZC"
 
         # fortiClientEMSOP:
-        #   ZTNA: 2000                        # 0 ~ 25000. Value should be divisible by 25.
-        #   EPP: 2000                         # 0 ~ 25000. Value should be divisible by 25.
-        #   chromebook: 2000                  # 0 ~ 25000. Value should be divisible by 25.
+        #   ZTNA: 1000                        # Value should be 0 or between 25 and 25000.
+        #   EPP: 1000                         # Value should be 0 or between 25 and 25000.
+        #   chromebook: 1000                  # Value should be 0 or between 25 and 25000.
         #   service: "FCTFC247"               # "FCTFC247"
         #   addons: ["BPS"]                   # Empty or "BPS"
 
@@ -475,21 +483,31 @@ EXAMPLES = '''
         #   applications: 20                  # 0 ~ 2000
 
         # fortiClientEMSCloud:
-        #   ZTNA: 200
-        #   ZTNA_FGF: 200
-        #   EPP_ZTNA: 200
-        #   EPP_ZTNA_FGF: 200
-        #   chromebook: 200
-        #   addons: []                        # [] or "BPS"
+        #   ZTNA: 100                         # Value should be 0 or between 25 and 25000.
+        #   ZTNA_FGF: 100                     # Value should be 0 or between 25 and 25000.
+        #   EPP_ZTNA: 100                     # Value should be 0 or between 25 and 25000.
+        #   EPP_ZTNA_FGF: 100                 # Value should be 0 or between 25 and 25000.
+        #   chromebook: 100                   # Value should be 0 or between 25 and 25000.
+        #   addons: ["BPS"]                   # [] or "BPS"
+
+        # fortiSASE:
+        #   users: 50                         # 50 ~ 50000. Value should be divisible by 25.
+        #   service: "FSASESTD"               # "FSASESTD" (Standard) or "FSASEADV" (Advanced).
+        #   bandwidth: 100                    # 25 ~ 10000. Value should be divisible by 25.
+        #   dedicatedIPs: 10                  # 4 ~ 65534
+
+        # fortiEDR:
+        #   service: "FEDRPDR"                # "FEDRPDR" (Discover/Protect/Respond)
+        #   addons: ["FEDRXDR"]               # Empty list or "FEDRXDR"
 
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.configs
-'''
+"""
 
-RETURN = '''
+RETURN = """
 configs:
     description: The configuration you update.
     type: dict
@@ -616,17 +634,17 @@ configs:
                 ZTNA:
                     description:
                         - ZTNA/VPN (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 EPP:
                     description:
                         - EPP/ATP + ZTNA/VPN (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 chromebook:
                     description:
                         - Chromebook (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 service:
                     description:
@@ -744,33 +762,65 @@ configs:
                 ZTNA:
                     description:
                         - ZTNA/VPN (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 ZTNA_FGF:
                     description:
                         - ZTNA/VPN + FortiGuard Forensics (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 EPP_ZTNA:
                     description:
                         - EPP/ATP + ZTNA/VPN (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 EPP_ZTNA_FGF:
                     description:
                         - EPP/ATP + ZTNA/VPN + FortiGuard Forensics (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 chromebook:
                     description:
                         - Chromebook (number of endpoints).
-                        - Number between 0 and 25000 (inclusive). Value should be divisible by 25.
+                        - Value should be 0 or between 25 and 25000.
                     type: int
                 addons:
                     description: Addons. A list. Possible value is "BPS" ( FortiCare Best Practice).
                     type: list
                     elements: str
-'''
+        fortiSASE:
+            description: fortiSASE Cloud Configuration.
+            type: dict
+            contains:
+                users:
+                    description:
+                        - Number of users. Number between 50 and 50,000 (inclusive).
+                        - Number between 50 and 50,000 (inclusive). Value should be divisible by 25.
+                    type: int
+                service:
+                    description: Service package. "FSASESTD" (Standard) or "FSASEADV" (Advanced).
+                    type: str
+                bandwidth:
+                    description: Number between 25 and 10,000 (inclusive). Value should be divisible by 25.
+                    type: int
+                dedicatedIPs:
+                    description: Number between 4 and 65,534 (inclusive).
+                    type: int
+        fortiEDR:
+            description: fortiEDR Cloud Configuration.
+            type: dict
+            contains:
+                service:
+                    description: Service package. "FEDRPDR" (Discover/Protect/Respond).
+                    type: str
+                endpoints:
+                    description: Number of Endpoints. Read only.
+                    type: int
+                addons:
+                    description: Addons. A list. Possible value is "FEDRXDR" (XDR).
+                    type: list
+                    elements: str
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.basic import _load_params
@@ -781,20 +831,20 @@ from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection im
 def get_module_args():
     # Define module arguments
     module_args = dict(
-        username=dict(type='str', required=False),
-        password=dict(type='str', required=False, no_log=True),
-        id=dict(type='int', required=True),
-        status=dict(type='str', required=False, choices=["ACTIVE", "DISABLED"]),
-        name=dict(type='str', required=False),
-        bypass_validation=dict(type="bool", required=False, default=False),
-        check_parameters=dict(type="bool", required=False, default=False),
+        username=dict(type="str"),
+        password=dict(type="str", no_log=True),
+        id=dict(type="int", required=True),
+        status=dict(type="str", choices=["ACTIVE", "DISABLED"]),
+        name=dict(type="str"),
+        bypass_validation=dict(type="bool", default=False),
+        check_parameters=dict(type="bool", default=False),
     )
 
     # Get product-specific parameters
     products = utils.get_products(key="name")
     ignore_validation = False
     params = _load_params()
-    if params and 'bypass_validation' in params and params['bypass_validation'] is True:
+    if params and "bypass_validation" in params and params["bypass_validation"] is True:
         ignore_validation = True
     for product_name in products:
         if ignore_validation:
@@ -802,6 +852,8 @@ def get_module_args():
         else:
             product_dict = {"type": "dict", "required": False, "options": {}}
             for param in products[product_name]["parameters"]:
+                if param.get("readonly", False):
+                    continue
                 param_details = dict(type=param["type"], required=param["required"])
                 if "default" in param:
                     param_details["default"] = param["default"]
@@ -865,5 +917,5 @@ def main():
     module.exit_json(changed=True, **response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

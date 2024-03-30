@@ -13,6 +13,7 @@ import os
 import json
 import hashlib
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.settings import API_URL, AUTH_URL
+from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.utils import replace_error_msg
 import traceback
 from ansible.module_utils.basic import missing_required_lib
 
@@ -91,8 +92,15 @@ class Connection():
             retry += 1
 
         if check_error and response.status_code >= 400:
+            response_data = response.json()
+            response_message = response_data.get("message", "")
+            try:
+                if response_message and response_message.startswith("Invalid parameter"):
+                    response_data["message"] = replace_error_msg(response_message)
+            except Exception as e:
+                pass
             self.module.fail_json(msg="Request failed with status code {0}".format(
-                response.status_code), response=response.json())
+                response.status_code), response=response_data)
         return response.json()
 
     def send(self, url, data, headers=None, method="post"):

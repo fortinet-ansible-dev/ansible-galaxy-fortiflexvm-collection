@@ -12,7 +12,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: fortiflexvm_programs_list_info
 short_description: Get list of FortiFlex Programs for the account.
@@ -26,19 +26,15 @@ options:
         description:
             - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
-        required: false
     password:
         description:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
-        required: false
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Get list of programs for the account
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars:
     username: "<your_own_value>"
     password: "<your_own_value>"
@@ -50,11 +46,11 @@ EXAMPLES = '''
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.programs
-'''
+"""
 
-RETURN = '''
+RETURN = """
 programs:
     description: List of programs associated with the specified user.
     type: list
@@ -85,7 +81,7 @@ programs:
             type: str
             returned: always
             sample: "2020-05-16 00:00:00"
-'''
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection import Connection
@@ -94,8 +90,8 @@ from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection im
 def main():
     # Define module arguments
     module_args = dict(
-        username=dict(type='str', required=False),
-        password=dict(type='str', required=False, no_log=True),
+        username=dict(type="str"),
+        password=dict(type="str", no_log=True),
     )
 
     # Initialize AnsibleModule object
@@ -114,5 +110,5 @@ def main():
     module.exit_json(changed=False, **response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

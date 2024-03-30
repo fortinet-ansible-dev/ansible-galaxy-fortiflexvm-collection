@@ -158,7 +158,7 @@ def transform_config_output(item):
     for param in item["parameters"]:
         param_name = get_param_name_by_id(param["id"])
         if param_name not in configs_response[product_type]:
-            if param["id"] in [7, 12, 29, 36, 42, 43, 44]:
+            if param["id"] in [7, 12, 29, 36, 42, 43, 44, 52]:
                 configs_response[product_type][param_name] = []
                 if param["value"] != "NONE":
                     configs_response[product_type][param_name].append(param["value"])
@@ -188,3 +188,10 @@ def fill_auth(module):
             module.fail_json(
                 msg="Please specify password in your playbook, or set environment variable: FORTIFLEX_ACCESS_PASSWORD.")
         module.params["password"] = password
+
+
+def replace_error_msg(msg):
+    def replace_id(match):
+        return get_param_name_by_id(match.group())
+    import re
+    return re.sub(r'\d+', replace_id, msg)

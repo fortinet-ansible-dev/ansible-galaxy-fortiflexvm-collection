@@ -166,4 +166,30 @@ PRODUCTS = [
                 "choices": ["BPS"], "required": False, "default": []},
         ],
     },
+    {
+        "id": 205,
+        "name": "fortiSASE",
+        "parameters": [
+            {"id": 48, "name": "users", "type": "int",
+                "min": 50, "max": 50000, "required": True},
+            {"id": 49, "name": "service", "type": "str",
+                "choices": ["FSASESTD", "FSASEADV"], "required": True},
+            {"id": 50, "name": "bandwidth", "type": "int",  # value should be divisible by 25
+                "min": 25, "max": 10000, "required": True},
+            {"id": 51, "name": "dedicatedIPs", "type": "int",
+                "min": 4, "max": 65534, "required": True},
+        ],
+    },
+    {
+        "id": 206,
+        "name": "fortiEDR",
+        "parameters": [
+            {"id": 46, "name": "service", "type": "str",
+                "choices": ["FEDRPDR"], "required": True},
+            {"id": 47, "name": "endpoints", "type": "int",
+                "readonly": True, "required": False},  # Read only
+            {"id": 52, "name": "addons", "type": "list", "elements": "str",
+                "choices": ["FEDRXDR"], "required": False, "default": []},
+        ],
+    },
 ]

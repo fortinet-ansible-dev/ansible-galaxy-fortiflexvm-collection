@@ -12,7 +12,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: fortiflexvm_entitlements_hardware_create
 short_description: Create hardware entitlements based on a FortiFlex Configuration.
@@ -28,12 +28,10 @@ options:
         description:
             - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
-        required: false
     password:
         description:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
-        required: false
     configId:
         description:
             - The ID of a FortiFlex Configuration.
@@ -52,16 +50,14 @@ options:
             - Recommended format is "YYYY-MM-DDThh:mm:ss".
             - If not specify, it will use the program's end date automatically.
         type: str
-        required: false
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create hardware entitlements
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
-  vars_files:
-    - vars/vars.yml
+  vars:
+    username: "<your_own_value>"
+    password: "<your_own_value>"
   tasks:
     - name: Create hardware entitlements
       fortinet.fortiflexvm.fortiflexvm_entitlements_hardware_create:
@@ -75,11 +71,11 @@ EXAMPLES = '''
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.entitlements
-'''
+"""
 
-RETURN = '''
+RETURN = """
 entitlements:
     description: A list of hardware entitlements and their details.
     type: list
@@ -130,7 +126,7 @@ entitlements:
             type: str
             returned: always
             sample: ""
-'''
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection import Connection
@@ -139,11 +135,11 @@ from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection im
 def main():
     # Define module arguments
     module_args = dict(
-        username=dict(type='str', required=False),
-        password=dict(type='str', required=False, no_log=True),
-        configId=dict(type='int', required=True),
-        serialNumbers=dict(type='list', required=True, elements="str"),
-        endDate=dict(type='str', required=False),
+        username=dict(type="str"),
+        password=dict(type="str", no_log=True),
+        configId=dict(type="int", required=True),
+        serialNumbers=dict(type="list", required=True, elements="str"),
+        endDate=dict(type="str"),
     )
 
     # Initialize AnsibleModule object
@@ -175,5 +171,5 @@ def main():
     module.exit_json(changed=True, **response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -1,7 +1,5 @@
 - name: Update entitlement
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
@@ -9,14 +7,14 @@
       fortinet.fortiflexvm.fortiflexvm_entitlements_update:
         username: "{{ username }}"
         password: "{{ password }}"
-        serialNumber: "FGVMMLTM23001324"
+        serialNumber: "FGVMXXXX00000000"
         # Please specify configId if you want to update configId, description or endDate
         configId: 3196
         description: "Modify through Ansible" # Optional.
-        endDate: "2023-12-12T00:00:00"  # Optional. If not set, it will use the program end date automatically.
-        status: "ACTIVE" # ACTIVE or STOPPED
+        endDate: "2024-12-12T00:00:00"        # Optional. If not set, it will use the program end date automatically.
+        status: "ACTIVE"                      # Optional. ACTIVE or STOPPED
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.entitlements

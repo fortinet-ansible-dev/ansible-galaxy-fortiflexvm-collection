@@ -12,7 +12,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: fortiflexvm_entitlements_points_info
 short_description: Get point usage for entitlements.
@@ -27,21 +27,17 @@ options:
         description:
             - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
-        required: false
     password:
         description:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
-        required: false
     accountId:
         description: Account ID.
         type: int
-        required: false
     configId:
         description:
             - The ID of the configuration.
         type: int
-        required: false
     endDate:
         description:
             - The end date of the date range to query. Any format that satisfies [ISO 8601](https://www.w3.org/TR/NOTE-datetime-970915.html) is accepted.
@@ -52,26 +48,22 @@ options:
         description:
             - The serial number of your FortiFlex Program.
         type: str
-        required: false
     serialNumber:
         description:
             - The entitlement serial number.
             - Instead of configId you can pass serialNumber to get results for one VM only.
         type: str
-        required: false
     startDate:
         description:
             - The start date of the date range to query. Any format that satisfies [ISO 8601](https://www.w3.org/TR/NOTE-datetime-970915.html) is accepted.
             - Recommended format is YYYY-MM-DD.
         type: str
         required: true
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Get point usage for entitlementss
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars:
     username: "<your_own_value>"
     password: "<your_own_value>"
@@ -91,11 +83,11 @@ EXAMPLES = '''
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.entitlements
-'''
+"""
 
-RETURN = '''
+RETURN = """
 entitlements:
     description: List of entitlements and their consumed points in the specified date range.
     type: list
@@ -116,7 +108,7 @@ entitlements:
             type: str
             returned: always
             sample: "FGVMELTM20000029"
-'''
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection import Connection
@@ -125,14 +117,14 @@ from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection im
 def main():
     # Define module arguments
     module_args = dict(
-        username=dict(type='str', required=False),
-        password=dict(type='str', required=False, no_log=True),
-        accountId=dict(type='int', required=False),
-        configId=dict(type='int', required=False),
-        endDate=dict(type='str', required=True),
-        programSerialNumber=dict(type='str', required=False),
-        serialNumber=dict(type='str', required=False),
-        startDate=dict(type='str', required=True),
+        username=dict(type="str"),
+        password=dict(type="str", no_log=True),
+        accountId=dict(type="int"),
+        configId=dict(type="int"),
+        endDate=dict(type="str", required=True),
+        programSerialNumber=dict(type="str"),
+        serialNumber=dict(type="str"),
+        startDate=dict(type="str", required=True),
     )
 
     # Initialize AnsibleModule object
@@ -161,5 +153,5 @@ def main():
     module.exit_json(changed=False, **response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

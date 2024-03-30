@@ -5,6 +5,33 @@ Fortinet.Fortiflexvm Release Notes
 .. contents:: Topics
 
 
+v2.2.0
+======
+
+Release Summary
+---------------
+
+Added 1 new resource, 2 new configurations.
+
+Minor Changes
+-------------
+
+- Added 1 new resource, fortiflexvm_tool_calc_info.
+- Added 2 new configurations, fortiSASE and fortiEDR.
+- fortiflexvm_entitlements_list_info supported options "description", "serialnumber", "status", "tokenstatus".
+- fortiflexvm_groups_nexttoken_info supported option "status". According to API, either "configId" or "accountId" is required now.
+
+Bugfixes
+--------
+
+- Imporved the format of example Ansible playbooks.
+- Improved logic of fortiflexvm_entitlements_update.
+
+New Modules
+-----------
+
+- fortinet.fortiflexvm.fortiflexvm_tools_calc_info - Estimate points that will be consumed for configuration with certain parameters.
+
 v2.1.0
 ======
 

@@ -1,7 +1,5 @@
 - name: Create hardware entitlements
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
@@ -17,5 +15,5 @@
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.entitlements

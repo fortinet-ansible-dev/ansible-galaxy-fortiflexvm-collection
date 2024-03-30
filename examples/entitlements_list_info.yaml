@@ -1,7 +1,5 @@
-- name: Get list of entitlements for a specific config ID
+- name: Get information of target entitlements.
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
@@ -13,8 +11,14 @@
         configId: 22
         # accountId: 12345
         # programSerialNumber: "ELAVMS00XXXXX"
+
+        # Optional filter options
+        # description: "you can use description to distinguish entitlements"
+        # serialNumber: "XXXXXX0000000000"
+        # status: "PENDING"
+        # tokenStatus: "NOTUSED"
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.entitlements

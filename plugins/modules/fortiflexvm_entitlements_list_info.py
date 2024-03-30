@@ -12,12 +12,12 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: fortiflexvm_entitlements_list_info
-short_description: Get list of existing entitlements for a FlexVM Configuration.
+short_description: Get entitlements information.
 description:
-    - This module retrieves a list of entitlements for a configuration.
+    - This module retrieves information of target entitlements.
     - Either configId or (accountId and programSerialNumber) should be provided.
 version_added: "2.0.0"
 author:
@@ -27,33 +27,37 @@ options:
         description:
             - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
-        required: false
     password:
         description:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
-        required: false
     accountId:
-        description: Account ID.
+        description: Filter option. Account ID.
         type: int
-        required: false
     configId:
         description:
             - The ID of the configuration for which to retrieve the list of VMs.
         type: int
-        required: false
-    programSerialNumber:
-        description:
-            - The serial number of your FortiFlex Program.
+    description:
+        description: Filter option. Description.
         type: str
-        required: false
-'''
+    serialNumber:
+        description: Filter option. Serial number.
+        type: str
+    status:
+        description: Filter option. "ACTIVE", "STOPPED", "PENDDING" or "EXPIRED".
+        type: str
+    tokenStatus:
+        description: Filter option. Token status. "NOTUSED" or "USED".
+        type: str
+    programSerialNumber:
+        description: Filter option. The serial number of your FortiFlex Program.
+        type: str
+"""
 
-EXAMPLES = '''
-- name: Get list of entitlements for a specific config ID
+EXAMPLES = """
+- name: Get information of target entitlements.
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars:
     username: "<your_own_value>"
     password: "<your_own_value>"
@@ -66,14 +70,20 @@ EXAMPLES = '''
         configId: 22
         # accountId: 12345
         # programSerialNumber: "ELAVMS00XXXXX"
+
+        # Optional filter options
+        # description: "you can use description to distinguish entitlements"
+        # serialNumber: "XXXXXX0000000000"
+        # status: "PENDING"
+        # tokenStatus: "NOTUSED"
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.entitlements
-'''
+"""
 
-RETURN = '''
+RETURN = """
 entitlements:
     description: List of entitlements associated with the specified config ID.
     type: list
@@ -123,7 +133,7 @@ entitlements:
             type: str
             returned: always
             sample: "USED"
-'''
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection import Connection
@@ -132,11 +142,15 @@ from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection im
 def main():
     # Define module arguments
     module_args = dict(
-        username=dict(type='str', required=False),
-        password=dict(type='str', required=False, no_log=True),
-        accountId=dict(type='int', required=False),
-        configId=dict(type='int', required=False),
-        programSerialNumber=dict(type='str', required=False),
+        username=dict(type="str"),
+        password=dict(type="str", no_log=True),
+        accountId=dict(type="int"),
+        configId=dict(type="int"),
+        description=dict(type="str"),
+        serialNumber=dict(type="str"),
+        status=dict(type="str"),
+        tokenStatus=dict(type="str", no_log=False),
+        programSerialNumber=dict(type="str"),
     )
 
     # Initialize AnsibleModule object
@@ -153,7 +167,7 @@ def main():
     if not module.params["configId"] and not (module.params["accountId"] and module.params["programSerialNumber"]):
         module.fail_json(
             msg="Please declare configId or declare accountId + programSerialNumber.")
-    for key in ["accountId", "configId", "programSerialNumber"]:
+    for key in ["accountId", "configId", "description", "programSerialNumber", "serialNumber", "status", "tokenStatus"]:
         if module.params[key]:
             data[key] = module.params[key]
 
@@ -163,5 +177,5 @@ def main():
     module.exit_json(changed=False, **response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

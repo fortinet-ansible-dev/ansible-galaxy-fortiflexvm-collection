@@ -1,7 +1,5 @@
 - name: Get list of FortiFlex groups
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
@@ -13,5 +11,5 @@
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.groups

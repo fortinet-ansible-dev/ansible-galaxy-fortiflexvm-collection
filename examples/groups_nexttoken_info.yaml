@@ -1,7 +1,5 @@
 - name: Get next available (unused) token
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars_files:
     - vars/vars.yml
   tasks:
@@ -9,13 +7,16 @@
       fortinet.fortiflexvm.fortiflexvm_groups_nexttoken_info:
         username: "{{ username }}"
         password: "{{ password }}"
-        # Please declare at least one of the following two arguments: folderPath and configId.
+        # Please declare at least one of the following two arguments: accountId or configId.
         # You can comment at most one argument that you don't want to specify.
-        folderPath: "My Assets"
         configId: 22
-        # accountId: 12345 # optional
+        # accountId: 12345
+
+        # Optional parameters
+        folderPath: "My Assets"
+        status: ["ACTIVE", "PENDING"] # "ACTIVE", "PENDING", "STOPPED", "EXPIRED"
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.entitlements

@@ -12,7 +12,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: fortiflexvm_entitlements_update
 short_description: Update an existing entitlement.
@@ -26,12 +26,10 @@ options:
         description:
             - The username to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_USERNAME.
         type: str
-        required: false
     password:
         description:
             - The password to authenticate. If not declared, the code will read the environment variable FORTIFLEX_ACCESS_PASSWORD.
         type: str
-        required: false
     serialNumber:
         description:
             - The serial number of the entitlement to update.
@@ -41,32 +39,26 @@ options:
         description:
             - The ID of the configuration.
         type: int
-        required: false
     description:
         description:
             - The description of the entitlement.
         type: str
-        required: false
     endDate:
         description:
             - The end date of the entitlement's validity.
             - Any format that satisfies [ISO 8601](https://www.w3.org/TR/NOTE-datetime-970915.html) is accepted.
             - Recommended format is "YYYY-MM-DDThh:mm:ss".
         type: str
-        required: false
     status:
         description:
             - The status of the entitlement.
         type: str
-        required: false
         choices: ["ACTIVE", "STOPPED"]
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Update entitlement
   hosts: localhost
-  collections:
-    - fortinet.fortiflexvm
   vars:
     username: "<your_own_value>"
     password: "<your_own_value>"
@@ -75,20 +67,20 @@ EXAMPLES = '''
       fortinet.fortiflexvm.fortiflexvm_entitlements_update:
         username: "{{ username }}"
         password: "{{ password }}"
-        serialNumber: "FGVMMLTM23001324"
+        serialNumber: "FGVMXXXX00000000"
         # Please specify configId if you want to update configId, description or endDate
         configId: 3196
         description: "Modify through Ansible" # Optional.
-        endDate: "2023-12-12T00:00:00"  # Optional. If not set, it will use the program end date automatically.
-        status: "ACTIVE" # ACTIVE or STOPPED
+        endDate: "2024-12-12T00:00:00"        # Optional. If not set, it will use the program end date automatically.
+        status: "ACTIVE"                      # Optional. ACTIVE or STOPPED
       register: result
 
     - name: Display response
-      debug:
+      ansible.builtin.debug:
         var: result.entitlements
-'''
+"""
 
-RETURN = '''
+RETURN = """
 entitlements:
     description: The entitlement you update. This list only contains one entitlement.
     type: list
@@ -138,7 +130,7 @@ entitlements:
             type: str
             returned: always
             sample: "NOTUSED"
-'''
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.fortinet.fortiflexvm.plugins.module_utils.connection import Connection
@@ -168,13 +160,13 @@ def update_entitlement(module, connection, check_error=True):
 def main():
     # Define module arguments
     module_args = dict(
-        username=dict(type='str', required=False),
-        password=dict(type='str', required=False, no_log=True),
-        serialNumber=dict(type='str', required=True),
-        configId=dict(type='int', required=False),
-        description=dict(type='str', required=False),
-        endDate=dict(type='str', required=False),
-        status=dict(type='str', required=False, choices=["ACTIVE", "STOPPED"])
+        username=dict(type="str"),
+        password=dict(type="str", no_log=True),
+        serialNumber=dict(type="str", required=True),
+        configId=dict(type="int"),
+        description=dict(type="str"),
+        endDate=dict(type="str"),
+        status=dict(type="str", choices=["ACTIVE", "STOPPED"])
     )
 
     # Initialize AnsibleModule object
@@ -195,88 +187,53 @@ def main():
 
     # Try to get current status.
     target_entitlement = None
-    if module.params["configId"]:
-        data = {"configId": module.params["configId"]}
+    if module.params["configId"]:  # Need configId to get info
+        data = {"serialNumber": module.params["serialNumber"],
+                "configId": module.params["configId"]}
         response = connection.send_request("fortiflex/v2/entitlements/list", data, method="POST")
-        target_serial_number = module.params["serialNumber"]
-        for entitlement in response["entitlements"]:
-            if entitlement["serialNumber"] == target_serial_number:
-                target_entitlement = entitlement
-                current_status = entitlement["status"]
-                break
+        if len(response["entitlements"]) == 0:
+            module.fail_json(msg="Can't find target entitlement. Please check serialNumber %s." % (module.params["serialNumber"]),
+                             response=response)
+        target_entitlement = response["entitlements"][0]
+        current_status = target_entitlement["status"]
 
+    # If every params are the same, no need to update.
     if target_entitlement:
-        response["entitlements"] = target_entitlement
-        # If every params are the same, no need to update.
         need_update_flag = False
         for key in ["description", "endDate", "status"]:
             if module.params[key] is not None and target_entitlement[key] != module.params[key]:
                 need_update_flag = True
         if not need_update_flag:
             module.exit_json(changed=False, **response)
-        if module.check_mode:
-            module.exit_json(changed=True, input_params=module.params, **response)
-
-        # Status check before update
-        if current_status == "PENDING":
-            module.fail_json(msg="You can't update this entitlement. "
-                                 "Current entitlemt status is PENDING, please use the token first. ", response=response)
-        elif current_status == "STOPPED":
-            if module.params["status"] == "ACTIVE":
-                response = change_status(module, connection, "ACTIVE")
-            else:
-                module.fail_json(msg="You can't update this entitlement. "
-                                     "Current entitlemt status is STOPPED, please set 'status: ACTIVE'. ", response=response)
 
     # Check mode
     if module.check_mode:
-        module.exit_json(changed=True, input_params=module.params)
+        module.exit_json(changed=True, input_params=module.params, **response)
+
+    # Update status
+    if module.params["status"] == "ACTIVE":
+        if current_status != "ACTIVE":
+            response = change_status(module, connection, "ACTIVE", check_error=False)
+            if response.get("error", None) and "errorCode" in response["error"]:
+                module.warn("The entitlement is already ACTIVE. You can provide configId to bypass this error.")
+                module.exit_json(changed=False, **response)
+    elif module.params["status"] == "STOPPED":
+        if current_status != "STOPPED":
+            response = change_status(module, connection, "STOPPED")
+            if response.get("error", None) and "errorCode" in response["error"]:
+                module.warn("The entitlement is already ACTIVE. You can provide configId to bypass this error.")
+                module.exit_json(changed=False, **response)
 
     # Update the entitlement
     if module.params["configId"]:
         # Try to update the entitlement.
         response = update_entitlement(module, connection, check_error=False)
-        # handle error manually
-        if response["status"] != 0:
-            if response["message"].startswith("Unable to update"):
-                # This error is probably because of one of the following:
-                # 1. The current status is PENDING, the user has to use the token first to activate this entitlement
-                # 2. The current status is STOPPED. If the user set status: "ACTIVE", we could try to activate it first and update the entitlement.
-                # Yet we can't tell it is because of case 1 or case 2 now.
-                if module.params["status"] == "ACTIVE":
-                    response = change_status(module, connection, "ACTIVE")
-                    # Update the entitlement again.
-                    response = update_entitlement(module, connection, check_error=False)
-                    # If error again
-                    if response["status"] != 0:
-                        if response["message"].startswith("Unable to update"):
-                            module.fail_json(msg="You can't update the status of the entitlement. It may be because: "
-                                             "This entitlemt is in the PENDING status, please use the token first. ", response=response)
-                        else:
-                            module.fail_json(msg="Request failed.", response=response)
-                else:
-                    module.fail_json(msg="You can't update the status of the entitlement. It may be because one of the following: "
-                                     "1) This entitlemt is in the PENDING status, please use the token first. "
-                                     "2) You are trying to update a stopped entitlement. "
-                                     "Please activate the entitlement by adding 'status: ACTIVE' and try again.",
-                                     response=response)
-            else:
-                module.fail_json(msg="Request failed.", response=response)
         # Get current status
         current_status = response["entitlements"][0]["status"]
-
-    # active or stop the entitlement
-    if module.params["status"] and module.params["status"] != current_status:
-        response = change_status(module, connection, module.params["status"], check_error=False)
-        if response["message"].startswith("Unable to update"):
-            module.fail_json(msg="You can't update the status of the entitlement. It may be because one of the following: "
-                             "1) The entitlement is in the PENDING status, please use the token first. "
-                             "2) You only update the status without providing other parameters. "
-                             "Please add configID, it can help FortiFlexVM Ansible to properly avoid this error.", response=response)
 
     # Exit with response data
     module.exit_json(changed=True, **response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

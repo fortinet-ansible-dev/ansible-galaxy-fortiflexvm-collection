@@ -1,6 +1,6 @@
 namespace: fortinet
 name: fortiflexvm
-version: 2.2.0
+version: 2.2.1
 readme: README.md
 authors:
     - Xinwei Du <dux@fortinet.com> (@dux-fortinet)
@@ -15,9 +15,9 @@ repository: https://github.com/fortinet-ansible-dev/ansible-galaxy-fortiflexvm-c
 documentation: https://ansible-galaxy-fortiflexvm-docs.readthedocs.io/en/latest
 homepage: https://www.fortinet.com
 issues: https://github.com/fortinet-ansible-dev/ansible-galaxy-fortiflexvm-collection/issues
-build_ignore: 
-  - "*.log"
-  - "tmp/**"
-  - ".git/*"
-  - "changelogs/fragments"
-  - "examples"
+build_ignore:
+    - "*.log"
+    - "tmp/**"
+    - ".git/*"
+    - "changelogs/fragments"
+    - "examples"

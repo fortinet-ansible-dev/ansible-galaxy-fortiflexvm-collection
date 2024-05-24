@@ -12,6 +12,7 @@
         description: "Create through Ansible" # Optional.
         endDate: "2023-11-11T00:00:00" # Optional. If not set, it will use the program end date automatically.
         folderPath: "My Assets" # Optional. If not set, new VM will be in "My Assets"
+        skipPending: false      # Optional. Set 'skipPending' to true will activate the entitlement right away and charges start.
       register: result
 
     - name: Display response

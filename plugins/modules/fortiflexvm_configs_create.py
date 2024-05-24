@@ -189,7 +189,7 @@ options:
                 type: str
                 required: true
             addons:
-                description: Addons. A list. Possible value is "BPS" ( FortiCare Best Practice).
+                description: Addons. A list. Possible value is "BPS" (FortiCare Best Practice).
                 type: list
                 elements: str
                 default: []
@@ -213,6 +213,11 @@ options:
                     - Support Service. Currently, the only available option is "FAZFC247" (FortiCare Premium). The default value is "FAZFC247".
                 required: true
                 type: str
+            addons:
+                description: Addons. A list. "FAZISSS" (OT Security Service), "FAZFGSA" (Attack Surface Security Service).
+                type: list
+                elements: str
+                default: []
     fortiPortal:
         description:
             - FortiPortal Virtual Machine.
@@ -247,7 +252,7 @@ options:
         suboptions:
             model:
                 description:
-                    - The device model. For all supported models, please check FNDN.
+                    - Device model. For all supported models, please check FNDN.
                     - Possible values are
                     - FGT40F (FortiGate-40F), FGT60F (FortiGate-60F), FGT70F (FortiGate-70F), FGT80F (FortiGate-80F),
                     - FG100F (FortiGate-100F), FGT60E (FortiGate-60E), FGT61F (FortiGate-61F), FG100E (FortiGate-100E),
@@ -255,7 +260,15 @@ options:
                     - FG4H0F (FortiGate-400F), FG6H0F (FortiGate-600F), FWF40F (FortiWifi-40F), FWF60F (FortiWifi-60F),
                     - FGR60F (FortiGateRugged-60F), FR70FB (FortiGateRugged-70F), FGT81F (FortiGate-81F), FG101E (FortiGate-101E),
                     - FG4H1F (FortiGate-401F), FG1K0F (FortiGate-1000F), FG180F (FortiGate-1800F), F2K60F (FortiGate-2600F),
-                    - FG3K0F (FortiGate-3000F), FG3K1F (FortiGate-3001F), FG3K2F (FortiGate-3200F).
+                    - FG3K0F (FortiGate-3000F), FG3K1F (FortiGate-3001F), FG3K2F (FortiGate-3200F), FG40FI (FortiGate 40F-3G4G),
+                    - FW40FI (FortiWifi 40F-3G4G), FWF61F (FortiWifi 61F), FR60FI (FortiGateRugged 60F 3G4G), FGT71F (FortiGate 71F),
+                    - FG80FP (FortiGate 80F-PoE), FG80FB (FortiGate 80F-Bypass), FG80FD (FortiGate 80F DSL), FWF80F (FortiWiFi 80F-2R),
+                    - FW80FS (FortiWiFi 80F-2R-3G4G-DSL), FWF81F (FortiWiFi 81F 2R), FW81FS (FortiWiFi 81F-2R-3G4G-DSL),
+                    - FW81FD (FortiWiFi 81F-2R-3G4G-PoE), FW81FP (FortiWiFi 81F 2R POE), FG81FP (FortiGate 81F-PoE), FGT90G (FortiGate 90G),
+                    - FGT91G (FortiGate 91G), FG201E (FortiGate 201E), FG4H0E (FortiGate 400E), FG4HBE (FortiGate 400E BYPASS),
+                    - FG4H1E (FortiGate 401E), FD4H1E (FortiGate 401E DC), FG6H0E (FortiGate 600E), FG6H1E (FortiGate 601E),
+                    - FG6H1F (FortiGate 601F), FG9H0G (FortiGate 900G), FG9H1G (FortiGate 901G), FG1K1F (FortiGate 1001F), FG181F (FortiGate 1801F),
+                    - FG3K7F (FortiGate 3700F), FG39E6 (FortiGate 3960E), FG441F (FortiGate 4401F).
                 type: str
                 required: true
             service:
@@ -274,6 +287,71 @@ options:
                 type: list
                 elements: str
                 default: []
+    fortiAPHardware:
+        description:
+            - FortiAP Hardware.
+        type: dict
+        version_added: 2.2.0
+        suboptions:
+            model:
+                description:
+                    - Device model. For all supported models, please check FNDN.
+                    - Possible values are
+                    - FP23JF (FortiAP-23JF), FP221E (FortiAP-221E), FP223E (FortiAP-223E), FP231F (FortiAP-231F),
+                    - FP231G (FortiAP-231G), FP233G (FortiAP-233G), FP234F (FortiAP-234F), FP234G (FortiAP-234G),
+                    - FP431F (FortiAP-431F), FP431G (FortiAP-431G), FP432F (FortiAP-432F), F432FR (FortiAP-432FR),
+                    - FP432G (FortiAP-432G), FP433F (FortiAP-433F), FP433G (FortiAP-433G), FP441K (FortiAP-441K),
+                    - FP443K (FortiAP-443K), FP831F (FortiAP-831F), PU231F (FortiAP-U231F), PU234F (FortiAP-U234F),
+                    - PU422E (FortiAP-U422EV), PU431F (FortiAP-U431F), PU432F (FortiAP-U432F), PU433F (FortiAP-U433F).
+                type: str
+                required: true
+            service:
+                description:
+                    - Support Service. Possible values are FAPHWFC247 (FortiCare Premium), FAPHWFCEL (FortiCare Elite).
+                type: str
+                required: true
+            addons:
+                description:
+                    - Addons. A list, can be empty, possible values are
+                    - FAPHWFSFG (FortiSASE Cloud Managed AP)
+                type: list
+                elements: str
+                default: []
+    fortiSwitchHardware:
+        description:
+            - FortiSwitch Hardware.
+        type: dict
+        version_added: 2.2.0
+        suboptions:
+            model:
+                description:
+                    - Device model. For all supported models, please check FNDN.
+                    - Possible values are
+                    - S108EN (FortiSwitch-108E), S108EF (FortiSwitch-108E-FPOE), S108EP (FortiSwitch-108E-POE),
+                    - S108FN (FortiSwitch-108F), S108FF (FortiSwitch-108F-FPOE), S108FP (FortiSwitch-108F-POE),
+                    - S124EN (FortiSwitch-124E), S124EF (FortiSwitch-124E-FPOE), S124EP (FortiSwitch-124E-POE),
+                    - S124FN (FortiSwitch-124F), S124FF (FortiSwitch-124F-FPOE), S124FP (FortiSwitch-124F-POE),
+                    - S148EN (FortiSwitch-148E), S148EP (FortiSwitch-148E-POE), S148FN (FortiSwitch-148F),
+                    - S148FF (FortiSwitch-148F-FPOE), S148FP (FortiSwitch-148F-POE), S224DF (FortiSwitch-224D-FPOE),
+                    - S224EN (FortiSwitch-224E), S224EP (FortiSwitch-224E-POE), S248DN (FortiSwitch-248D),
+                    - S248EF (FortiSwitch-248E-FPOE), S248EP (FortiSwitch-248E-POE), S424DN (FortiSwitch-424D),
+                    - S424DF (FortiSwitch-424D-FPOE), S424DP (FortiSwitch-424D-POE), S424EN (FortiSwitch-424E),
+                    - S424EF (FortiSwitch-424E-FPOE), S424EI (FortiSwitch-424E-Fiber), S424EP (FortiSwitch-424E-POE),
+                    - S448DN (FortiSwitch-448D), S448DP (FortiSwitch-448D-POE), S448EN (FortiSwitch-448E),
+                    - S448EF (FortiSwitch-448E-FPOE), S448EP (FortiSwitch-448E-POE), S524DN (FortiSwitch-524D),
+                    - S524DF (FortiSwitch-524D-FPOE), S548DN (FortiSwitch-548D), S548DF (FortiSwitch-548D-FPOE),
+                    - S624FN (FortiSwitch-624F), S624FF (FortiSwitch-624F-FPOE), S648FN (FortiSwitch-648F),
+                    - S648FF (FortiSwitch-648F-FPOE), FS1D24 (FortiSwitch-1024D), FS1E24 (FortiSwitch-1024E),
+                    - FS1D48 (FortiSwitch-1048D), FS1E48 (FortiSwitch-1048E), FS2F48 (FortiSwitch-2048F),
+                    - FS3D32 (FortiSwitch-3032D), FS3E32 (FortiSwitch-3032E), S426EF (FortiSwitch-M426E-FPOE),
+                    - ST1E24 (FortiSwitch-T1024E), SR12DP (FortiSwitchRugged-112D-POE), SR24DN (FortiSwitchRugged-124D).
+                type: str
+                required: true
+            service:
+                description:
+                    - Support Service. Possible values are FSWHWFC247 (FortiCare Premium), FSWHWFCEL (FortiCare Elite).
+                type: str
+                required: true
     fortiCloudPrivate:
         description:
             - FortiWeb Cloud, Private.
@@ -448,6 +526,7 @@ EXAMPLES = '''
         #   storage: 5                        # 5 ~ 8300
         #   adom: 1                           # 0 ~ 1200
         #   service: "FAZFC247"               # "FAZFC247"
+        #   addons: []                        # "FAZISSS", "FAZFGSA"
 
         # fortiPortal:
         #   device: 1                         # 0 ~ 100000
@@ -458,13 +537,41 @@ EXAMPLES = '''
 
         # fortiGateHardware:
         #   model: "FGT60F"                   # For all supported modules, please check FNDN.
-        #                                     # "FGT40F", "FGT60F", "FGT70F", "FGT80F", "FG100F", "FGT60E", "FGT61F",
-        #                                     # "FG100E", "FG101F", "FG200E", "FG200F", "FG201F", "FG4H0F", "FG6H0F",
-        #                                     # "FWF40F", "FWF60F", "FGR60F", "FR70FB", "FGT81F", "FG101E", "FG4H1F",
-        #                                     # "FG1K0F", "FG180F", "F2K60F", "FG3K0F", "FG3K1F", "FG3K2F"...
+        #                                     # "FGT40F", "FGT60F", "FGT70F", "FGT80F", "FG100F", "FGT60E",
+        #                                     # "FGT61F", "FG100E", "FG101F", "FG200E", "FG200F", "FG201F",
+        #                                     # "FG4H0F", "FG6H0F", "FWF40F", "FWF60F", "FGR60F", "FR70FB",
+        #                                     # "FGT81F", "FG101E", "FG4H1F", "FG1K0F", "FG180F", "F2K60F",
+        #                                     # "FG3K0F", "FG3K1F", "FG3K2F", "FG40FI", "FW40FI", "FWF61F",
+        #                                     # "FR60FI", "FGT71F", "FG80FP", "FG80FB", "FG80FD", "FWF80F",
+        #                                     # "FW80FS", "FWF81F", "FW81FS", "FW81FD", "FW81FP", "FG81FP",
+        #                                     # "FGT90G", "FGT91G", "FG201E", "FG4H0E", "FG4HBE", "FG4H1E",
+        #                                     # "FD4H1E", "FG6H0E", "FG6H1E", "FG6H1F", "FG9H0G", "FG9H1G",
+        #                                     # "FG1K1F", "FG181F", "FG3K7F", "FG39E6", "FG441F"
         #   service: "FGHWFCEL"               # "FGHWFC247", "FGHWFCEL", "FDVFC247", "FGHWUTP" or "FGHWENT"
         #   addons: []                        # "FGHWFCELU", "FGHWFAMS", "FGHWFAIS", "FGHWSWNM", "FGHWDLDB",
         #                                     # "FGHWFAZC", "FGHWSOCA", "FGHWMGAS", "FGHWSPAL", "FGHWFCSS"
+
+        # fortiAPHardware:
+        #   model: "FP23JF"                   # For all supported modules, please check FNDN.
+        #                                     # "FP23JF", "FP221E", "FP223E", "FP231F", "FP231G", "FP233G",
+        #                                     # "FP234F", "FP234G", "FP431F", "FP431G", "FP432F", "F432FR",
+        #                                     # "FP432G", "FP433F", "FP433G", "FP441K", "FP443K", "FP831F",
+        #                                     # "PU231F", "PU234F", "PU422E", "PU431F", "PU432F", "PU433F"
+        #   service: "FAPHWFC247"             # "FAPHWFC247" or "FAPHWFCEL"
+        #   addons: []                        # "FAPHWFSFG"
+
+        # fortiSwitchHardware:
+        #   model: "S108EN"                   # For all supported modules, please check FNDN.
+        #                                     # "S108EN", "S108EF", "S108EP", "S108FN", "S108FF", "S108FP",
+        #                                     # "S124EN", "S124EF", "S124EP", "S124FN", "S124FF", "S124FP",
+        #                                     # "S148EN", "S148EP", "S148FN", "S148FF", "S148FP", "S224DF",
+        #                                     # "S224EN", "S224EP", "S248DN", "S248EF", "S248EP", "S424DN",
+        #                                     # "S424DF", "S424DP", "S424EN", "S424EF", "S424EI", "S424EP",
+        #                                     # "S448DN", "S448DP", "S448EN", "S448EF", "S448EP", "S524DN",
+        #                                     # "S524DF", "S548DN", "S548DF", "S624FN", "S624FF", "S648FN",
+        #                                     # "S648FF", "FS1D24", "FS1E24", "FS1D48", "FS1E48", "FS2F48",
+        #                                     # "FS3D32", "FS3E32", "S426EF", "ST1E24", "SR12DP", "SR24DN"
+        #   service: "FSWHWFC247"             # "FSWHWFC247" or "FSWHWFCEL"
 
         # fortiCloudPrivate:
         #   throughput: 100                   # 10, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800,
@@ -668,6 +775,10 @@ configs:
                         - Support Service. Currently, the only available option is "FAZFC247" (FortiCare Premium).
                         - The default value is "FAZFC247".
                     type: str
+                addons:
+                    description: Addons. A list. "FAZISSS" (OT Security Service), "FAZFGSA" (Attack Surface Security Service).
+                    type: list
+                    elements: str
         fortiPortal:
             description:
                 - FortiPortal Virtual Machine.
@@ -704,7 +815,15 @@ configs:
                         - FG4H0F (FortiGate-400F), FG6H0F (FortiGate-600F), FWF40F (FortiWifi-40F), FWF60F (FortiWifi-60F),
                         - FGR60F (FortiGateRugged-60F), FR70FB (FortiGateRugged-70F), FGT81F (FortiGate-81F), FG101E (FortiGate-101E),
                         - FG4H1F (FortiGate-401F), FG1K0F (FortiGate-1000F), FG180F (FortiGate-1800F), F2K60F (FortiGate-2600F),
-                        - FG3K0F (FortiGate-3000F), FG3K1F (FortiGate-3001F), FG3K2F (FortiGate-3200F)...
+                        - FG3K0F (FortiGate-3000F), FG3K1F (FortiGate-3001F), FG3K2F (FortiGate-3200F), FG40FI (FortiGate 40F-3G4G),
+                        - FW40FI (FortiWifi 40F-3G4G), FWF61F (FortiWifi 61F), FR60FI (FortiGateRugged 60F 3G4G), FGT71F (FortiGate 71F),
+                        - FG80FP (FortiGate 80F-PoE), FG80FB (FortiGate 80F-Bypass), FG80FD (FortiGate 80F DSL), FWF80F (FortiWiFi 80F-2R),
+                        - FW80FS (FortiWiFi 80F-2R-3G4G-DSL), FWF81F (FortiWiFi 81F 2R), FW81FS (FortiWiFi 81F-2R-3G4G-DSL),
+                        - FW81FD (FortiWiFi 81F-2R-3G4G-PoE), FW81FP (FortiWiFi 81F 2R POE), FG81FP (FortiGate 81F-PoE), FGT90G (FortiGate 90G),
+                        - FGT91G (FortiGate 91G), FG201E (FortiGate 201E), FG4H0E (FortiGate 400E), FG4HBE (FortiGate 400E BYPASS),
+                        - FG4H1E (FortiGate 401E), FD4H1E (FortiGate 401E DC), FG6H0E (FortiGate 600E), FG6H1E (FortiGate 601E),
+                        - FG6H1F (FortiGate 601F), FG9H0G (FortiGate 900G), FG9H1G (FortiGate 901G), FG1K1F (FortiGate 1001F), FG181F (FortiGate 1801F),
+                        - FG3K7F (FortiGate 3700F), FG39E6 (FortiGate 3960E), FG441F (FortiGate 4401F).
                     type: str
                 service:
                     description:
@@ -720,6 +839,64 @@ configs:
                         - FGHWSPAL (SD-WAN Connector for FortiSASE), FGHWFCSS (FortiConverter Service).
                     type: list
                     elements: str
+        fortiAPHardware:
+            description:
+                - FortiAP Hardware.
+            type: dict
+            contains:
+                model:
+                    description:
+                        - Device model. For all supported models, please check FNDN.
+                        - Possible values are
+                        - FP23JF (FortiAP-23JF), FP221E (FortiAP-221E), FP223E (FortiAP-223E), FP231F (FortiAP-231F),
+                        - FP231G (FortiAP-231G), FP233G (FortiAP-233G), FP234F (FortiAP-234F), FP234G (FortiAP-234G),
+                        - FP431F (FortiAP-431F), FP431G (FortiAP-431G), FP432F (FortiAP-432F), F432FR (FortiAP-432FR),
+                        - FP432G (FortiAP-432G), FP433F (FortiAP-433F), FP433G (FortiAP-433G), FP441K (FortiAP-441K),
+                        - FP443K (FortiAP-443K), FP831F (FortiAP-831F), PU231F (FortiAP-U231F), PU234F (FortiAP-U234F),
+                        - PU422E (FortiAP-U422EV), PU431F (FortiAP-U431F), PU432F (FortiAP-U432F), PU433F (FortiAP-U433F)
+                    type: str
+                service:
+                    description:
+                        - Support Service. Possible values are FAPHWFC247 (FortiCare Premium), FAPHWFCEL (FortiCare Elite),
+                    type: str
+                addons:
+                    description:
+                        - Addons. A list, can be empty, possible values are
+                        - FAPHWFSFG (FortiSASE Cloud Managed AP)
+                    type: list
+                    elements: str
+        fortiSwitchHardware:
+            description:
+                - FortiSwitch Hardware.
+            type: dict
+            contains:
+                model:
+                    description:
+                        - Device model. For all supported models, please check FNDN.
+                        - Possible values are
+                        - S108EN (FortiSwitch-108E), S108EF (FortiSwitch-108E-FPOE), S108EP (FortiSwitch-108E-POE),
+                        - S108FN (FortiSwitch-108F), S108FF (FortiSwitch-108F-FPOE), S108FP (FortiSwitch-108F-POE),
+                        - S124EN (FortiSwitch-124E), S124EF (FortiSwitch-124E-FPOE), S124EP (FortiSwitch-124E-POE),
+                        - S124FN (FortiSwitch-124F), S124FF (FortiSwitch-124F-FPOE), S124FP (FortiSwitch-124F-POE),
+                        - S148EN (FortiSwitch-148E), S148EP (FortiSwitch-148E-POE), S148FN (FortiSwitch-148F),
+                        - S148FF (FortiSwitch-148F-FPOE), S148FP (FortiSwitch-148F-POE), S224DF (FortiSwitch-224D-FPOE),
+                        - S224EN (FortiSwitch-224E), S224EP (FortiSwitch-224E-POE), S248DN (FortiSwitch-248D),
+                        - S248EF (FortiSwitch-248E-FPOE), S248EP (FortiSwitch-248E-POE), S424DN (FortiSwitch-424D),
+                        - S424DF (FortiSwitch-424D-FPOE), S424DP (FortiSwitch-424D-POE), S424EN (FortiSwitch-424E),
+                        - S424EF (FortiSwitch-424E-FPOE), S424EI (FortiSwitch-424E-Fiber), S424EP (FortiSwitch-424E-POE),
+                        - S448DN (FortiSwitch-448D), S448DP (FortiSwitch-448D-POE), S448EN (FortiSwitch-448E),
+                        - S448EF (FortiSwitch-448E-FPOE), S448EP (FortiSwitch-448E-POE), S524DN (FortiSwitch-524D),
+                        - S524DF (FortiSwitch-524D-FPOE), S548DN (FortiSwitch-548D), S548DF (FortiSwitch-548D-FPOE),
+                        - S624FN (FortiSwitch-624F), S624FF (FortiSwitch-624F-FPOE), S648FN (FortiSwitch-648F),
+                        - S648FF (FortiSwitch-648F-FPOE), FS1D24 (FortiSwitch-1024D), FS1E24 (FortiSwitch-1024E),
+                        - FS1D48 (FortiSwitch-1048D), FS1E48 (FortiSwitch-1048E), FS2F48 (FortiSwitch-2048F),
+                        - FS3D32 (FortiSwitch-3032D), FS3E32 (FortiSwitch-3032E), S426EF (FortiSwitch-M426E-FPOE),
+                        - ST1E24 (FortiSwitch-T1024E), SR12DP (FortiSwitchRugged-112D-POE), SR24DN (FortiSwitchRugged-124D).
+                    type: str
+                service:
+                    description:
+                        - Support Service. Possible values are FSWHWFC247 (FortiCare Premium), FSWHWFCEL (FortiCare Elite).
+                    type: str
         fortiCloudPrivate:
             description:
                 - FortiWeb Cloud, Private.

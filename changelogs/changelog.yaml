@@ -130,3 +130,13 @@ releases:
         name: fortiflexvm_tools_calc_info
         namespace: ""
     release_date: "2024-03-29"
+  2.2.1:
+    changes:
+      bugfixes:
+        - Configuration fortiAnalyzer support parameter addons.
+        - Suppoered 2 new configuration fortiAPHardware, fortiSwitchHardware.
+        - fortiflexvm_entitlements_vm_create supported parameter skipPending.
+      release_summary: Release FortiFlex 2.2.1, 2 new configurations.
+    fragments:
+      - 2.2.1.yml
+    release_date: "2024-05-24"

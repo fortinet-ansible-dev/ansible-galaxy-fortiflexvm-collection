@@ -57,6 +57,10 @@ options:
         description:
             - The folder path of the VM(s).
         type: str
+    skipPending:
+        description:
+            - Set it to true will activate the entitlement right away and charges start to incur even without downloading the license by token.
+        type: bool
 """
 
 EXAMPLES = """
@@ -75,6 +79,7 @@ EXAMPLES = """
         description: "Create through Ansible" # Optional.
         endDate: "2023-11-11T00:00:00" # Optional. If not set, it will use the program end date automatically.
         folderPath: "My Assets" # Optional. If not set, new VM will be in "My Assets"
+        skipPending: false      # Optional. Set 'skipPending' to true will activate the entitlement right away and charges start.
       register: result
 
     - name: Display response
@@ -146,8 +151,9 @@ def main():
         configId=dict(type="int", required=True),
         count=dict(type="int", default=1),
         description=dict(type="str", default=""),
-        folderPath=dict(type="str"),
         endDate=dict(type="str"),
+        folderPath=dict(type="str"),
+        skipPending=dict(type="bool"),
     )
 
     # Initialize AnsibleModule object
@@ -158,7 +164,7 @@ def main():
 
     # Prepare data to send
     data = {}
-    for param in ["configId", "count", "endDate", "folderPath", "description"]:
+    for param in ["configId", "count", "endDate", "folderPath", "description", "skipPending"]:
         if module.params[param] is not None:
             data[param] = module.params[param]
 

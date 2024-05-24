@@ -5,6 +5,21 @@ Fortinet.Fortiflexvm Release Notes
 .. contents:: Topics
 
 
+v2.2.1
+======
+
+Release Summary
+---------------
+
+Release FortiFlex 2.2.1, 2 new configurations.
+
+Bugfixes
+--------
+
+- Configuration fortiAnalyzer support parameter addons.
+- Suppoered 2 new configuration fortiAPHardware, fortiSwitchHardware.
+- fortiflexvm_entitlements_vm_create supported parameter skipPending.
+
 v2.2.0
 ======
 
@@ -19,7 +34,7 @@ Minor Changes
 - Added 1 new resource, fortiflexvm_tool_calc_info.
 - Added 2 new configurations, fortiSASE and fortiEDR.
 - fortiflexvm_entitlements_list_info supported options "description", "serialnumber", "status", "tokenstatus".
-- fortiflexvm_groups_nexttoken_info supported option "status". According to API, either "configId" or "accountId" is required now.
+- fortiflexvm_groups_nexttoken_info supported option "status".
 
 Bugfixes
 --------

@@ -58,6 +58,7 @@
         #   storage: 5                        # 5 ~ 8300
         #   adom: 1                           # 0 ~ 1200
         #   service: "FAZFC247"               # "FAZFC247"
+        #   addons: []                        # "FAZISSS", "FAZFGSA"
 
         # fortiPortal:
         #   device: 1                         # 0 ~ 100000
@@ -68,13 +69,41 @@
 
         # fortiGateHardware:
         #   model: "FGT60F"                   # For all supported modules, please check FNDN.
-        #                                     # "FGT40F", "FGT60F", "FGT70F", "FGT80F", "FG100F", "FGT60E", "FGT61F",
-        #                                     # "FG100E", "FG101F", "FG200E", "FG200F", "FG201F", "FG4H0F", "FG6H0F",
-        #                                     # "FWF40F", "FWF60F", "FGR60F", "FR70FB", "FGT81F", "FG101E", "FG4H1F",
-        #                                     # "FG1K0F", "FG180F", "F2K60F", "FG3K0F", "FG3K1F", "FG3K2F"...
+        #                                     # "FGT40F", "FGT60F", "FGT70F", "FGT80F", "FG100F", "FGT60E",
+        #                                     # "FGT61F", "FG100E", "FG101F", "FG200E", "FG200F", "FG201F",
+        #                                     # "FG4H0F", "FG6H0F", "FWF40F", "FWF60F", "FGR60F", "FR70FB",
+        #                                     # "FGT81F", "FG101E", "FG4H1F", "FG1K0F", "FG180F", "F2K60F",
+        #                                     # "FG3K0F", "FG3K1F", "FG3K2F", "FG40FI", "FW40FI", "FWF61F",
+        #                                     # "FR60FI", "FGT71F", "FG80FP", "FG80FB", "FG80FD", "FWF80F",
+        #                                     # "FW80FS", "FWF81F", "FW81FS", "FW81FD", "FW81FP", "FG81FP",
+        #                                     # "FGT90G", "FGT91G", "FG201E", "FG4H0E", "FG4HBE", "FG4H1E",
+        #                                     # "FD4H1E", "FG6H0E", "FG6H1E", "FG6H1F", "FG9H0G", "FG9H1G",
+        #                                     # "FG1K1F", "FG181F", "FG3K7F", "FG39E6", "FG441F"
         #   service: "FGHWFCEL"               # "FGHWFC247", "FGHWFCEL", "FDVFC247", "FGHWUTP" or "FGHWENT"
-        #   addons: ["FGHWFAMS", "FGHWFAIS"]  # "FGHWFCELU", "FGHWFAMS", "FGHWFAIS", "FGHWSWNM", "FGHWDLDB",
+        #   addons: []                        # "FGHWFCELU", "FGHWFAMS", "FGHWFAIS", "FGHWSWNM", "FGHWDLDB",
         #                                     # "FGHWFAZC", "FGHWSOCA", "FGHWMGAS", "FGHWSPAL", "FGHWFCSS"
+
+        # fortiAPHardware:
+        #   model: "FP23JF"                   # For all supported modules, please check FNDN.
+        #                                     # "FP23JF", "FP221E", "FP223E", "FP231F", "FP231G", "FP233G",
+        #                                     # "FP234F", "FP234G", "FP431F", "FP431G", "FP432F", "F432FR",
+        #                                     # "FP432G", "FP433F", "FP433G", "FP441K", "FP443K", "FP831F",
+        #                                     # "PU231F", "PU234F", "PU422E", "PU431F", "PU432F", "PU433F"
+        #   service: "FAPHWFC247"             # "FAPHWFC247" or "FAPHWFCEL"
+        #   addons: []                        # "FAPHWFSFG"
+
+        # fortiSwitchHardware:
+        #   model: "S108EN"                   # For all supported modules, please check FNDN.
+        #                                     # "S108EN", "S108EF", "S108EP", "S108FN", "S108FF", "S108FP",
+        #                                     # "S124EN", "S124EF", "S124EP", "S124FN", "S124FF", "S124FP",
+        #                                     # "S148EN", "S148EP", "S148FN", "S148FF", "S148FP", "S224DF",
+        #                                     # "S224EN", "S224EP", "S248DN", "S248EF", "S248EP", "S424DN",
+        #                                     # "S424DF", "S424DP", "S424EN", "S424EF", "S424EI", "S424EP",
+        #                                     # "S448DN", "S448DP", "S448EN", "S448EF", "S448EP", "S524DN",
+        #                                     # "S524DF", "S548DN", "S548DF", "S624FN", "S624FF", "S648FN",
+        #                                     # "S648FF", "FS1D24", "FS1E24", "FS1D48", "FS1E48", "FS2F48",
+        #                                     # "FS3D32", "FS3E32", "S426EF", "ST1E24", "SR12DP", "SR24DN"
+        #   service: "FSWHWFC247"             # "FSWHWFC247" or "FSWHWFCEL"
 
         # fortiCloudPrivate:
         #   throughput: 1000                  # 10, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800,

@@ -1,0 +1,5 @@
+release_summary: Release FortiFlex 2.2.1, 2 new configurations.
+bugfixes:
+  - Suppoered 2 new configuration fortiAPHardware, fortiSwitchHardware.
+  - Configuration fortiAnalyzer support parameter addons.
+  - fortiflexvm_entitlements_vm_create supported parameter skipPending.

@@ -249,7 +249,7 @@ configs:
                     type: str
                 service:
                     description:
-                        - Support Service. "FDVSTD" (Standard), "FDVADV" (Advanced) or "FDVFC247" (FortiCare Premium).
+                        - Support Service. "FDVFC247" (FortiCare Premium), "FDVNET" (Network Security), "FDVAPP" (Application Security), "FDVAI" (AI Security).
                     type: str
         fortiGateHardware:
             description:
@@ -278,7 +278,7 @@ configs:
                 service:
                     description:
                         - Support Service. Possible values are FGHWFC247 (FortiCare Premium), FGHWFCEL (FortiCare Elite),
-                        - FDVFC247 (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
+                        - FGHWATP (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
                     type: str
                 addons:
                     description:

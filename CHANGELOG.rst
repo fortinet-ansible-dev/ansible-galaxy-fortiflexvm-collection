@@ -5,6 +5,20 @@ Fortinet.Fortiflexvm Release Notes
 .. contents:: Topics
 
 
+v2.2.2
+======
+
+Release Summary
+---------------
+
+Release FortiFlex 2.2.2.
+
+Bugfixes
+--------
+
+- Fixed description error in the document.
+- Improved logic of existing modules.
+
 v2.2.1
 ======
 

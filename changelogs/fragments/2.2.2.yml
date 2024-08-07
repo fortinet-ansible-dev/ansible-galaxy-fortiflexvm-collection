@@ -1,0 +1,4 @@
+release_summary: Release FortiFlex 2.2.2.
+bugfixes:
+  - Improved logic of existing modules.
+  - Fixed description error in the document.

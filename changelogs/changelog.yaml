@@ -140,3 +140,12 @@ releases:
     fragments:
       - 2.2.1.yml
     release_date: "2024-05-24"
+  2.2.2:
+    changes:
+      bugfixes:
+        - Fixed description error in the document.
+        - Improved logic of existing modules.
+      release_summary: Release FortiFlex 2.2.2.
+    fragments:
+      - 2.2.2.yml
+    release_date: "2024-08-07"

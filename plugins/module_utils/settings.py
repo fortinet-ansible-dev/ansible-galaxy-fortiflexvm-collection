@@ -109,7 +109,7 @@ PRODUCTS = [
             {"id": 25, "name": "cpu", "type": "str",
                 "choices": ["1", "2", "4", "8", "16", "32"], "required": True},
             {"id": 26, "name": "service", "type": "str",
-                "choices": ["FDVSTD", "FDVADV", "FDVFC247"], "required": True},
+                "choices": ["FDVFC247", "FDVNET", "FDVAPP", "FDVAI"], "required": True},
         ],
     },
     {

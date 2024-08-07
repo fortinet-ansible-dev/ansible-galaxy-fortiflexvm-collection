@@ -242,7 +242,7 @@ options:
                 required: true
             service:
                 description:
-                    - Support Service. "FDVSTD" (Standard), "FDVADV" (Advanced) or "FDVFC247" (FortiCare Premium).
+                    - Support Service. "FDVFC247" (FortiCare Premium), "FDVNET" (Network Security), "FDVAPP" (Application Security), "FDVAI" (AI Security).
                 type: str
                 required: true
     fortiGateHardware:
@@ -275,7 +275,7 @@ options:
             service:
                 description:
                     - Support Service. Possible values are FGHWFC247 (FortiCare Premium), FGHWFCEL (FortiCare Elite),
-                    - FDVFC247 (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
+                    - FGHWATP (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
                 type: str
                 required: true
             addons:
@@ -537,7 +537,7 @@ EXAMPLES = """
 
         # fortiADC:
         #   cpu: "1"                          # "1", "2", "4", "8", "16", "32"
-        #   service: "FDVSTD"                 # "FDVSTD", "FDVADV" or "FDVFC247"
+        #   service: "FDVSTD"                 # "FDVFC247", "FDVNET", "FDVAPP" or "FDVAI"
 
         # fortiGateHardware:
         #   model: "FGT60F"                   # For all supported modules, please check FNDN.
@@ -551,7 +551,7 @@ EXAMPLES = """
         #                                     # "FGT90G", "FGT91G", "FG201E", "FG4H0E", "FG4HBE", "FG4H1E",
         #                                     # "FD4H1E", "FG6H0E", "FG6H1E", "FG6H1F", "FG9H0G", "FG9H1G",
         #                                     # "FG1K1F", "FG181F", "FG3K7F", "FG39E6", "FG441F"
-        #   service: "FGHWFCEL"               # "FGHWFC247", "FGHWFCEL", "FDVFC247", "FGHWUTP" or "FGHWENT"
+        #   service: "FGHWFCEL"               # "FGHWFC247", "FGHWFCEL", "FGHWATP", "FGHWUTP" or "FGHWENT"
         #   addons: []                        # "FGHWFCELU", "FGHWFAMS", "FGHWFAIS", "FGHWSWNM", "FGHWDLDB",
         #                                     # "FGHWFAZC", "FGHWSOCA", "FGHWMGAS", "FGHWSPAL", "FGHWFCSS"
 
@@ -803,7 +803,7 @@ configs:
                     type: str
                 service:
                     description:
-                        - Support Service. "FDVSTD" (Standard), "FDVADV" (Advanced) or "FDVFC247" (FortiCare Premium).
+                        - Support Service. "FDVFC247" (FortiCare Premium), "FDVNET" (Network Security), "FDVAPP" (Application Security), "FDVAI" (AI Security).
                     type: str
         fortiGateHardware:
             description:
@@ -832,7 +832,7 @@ configs:
                 service:
                     description:
                         - Support Service. Possible values are FGHWFC247 (FortiCare Premium), FGHWFCEL (FortiCare Elite),
-                        - FDVFC247 (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
+                        - FGHWATP (ATP), FGHWUTP (UTP) or FGHWENT (Enterprise).
                     type: str
                 addons:
                     description:

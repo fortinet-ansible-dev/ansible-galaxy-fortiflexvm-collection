@@ -427,7 +427,12 @@ configs:
                     description: Number between 25 and 10,000 (inclusive). Value should be divisible by 25.
                     type: int
                 dedicatedIPs:
-                    description: Number between 4 and 65,534 (inclusive).
+                    description: Number between 4 and 65,534 (inclusive). Value should be divisible by 4.
+                    type: int
+                computeRegion:
+                    description:
+                        - Additional Compute Region. Number between 0 and 16 (inclusive).
+                        - It can be scaled up in an increment of 1 but scaling down is NOT allowed.
                     type: int
         fortiEDR:
             description: fortiEDR Cloud Configuration.
@@ -443,6 +448,46 @@ configs:
                     description: Addons. A list. Possible value is "FEDRXDR" (XDR).
                     type: list
                     elements: str
+        fortiRecon:
+            description: fortiRecon Cloud Configuration.
+            type: dict
+            contains:
+                service:
+                    description:
+                        - Service package.
+                        - FRNEASM (External Attack Surface Monitoring).
+                        - FRNEASMBP (External Attack Surface Monitoring & Brand Protect)
+                        - FRNEASMBPACI (External Attack Surface Monitoring & Brand Protect & Adversary Centric Intelligence)
+                    type: str
+                assets:
+                    description: Number of Monitored Assets. Number between 200 and 1,000,000 (inclusive). Value should be divisible by 50.
+                    type: int
+                networks:
+                    description: Internal Attack Surface Monitoring (number of networks). Number between 0 and 100 (inclusive).
+                    type: int
+                executives:
+                    description: Executive Monitoring (number of executives). Number between 0 and 1,000 (inclusive).
+                    type: int
+                vendors:
+                    description: Vendor Monitoring (number of vendors). Number between 0 and 1,000 (inclusive).
+                    type: int
+        fortiSIEMCloud:
+            description: fortiSIEM Cloud Configuration.
+            type: dict
+            contains:
+                computeUnits:
+                    description: Number of Compute Units. Number between 10 and 600 (inclusive).
+                    type: int
+                onlineStorage:
+                    description:
+                        - Additional Online Storage. Number between 500 and 60,000 (inclusive). Value should be divisible by 500.
+                        - It can be scaled up in an increment of 500 but scaling down is NOT allowed.
+                    type: int
+                archiveStorage:
+                    description:
+                        - Archive Storage. Number between 0 and 60,000 (inclusive). Value should be divisible by 500.
+                        - can be scaled up in an increment of 500 but scaling down is NOT allowed.
+                    type: int
 """
 
 from ansible.module_utils.basic import AnsibleModule

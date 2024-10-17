@@ -1,0 +1,5 @@
+release_summary: Release FortiFlex 2.2.3.
+bugfixes:
+  - Added two configurations, `fortiRecon` and `fortiSIEMCloud`.
+  - Configuration `fortiSASE` supported new argument `computeRegion`.
+  - Improved error message content.

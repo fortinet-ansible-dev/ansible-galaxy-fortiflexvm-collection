@@ -149,3 +149,13 @@ releases:
     fragments:
       - 2.2.2.yml
     release_date: "2024-08-07"
+  2.2.3:
+    changes:
+      bugfixes:
+        - Added two configurations, `fortiRecon` and `fortiSIEMCloud`.
+        - Configuration `fortiSASE` supported new argument `computeRegion`.
+        - Improved error message content.
+      release_summary: Release FortiFlex 2.2.3.
+    fragments:
+      - 2.2.3.yml
+    release_date: "2024-10-11"

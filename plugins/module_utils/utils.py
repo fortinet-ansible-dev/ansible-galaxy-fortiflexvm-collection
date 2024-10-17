@@ -192,6 +192,8 @@ def fill_auth(module):
 
 def replace_error_msg(msg):
     def replace_id(match):
-        return get_param_name_by_id(match.group())
+        id_number = match.group(1)
+        return get_param_name_by_id(id_number)
     import re
-    return re.sub(r'\d+', replace_id, msg)
+    pattern = r"id (\d+)"
+    return re.sub(pattern, replace_id, msg)

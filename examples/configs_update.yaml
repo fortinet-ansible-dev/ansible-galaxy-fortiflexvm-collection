@@ -7,7 +7,7 @@
       fortinet.fortiflexvm.fortiflexvm_configs_update:
         username: "{{ username }}"
         password: "{{ password }}"
-        id: 3643
+        id: 12345
         name: "ansible_modify"
         status: "DISABLED" # ACTIVE or DISABLED
 
@@ -129,11 +129,26 @@
         #   users: 50                         # 50 ~ 50000. Value should be divisible by 25.
         #   service: "FSASESTD"               # "FSASESTD" (Standard) or "FSASEADV" (Advanced).
         #   bandwidth: 100                    # 25 ~ 10000. Value should be divisible by 25.
-        #   dedicatedIPs: 10                  # 4 ~ 65534
+        #   dedicatedIPs: 10                  # 4 ~ 65534. Value should be divisible by 4.
+        #   computeRegion: 0                  # 0 ~ 16. It can be scaled up in an increment of 1 but scaling down is NOT allowed.
 
         # fortiEDR:
         #   service: "FEDRPDR"                # "FEDRPDR" (Discover/Protect/Respond)
         #   addons: ["FEDRXDR"]               # Empty list or "FEDRXDR"
+
+        # fortiRecon:
+        #   service: "FRNEASM"                # "FRNEASM", "FRNEASMBP", "FRNEASMBPACI"
+        #   assets: 200                       # 200 ~ 1000000. Value should be divisible by 50
+        #   networks: 0                       # 0 ~ 100
+        #   executives: 0                     # 0 ~ 1000
+        #   vendors: 0                        # 0 ~ 100
+
+        # fortiSIEMCloud:
+        #   computeUnits: 10                  # 10 ~ 600
+        #   onlineStorage: 500                # 500 ~ 60000. Value should be divisible by 500.
+        #                                     # It can be scaled up in an increment of 500 but scaling down is NOT allowed.
+        #   archiveStorage: 0                 # 0 ~ 60000. Value should be divisible by 500.
+        #                                     # It can be scaled up in an increment of 500 but scaling down is NOT allowed.
 
       register: result
 

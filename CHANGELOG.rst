@@ -5,6 +5,21 @@ Fortinet.Fortiflexvm Release Notes
 .. contents:: Topics
 
 
+v2.2.3
+======
+
+Release Summary
+---------------
+
+Release FortiFlex 2.2.3.
+
+Bugfixes
+--------
+
+- Added two configurations, `fortiRecon` and `fortiSIEMCloud`.
+- Configuration `fortiSASE` supported new argument `computeRegion`.
+- Improved error message content.
+
 v2.2.2
 ======
 

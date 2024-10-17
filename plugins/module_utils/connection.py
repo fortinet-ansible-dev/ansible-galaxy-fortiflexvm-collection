@@ -95,7 +95,7 @@ class Connection():
             response_data = response.json()
             response_message = response_data.get("message", "")
             try:
-                if response_message and response_message.startswith("Invalid parameter"):
+                if response_message and "parameter id" in response_message.lower():
                     response_data["message"] = replace_error_msg(response_message)
             except Exception as e:
                 pass

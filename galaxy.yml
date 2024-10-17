@@ -1,6 +1,6 @@
 namespace: fortinet
 name: fortiflexvm
-version: 2.2.2
+version: 2.2.3
 readme: README.md
 authors:
     - Xinwei Du <dux@fortinet.com> (@dux-fortinet)

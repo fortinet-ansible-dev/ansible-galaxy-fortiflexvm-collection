@@ -1,6 +1,6 @@
 ![Fortinet logo|](https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Fortinet_logo.svg/320px-Fortinet_logo.svg.png)
 
-# fortinet.fortiflexvm:2.2.2 - interacting with Fortiflex
+# fortinet.fortiflexvm:2.2.3 - interacting with Fortiflex
 
 ## Description
 

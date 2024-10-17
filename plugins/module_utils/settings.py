@@ -213,6 +213,8 @@ PRODUCTS = [
                 "min": 25, "max": 10000, "required": True},
             {"id": 51, "name": "dedicatedIPs", "type": "int",
                 "min": 4, "max": 65534, "required": True},
+            {"id": 59, "name": "computeRegion", "type": "int",
+                "min": 0, "max": 16, "required": False},
         ],
     },
     {
@@ -225,6 +227,27 @@ PRODUCTS = [
                 "readonly": True, "required": False},  # Read only
             {"id": 52, "name": "addons", "type": "list", "elements": "str",
                 "choices": ["FEDRXDR"], "required": False, "default": []},
+        ],
+    },
+    {
+        "id": 208,
+        "name": "fortiRecon",
+        "parameters": [
+            {"id": 61, "name": "service", "type": "str",
+                "choices": ["FRNEASM", "FRNEASMBP", "FRNEASMBPACI"], "required": True},
+            {"id": 62, "name": "assets", "type": "int", "required": True, "min": 200, "max": 1000000},
+            {"id": 63, "name": "networks", "type": "int", "required": False, "min": 0, "max": 100},
+            {"id": 64, "name": "executives", "type": "int", "required": False, "min": 0, "max": 1000},
+            {"id": 65, "name": "vendors", "type": "int", "required": False, "min": 0, "max": 1000},
+        ],
+    },
+    {
+        "id": 209,
+        "name": "fortiSIEMCloud",
+        "parameters": [
+            {"id": 66, "name": "computeUnits", "type": "int", "required": True, "min": 10, "max": 600},
+            {"id": 67, "name": "onlineStorage", "type": "int", "required": False, "min": 500, "max": 60000},
+            {"id": 68, "name": "archiveStorage", "type": "int", "required": False, "min": 0, "max": 60000},
         ],
     },
 ]

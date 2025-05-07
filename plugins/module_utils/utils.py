@@ -67,7 +67,7 @@ def get_product_name_by_id(id):
 def infer_product_type(module):
     specified_products = []
     for product_name in get_product_names():
-        if module.params[product_name]:
+        if module.params[product_name] is not None:
             specified_products.append(product_name)
     if len(specified_products) == 0:
         module.fail_json(
@@ -158,7 +158,7 @@ def transform_config_output(item):
     for param in item["parameters"]:
         param_name = get_param_name_by_id(param["id"])
         if param_name not in configs_response[product_type]:
-            if param["id"] in [7, 12, 29, 36, 42, 43, 44, 52]:
+            if param["id"] in [7, 12, 29, 36, 42, 43, 44, 52, 57, 58, 71, 75]:
                 configs_response[product_type][param_name] = []
                 if param["value"] != "NONE":
                     configs_response[product_type][param_name].append(param["value"])

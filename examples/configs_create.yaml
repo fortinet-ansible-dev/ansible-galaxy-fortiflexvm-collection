@@ -25,7 +25,7 @@
           cpu: 2                              # 1 ~ 96
           service: "UTP"                      # "FC", "UTP", "ENT", "ATP"
           vdom: 10                            # 0 ~ 500
-          fortiGuardServices: ["FGTFAIS"]     # ["FGTAVDB", "FGTFAIS", "FGTISSS", "FGTDLDB", "FGTFGSA", "FGTFCSS"]
+          fortiGuardServices: ["FGTAVDB"]     # ["FGTAVDB", "FGTFAIS", "FGTISSS", "FGTDLDB", "FGTFGSA"]
           cloudServices: ["FGTFAMS"]          # ["FGTFAMS", "FGTSWNM", "FGTSOCA", "FGTFAZC", "FGTSWOS", "FGTFSPA"]
           supportService: "NONE"              # "FGTFCELU", "NONE"
 
@@ -35,14 +35,14 @@
 
         # fortiWeb:
         #   cpu: "4"                          # "1", "2", "4", "8", "16"
-        #   service: "FWBSTD"                 # "FWBSTD" or "FWBADV"
+        #   service: "FWBSTD"                 # "FWBSTD", "FWBADV", "FWBENT"
 
         # fortiGateLCS:
         #   cpu: 4                            # 1 ~ 96
-        #   fortiGuardServices: []            # "IPS", "AVDB", "FGSA", "DLDB", "FAIS", "FURLDNS"
+        #   fortiGuardServices: []            # ["IPS", "AVDB", "FURLDNS", "FGSA", "ISSS", "DLDB", "FAIS", "FURL", "IOTH"]
         #   supportService: "FC247"           # "FC247", "ASET"
-        #   vdom: 1                           # 1 ~ 500
-        #   cloudServices: ["FAMS", "SWNM"]   # "FAMS", "SWNM", "AFAC", "FAZC"
+        #   vdom: 1                           # 0 ~ 500
+        #   cloudServices: ["FAMS", "SWNM"]   # ["FAMS", "SWNM", "AFAC", "FAZC", "FSPA", "SWOS", "FMGC"]
 
         # fortiClientEMSOP:
         #   ZTNA: 1000                        # Value should be 0 or between 25 and 25000.
@@ -55,17 +55,27 @@
         #   storage: 5                        # 5 ~ 8300
         #   adom: 1                           # 0 ~ 1200
         #   service: "FAZFC247"               # "FAZFC247"
-        #   addons: []                        # "FAZISSS", "FAZFGSA"
+        #   addons: []                        # ["FAZISSS", "FAZFGSA", "FAZAISN"]
 
         # fortiPortal:
         #   device: 1                         # 0 ~ 100000
 
         # fortiADC:
-        #   cpu: "32"                         # "1", "2", "4", "8", "16", "32"
-        #   service: "FDVSTD"                 # "FDVFC247", "FDVNET", "FDVAPP" or "FDVAI"
+        #   cpu: "1"                          # "1", "2", "4", "8", "16", "32"
+        #   service: "FDVFC247"               # "FDVFC247", "FDVNET", "FDVAPP", "FDVAI"
+
+        # fortiSOAR:
+        #   service: "FSRE"                   # "FSRE", "FSRM", "FSRD", "FSRR"
+        #   licenseNum: 1                     # 0 ~ 1000
+        #   addons: []                        # ["FSRTIMS"]
+
+        # fortiMail:
+        #   cpu: "1"                          # "1", "2", "4", "8", "16", "32"
+        #   service: "FMLBASE"                # "FMLBASE", "FMLATP"
+        #   addons: []                        # ["FMLFEMS", "FMLFCAS", "FMLFEOP", "FMLFEEC"]
 
         # fortiGateHardware:
-        #   model: "FGT60F"                   # For all supported modules, please check FNDN.
+        #   model: "FGT40F"                   # For all supported modules, please check FNDN.
         #                                     # "FGT40F", "FGT60F", "FGT70F", "FGT80F", "FG100F", "FGT60E",
         #                                     # "FGT61F", "FG100E", "FG101F", "FG200E", "FG200F", "FG201F",
         #                                     # "FG4H0F", "FG6H0F", "FWF40F", "FWF60F", "FGR60F", "FR70FB",
@@ -75,19 +85,37 @@
         #                                     # "FW80FS", "FWF81F", "FW81FS", "FW81FD", "FW81FP", "FG81FP",
         #                                     # "FGT90G", "FGT91G", "FG201E", "FG4H0E", "FG4HBE", "FG4H1E",
         #                                     # "FD4H1E", "FG6H0E", "FG6H1E", "FG6H1F", "FG9H0G", "FG9H1G",
-        #                                     # "FG1K1F", "FG181F", "FG3K7F", "FG39E6", "FG441F"
-        #   service: "FGHWFCEL"               # "FGHWFC247", "FGHWFCEL", "FGHWATP", "FGHWUTP" or "FGHWENT"
-        #   addons: []                        # "FGHWFCELU", "FGHWFAMS", "FGHWFAIS", "FGHWSWNM", "FGHWDLDB",
-        #                                     # "FGHWFAZC", "FGHWSOCA", "FGHWMGAS", "FGHWSPAL", "FGHWFCSS"
+        #                                     # "FG1K1F", "FG181F", "FG3K7F", "FG39E6", "FG441F", "FGR35D",
+        #                                     # "FR70FM", "FG60EV", "FG60EP", "FGT61E", "FGT80E", "FG80EP",
+        #                                     # "FGT81E", "FG81EP", "FGT90E", "FGT91E", "FG3H0E", "FG3H1E",
+        #                                     # "FG10E0", "FD10E0", "FG10E1", "FD180F", "FD181F", "FG2K2E",
+        #                                     # "FG22E1", "FD260F", "F2K61F", "FD261F", "FD3K0F", "FD3K1F",
+        #                                     # "FG32F1", "FG3K3E", "FG33E1", "FG3K4E", "FD3K4E", "FG34E1",
+        #                                     # "FD34E1", "FG3K5F", "FG35F1", "FG3K6E", "FD3K6E", "FG36E1",
+        #                                     # "FG37F1", "FG39E8", "FGD398", "FG420F", "FD420F", "FG421F",
+        #                                     # "FD421F", "FG440F", "FD440F", "FD441F", "FG480F", "FD480F",
+        #                                     # "FG481F", "FD481F", "FGT2KE", "FG2K5E", "FG120G", "FG121G",
+        #                                     # "FGT30E", "FG30EG", "FGT50E", "FGT51E", "FG60EJ", "FG1HEF",
+        #                                     # "F140EP", "FG5H0E", "FG5H1E", "FGD396", "FWF30E", "FWF50E",
+        #                                     # "FW502R", "FWF51E", "FWF60E", "FW60EV", "FW60EJ", "FWF61E",
+        #                                     # "FW50GD", "FW50GS", "FG50GD", "FG50GS", "FG50GP", "FG51GP",
+        #                                     # "FG2H0G", "FG2H1G", "FGT30G", "FGT50G", "FG50G5", "FGT51G",
+        #                                     # "FG51G5", "FGT70G", "FGT71G", "FD9H0G", "FD9H1G"
+        #   service: "FGHWFC247"              # "FGHWFC247", "FGHWFCEL", "FGHWATP", "FGHWUTP", "FGHWENT", "FGHWFCESN"
+        #   addons: []                        # ["FGHWFCELU", "FGHWFAMS", "FGHWFAIS", "FGHWSWNM", "FGHWDLDB",
+        #                                     # "FGHWFAZC", "FGHWSOCA", "FGHWMGAS", "FGHWSPAL", "FGHWISSS",
+        #                                     # "FGHWSWOS", "FGHWAVDB", "FGHWNIDS", "FGHWFGSA", "FGHWFURL",
+        #                                     # "FGHWFSFG"]
 
         # fortiAPHardware:
         #   model: "FP23JF"                   # For all supported modules, please check FNDN.
         #                                     # "FP23JF", "FP221E", "FP223E", "FP231F", "FP231G", "FP233G",
         #                                     # "FP234F", "FP234G", "FP431F", "FP431G", "FP432F", "F432FR",
         #                                     # "FP432G", "FP433F", "FP433G", "FP441K", "FP443K", "FP831F",
-        #                                     # "PU231F", "PU234F", "PU422E", "PU431F", "PU432F", "PU433F"
+        #                                     # "PU231F", "PU234F", "PU422E", "PU431F", "PU432F", "PU433F",
+        #                                     # "FP222E", "FP224E", "FP231E"
         #   service: "FAPHWFC247"             # "FAPHWFC247" or "FAPHWFCEL"
-        #   addons: []                        # "FAPHWFSFG"
+        #   addons: []                        # ["FAPHWFSFG"]
 
         # fortiSwitchHardware:
         #   model: "S108EN"                   # For all supported modules, please check FNDN.
@@ -99,7 +127,8 @@
         #                                     # "S448DN", "S448DP", "S448EN", "S448EF", "S448EP", "S524DN",
         #                                     # "S524DF", "S548DN", "S548DF", "S624FN", "S624FF", "S648FN",
         #                                     # "S648FF", "FS1D24", "FS1E24", "FS1D48", "FS1E48", "FS2F48",
-        #                                     # "FS3D32", "FS3E32", "S426EF", "ST1E24", "SR12DP", "SR24DN"
+        #                                     # "FS3D32", "FS3E32", "S426EF", "ST1E24", "SR12DP", "SR24DN",
+        #                                     # "SM10GF", "SR16FP", "SR24FP"
         #   service: "FSWHWFC247"             # "FSWHWFC247" or "FSWHWFCEL"
 
         # fortiCloudPrivate:
@@ -112,7 +141,7 @@
         #   throughput: 100                   # 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800,
         #                                     # 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500,
         #                                     # 7000, 7500, 8000, 8500, 9000, 9500, 10000.
-        #   applications: 10                  # 0 ~ 2000
+        #   applications: 10                  # 1 ~ 5000
 
         # fortiClientEMSCloud:
         #   ZTNA: 100                         # Value should be 0 or between 25 and 25000.
@@ -120,25 +149,29 @@
         #   EPP_ZTNA: 100                     # Value should be 0 or between 25 and 25000.
         #   EPP_ZTNA_FGF: 100                 # Value should be 0 or between 25 and 25000.
         #   chromebook: 100                   # Value should be 0 or between 25 and 25000.
-        #   addons: ["BPS"]                   # [] or "BPS"
+        #   addons: ["BPS"]                   # [] or ["BPS"]
 
         # fortiSASE:
         #   users: 50                         # 50 ~ 50000. Value should be divisible by 25.
-        #   service: "FSASESTD"               # "FSASESTD" (Standard) or "FSASEADV" (Advanced).
-        #   bandwidth: 100                    # 25 ~ 10000. Value should be divisible by 25.
-        #   dedicatedIPs: 10                  # 4 ~ 65534. Value should be divisible by 4.
-        #   computeRegion: 0                  # 0 ~ 16. t can be scaled up in an increment of 1 but scaling down is NOT allowed.
+        #   service: "FSASESTD"               # "FSASESTD", "FSASEADV", "FSASECOM"
+        #   bandwidth: 100                    # 0 ~ 10000. Value should be divisible by 25.
+        #   dedicatedIPs: 12                  # 0 ~ 65534.  Value should be divisible by 4.
+        #   computeRegion: 1                  # 0 ~ 16. It can be scaled up in an increment of 1 but scaling down is NOT allowed.
+        #   onRampLocations: 0                # 0 ~ 8. It can be scaled up in an increment of 1 but scaling down is NOT allowed.
 
         # fortiEDR:
-        #   service: "FEDRPDR"                # "FEDRPDR" (Discover/Protect/Respond)
-        #   addons: ["FEDRXDR"]               # Empty list or "FEDRXDR"
+        #   service: "FEDRPDR"                # "FEDRPDR"
+        #   addons: ["FEDRXDR"]               # [] or ["FEDRXDR"]
+        #   repoStorage: 0                    # 0 ~ 30720. It can be scaled up in an increment of 512 but scaling down is NOT allowed.
+
+        # fortiNDRCloud: {}                   # Since fortiNDRCloud does not have any parameters, you need to set it as empty.
 
         # fortiRecon:
         #   service: "FRNEASM"                # "FRNEASM", "FRNEASMBP", "FRNEASMBPACI"
         #   assets: 200                       # 200 ~ 1000000. Value should be divisible by 50
         #   networks: 0                       # 0 ~ 100
         #   executives: 0                     # 0 ~ 1000
-        #   vendors: 0                        # 0 ~ 100
+        #   vendors: 0                        # 0 ~ 1000
 
         # fortiSIEMCloud:
         #   computeUnits: 10                  # 10 ~ 600

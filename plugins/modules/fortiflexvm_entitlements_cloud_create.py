@@ -51,13 +51,14 @@ EXAMPLES = """
   vars:
     username: "<your_own_value>"
     password: "<your_own_value>"
+    config_id: 12345
   tasks:
     - name: Create Cloud Entitlement.
       fortinet.fortiflexvm.fortiflexvm_entitlements_cloud_create:
         username: "{{ username }}"
         password: "{{ password }}"
-        configId: 12345
-        endDate: "2024-02-12T00:00:00" # Optional. If not set, it will use the program end date automatically.
+        configId: "{{ config_id }}"
+        # endDate: "2024-02-12T00:00:00" # Optional. If not set, it will use the program end date automatically.
       register: result
 
     - name: Display response

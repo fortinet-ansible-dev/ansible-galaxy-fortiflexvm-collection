@@ -1,0 +1,5 @@
+release_summary: Release FortiFlex 2.3.0.
+minor_changes:
+  - Added 3 new configurations. fortiSOAR, fortiMail, fortiNDRCloud.
+bugfixes:
+  - Improved the schemas of the existing configurations.

@@ -159,3 +159,13 @@ releases:
     fragments:
       - 2.2.3.yml
     release_date: "2024-10-11"
+  2.3.0:
+    changes:
+      bugfixes:
+        - Improved the schemas of the existing configurations.
+      minor_changes:
+        - Added 3 new configurations. fortiSOAR, fortiMail, fortiNDRCloud.
+      release_summary: Release FortiFlex 2.3.0.
+    fragments:
+      - 2.3.0.yml
+    release_date: "2025-05-07"

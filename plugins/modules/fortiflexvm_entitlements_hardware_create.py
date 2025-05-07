@@ -65,9 +65,9 @@ EXAMPLES = """
         password: "{{ password }}"
         configId: 42
         serialNumbers:
-          - "FGT60FTK19000010"
-          - "FGT60FTK19000013"
-        endDate: "2023-11-11T00:00:00"
+          - "FGT60FTK00000000"
+          - "FGT60FTK00000001"
+        # endDate: "2023-11-11T00:00:00" # Optional. If not set, it will use the program end date automatically.
       register: result
 
     - name: Display response

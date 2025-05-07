@@ -5,6 +5,24 @@ Fortinet.Fortiflexvm Release Notes
 .. contents:: Topics
 
 
+v2.3.0
+======
+
+Release Summary
+---------------
+
+Release FortiFlex 2.3.0.
+
+Minor Changes
+-------------
+
+- Added 3 new configurations. fortiSOAR, fortiMail, fortiNDRCloud.
+
+Bugfixes
+--------
+
+- Improved the schemas of the existing configurations.
+
 v2.2.3
 ======
 

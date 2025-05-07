@@ -46,7 +46,7 @@ EXAMPLES = """
       fortinet.fortiflexvm.fortiflexvm_groups_list_info:
         username: "{{ username }}"
         password: "{{ password }}"
-        # accountId: 12345 # optional
+        # accountId: 12345 # Optional
       register: result
 
     - name: Display response
